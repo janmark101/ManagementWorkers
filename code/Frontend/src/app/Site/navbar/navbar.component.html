@@ -1,0 +1,20 @@
+<div class="navbar">
+    <div class="brand">
+      <div class="logo">
+        <img src="https://picsum.photos/250/250" alt="Logo Projektu">
+      </div>
+      <span routerLink="/home" style="cursor: pointer;">Workers Management</span>
+    </div>
+      
+    
+    <div class="user-info">
+        <div class="buttons">
+            <button class="create-button" (click)="CreateTeam()">Create</button>
+            <button class="join-button" (click)="JoinTeam()">Join</button>
+          </div>
+      <span style="margin-left: 20px;font-size: 1.2em;">Witaj, {{user.firstname}} {{user.lastname}}!</span>
+      <button class ="join-button" style="background-color: red;" (click)="Logout()">Log out</button>
+    </div>
+</div>
+
+

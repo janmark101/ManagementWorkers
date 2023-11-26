@@ -1,0 +1,82 @@
+
+
+  .background-container {
+    background-color: #17a2b8;
+    padding: 40px;
+    margin-top: 50px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    width: 90%;
+    display: flex;
+    margin: 2% auto;
+    
+  }
+
+
+  .content {
+    display: grid;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+  }
+  
+  .square {
+    width: 150px;
+    height: 150px;
+    background-color: #c4e1e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .square:hover {
+    background-color: #a3c1c9;
+  }
+  
+
+  .event-card {
+    
+    width: 260px; /* Dostosuj szerokość do swoich potrzeb */
+    height: 205px; /* Dostosuj wysokość do swoich potrzeb */
+    padding: 10px; /* Dodaj odstępy wokół tekstu */
+    overflow: hidden;  
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .card-text {
+    font-size: 1rem; /* Wielkość tekstu w odniesieniu do rozmiaru kontenera */
+    margin: 0; /* Resetuj margines, aby uniknąć niepotrzebnych odstępów */
+  }
+  
+  .songs-box{
+    margin-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 10px;
+    margin-left: 1%;
+    margin-right: 1%;
+    background-color:  #17a2b8;
+    border-radius: 15px;
+  }
+
+  .playlist-grid {
+    margin-left: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px; /* Odstęp między kartami */
+  }
+
+  .custom-card {
+    box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+  .custom-card:hover {
+
+    transform: scale(1.02);
+}
