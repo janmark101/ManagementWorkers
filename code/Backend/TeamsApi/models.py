@@ -10,3 +10,16 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
+class Task(models.Model):
+    description = models.CharField(max_length=500)
+    team_id = models.ForeignKey(Team,null=False,blank=False,on_delete=models.CASCADE)
+    workers_id = models.ManyToManyField(User,blank=True)
+    status = models.CharField(max_length=20,default="Not started")
+    error = models.CharField(max_length=500,null=True,blank=True)
+    date = models.DateTimeField(null=False,blank=False)
+    
+    
+    def __str__(self):
+        return "Task " + self.description
