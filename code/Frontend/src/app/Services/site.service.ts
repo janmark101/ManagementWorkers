@@ -34,10 +34,7 @@ export class SiteService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-
-    console.log(headers);
     
-
     return this.http.post(`${this.api_url}teams/`,data,{headers})
   }
 
@@ -48,11 +45,8 @@ export class SiteService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-
-    console.log(headers);
-    
-
-    return this.http.post(`${this.api_url}teams/`,data,{headers})
+   
+    return this.http.post(`${this.api_url}teams/join/`,data,{headers})
   }
 
 

@@ -61,3 +61,22 @@ class TasksForTeamView(APIView):
             serializer.save()
             return Response({"message" : 'Task created!'},status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class JoinTeamView(APIView):
+    permission_classes=[CustomPersmissions]
+    
+    def post(self,request,format=None):
+        self.check_permissions(self.request)
+        unique_code = request.data.get('unique_code')
+        
+        team = get_object_or_404(Team,unique_code=unique_code)
+        user = request.user
+        if user in team.workers.all():
+            return Response({"message" : 'Already in team!'},status=status.HTTP_200_OK)
+        else :
+            if team.manager == user:
+                return Response({"message" : 'You are manager of this team!'},status=status.HTTP_200_OK)
+            else:
+                team.workers.add(user)
+                return Response({"message" : 'Joined team!'},status=status.HTTP_200_OK)
