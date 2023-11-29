@@ -15,6 +15,7 @@ import { NavbarComponent } from './Site/navbar/navbar.component';
 import { CreateComponent } from './Site/create/create.component';
 import { MatDialogModule} from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JoinTeamComponent } from './Site/join-team/join-team.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TeamComponent,
     NavbarComponent,
     CreateComponent,
+    JoinTeamComponent,
   ],
   imports: [
     BrowserModule,
