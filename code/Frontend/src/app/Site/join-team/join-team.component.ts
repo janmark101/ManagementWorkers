@@ -23,7 +23,7 @@ export class JoinTeamComponent {
         "unique_code" : form.value.unique_code,
       }
       
-      console.log(data);
+
       this.Service.joinTeam(data).subscribe((data:any) =>{
         console.log(data);
         this.message = `Team ${data.name} joined succesfully`;
