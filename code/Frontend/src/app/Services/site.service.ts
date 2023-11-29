@@ -41,5 +41,19 @@ export class SiteService {
     return this.http.post(`${this.api_url}teams/`,data,{headers})
   }
 
+  joinTeam(data:any){
+    let user = this.Auth.getUserFromLocalStorage();
+    console.log(user);
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+
+    console.log(headers);
+    
+
+    return this.http.post(`${this.api_url}teams/`,data,{headers})
+  }
+
 
 }

@@ -4,6 +4,7 @@ import { delay } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { CreateComponent } from '../create/create.component';
 import { MatDialog } from '@angular/material/dialog';
+import { JoinTeamComponent } from '../join-team/join-team.component';
 
 @Component({
   selector: 'app-navbar',
@@ -59,7 +60,19 @@ export class NavbarComponent implements OnInit {
   }
 
   JoinTeam(){
+    const dialogRef = this.dialog.open(JoinTeamComponent, {
+      width: '700px',
+      
+    });
 
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result === 'confirm') {
+        console.log('Potwierdzono');
+      } else if (result === 'cancel') {
+        console.log("nie potwierdzono");
+        
+      }
+    });
   }
 
 }

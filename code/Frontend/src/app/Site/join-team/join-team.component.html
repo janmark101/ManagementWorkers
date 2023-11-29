@@ -1,1 +1,15 @@
-<p>join-team works!</p>
+<div class="container mt-5">
+    <h1 style="text-align: center;">Join team</h1>
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+        
+      <div class="mb-3">
+        <label for="Title" class="form-label">Unique team code:</label>
+        <input type="text" class="form-control" id="Title" ngModel name="unique_code">
+      </div>
+      <p style="text-align: center;">{{message}}  </p>
+      <div class="button-container" style="margin-top: 15%;">
+        <button class="confirm-button" type="submit">Join</button>
+        <button class="cancel-button" type="button"(click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
