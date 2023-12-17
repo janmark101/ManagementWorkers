@@ -13,6 +13,7 @@ class Team(models.Model):
     
     
 class Task(models.Model):
+    name=models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     team_id = models.ForeignKey(Team,null=False,blank=False,on_delete=models.CASCADE)
     workers_id = models.ManyToManyField(User,blank=True)

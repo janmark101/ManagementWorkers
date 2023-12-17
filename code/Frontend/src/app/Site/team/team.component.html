@@ -1,1 +1,21 @@
-<p>team works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="team.component.scss" rel="stylesheet">
+</head>
+<body>
+    <!-- days sourced from: https://nationaldaycalendar.com/february/ -->
+<h1>{{currentMonth}} {{currentYear}}</h1>
+<p>Holidays and Daily Observances in the United States</p>
+<ul>
+    
+	<div (click)="DisplayDay(i+1)" *ngFor="let day of currentMonthDays;let i = index" [ngClass]="{'today': i === currentDay-1}">
+        <time>{{i+1}}</time><p *ngIf="TaskCounterMap.get(i+1)!=0">Tasks to do:{{TaskCounterMap.get(i+1)}}</p>
+    </div>
+    
+</ul>
+</body>
+</html>
