@@ -1,23 +1,22 @@
 <div class="container mt-5">
     <h1 style="text-align: center;">Tasks</h1>
-    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+    
       <div class="tasks-container">
         <div class="task" *ngFor="let task of tasks;let i = index">
           <div class="task-info">
             <div class="task-name">{{ task.name }}</div>
             <div class="task-description">{{ task.description }}</div>
-            <div class="CRUD">
-                <button class="edit_button" type="button">Edit</button>
-                <button class="delete_button" type="button">Delete</button>
+            <div class="CRUD">             
+                <fa-icon [icon]="editicon" size="xl" style="cursor: pointer;"></fa-icon>
+                <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete('expense')"></fa-icon>
             </div>
             
         </div>
       </div>
       </div>
       <div class="button-container">
-        <button class="confirm-button" type="submit">Save</button>
-        <button class="cancel-button" type="button" (click)="onCancel()">Cancel</button>
+        <button class="cancel-button" type="button" (click)="onCancel()">Ok</button>
       </div>
-    </form>
+    
   </div>
   

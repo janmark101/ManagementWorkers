@@ -1,11 +1,10 @@
 
-
-
+<div class ="back">
 <div class ="songs-box">
     <h1 style="font-family: 'Arial', Times, serif; text-align: center;">Your teams</h1>
 
     <div class="playlist-grid" >
-     <div *ngFor="let team of userTeams;let i = index" >
+     <div class="test"*ngFor="let team of userTeams;let i = index" >
         
   
         <div class="card custom-card" style="width: 25rem;  box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.3) ;margin-top: 10px; cursor: pointer;" [routerLink]="['/team',team.id]"  >
@@ -18,4 +17,4 @@
         </div>
     </div>
 </div>
-
+</div>

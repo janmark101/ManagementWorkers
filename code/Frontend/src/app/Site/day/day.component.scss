@@ -6,6 +6,7 @@
   .tasks-container {
     display: grid;
     gap: 10px;
+    
   }
   
   .task {
@@ -28,7 +29,7 @@
   }
   .task:hover{
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    background-color: #f44336;
+    background-color: rgb(178, 165, 155) ;
   }
   .task:hover .CRUD{
     opacity: 1;
@@ -47,6 +48,10 @@
   }
   .CRUD{
     opacity: 0;
+    
+  }
+  .CRUD fa-icon{
+    margin-left: 15px;
   }
 .button-container {
     display: flex;
@@ -71,6 +76,6 @@
   
   .cancel-button {
     border-radius: 5px;
-    background-color: #f44336;
+    background-color: rgb(178, 165, 155);
     color: white;
   }
