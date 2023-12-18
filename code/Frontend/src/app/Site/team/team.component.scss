@@ -5,11 +5,12 @@ body {
 	flex-flow: column;
 	align-items: center;
 	font-family: "Poppins", serif;
-	background: rgb(238, 174, 202);
+	background: rgb(178, 165, 155);
 	background: radial-gradient(
 		circle,
-		rgba(238, 174, 202, 1) 0%,
-		rgba(148, 187, 233, 1) 100%
+		rgba(178, 165, 155, 1) 0%,
+    	rgba(250, 238, 209, 1) 75%,
+    	rgba(96, 114, 116, 1) 120%
 	);
 }
 h1 {
@@ -35,8 +36,8 @@ ul {
 		font-weight: 300;
 		font-size: 0.8rem;
 		box-sizing: border-box;
-		background: rgba(255, 255, 255, 0.25);
-		box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+		background: rgba(222, 208, 182, 0.75);
+		box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.50);
 		backdrop-filter: blur(4px);
 		-webkit-backdrop-filter: blur(4px);
 		border-radius: 10px;
@@ -49,12 +50,12 @@ ul {
 		}
 	}
     div:hover{
-        background-color: #a3c1c9;   
+        background-color: rgb(250, 238, 209),;   
     }
 	.today {
 		time {
 			font-weight: 800;
 		}
-		background: #ffffff70;
+		background: rgb(178, 165, 155);
 	}
 }

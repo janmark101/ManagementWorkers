@@ -11,13 +11,12 @@
 
 
 .navbar {
-    background-color: #17a2b8;
-    color: black;
+    background-color: rgb(178, 165, 155);
+    color: white;
     padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #117a8b;
     width: 100%;
 
   }
@@ -28,9 +27,9 @@
   }
   
   .logo img {
-    height: 40px;
+    height: 50px;
     width: auto;
-    margin-right: 10px;
+    margin-right: 25px;
   }
   
   .brand span {
@@ -44,7 +43,7 @@
   
   .create-button,
   .join-button {
-    background-color: #4CAF50;  
+    background-color: #7b4e34;  
     color: white;
     border: none;
     padding: 8px 20px;
@@ -56,7 +55,7 @@
   
   .create-button:hover,
   .join-button:hover {
-    background-color: #45a049;
+    background-color: rgb(182,139,114);
   }
   
   .user-info {

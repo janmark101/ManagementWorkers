@@ -1,7 +1,20 @@
 
+  .back{
+    background: rgb(178, 165, 155);
+	  background: radial-gradient(
+		circle,
+		  rgba(178, 165, 155, 1) 0%,
+    	rgba(250, 238, 209, 1) 75%,
+    	rgba(96, 114, 116, 1) 120%
+	);
+    width: 100%;
+    height: 100%;
+    padding-top: 50px;
+    
+  }
 
   .background-container {
-    background-color: #17a2b8;
+    background-color: rgb(178, 165, 155);;
     padding: 40px;
     margin-top: 50px;
     border-radius: 15px;
@@ -20,6 +33,7 @@
     align-items: center;
     justify-content: center;
     padding-top: 30px;
+    
   }
   
   .square {
@@ -38,7 +52,7 @@
     background-color: #a3c1c9;
   }
   
-
+ 
   .event-card {
     
     width: 260px; /* Dostosuj szerokość do swoich potrzeb */
@@ -60,15 +74,18 @@
     padding-left: 10px;
     margin-left: 1%;
     margin-right: 1%;
-    background-color:  #17a2b8;
+    background-color: rgb(178, 165, 155);;
     border-radius: 15px;
+    
   }
 
   .playlist-grid {
     margin-left: 5%;
     display: flex;
     flex-wrap: wrap;
-    gap: 50px; /* Odstęp między kartami */
+    column-gap: 140px;
+    row-gap: 50px; /* Odstęp między kartami */
+    padding-bottom: 40px;
   }
 
   .custom-card {

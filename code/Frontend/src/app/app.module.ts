@@ -17,6 +17,14 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JoinTeamComponent } from './Site/join-team/join-team.component';
 import { DayComponent } from './Site/day/day.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import {
+  ConfirmBoxConfigModule,
+  DialogConfigModule,
+  NgxAwesomePopupModule,
+  ToastNotificationConfigModule,
+} from '@costlydeveloper/ngx-awesome-popup';
 
 @NgModule({
   declarations: [
@@ -36,7 +44,22 @@ import { DayComponent } from './Site/day/day.component';
     FormsModule,
     HttpClientModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+    NgxAwesomePopupModule.forRoot({
+      colorList: {
+        success: '#3caea3', // optional
+        info: '#2f8ee5', // optional
+        warning: '#ffc107', // optional
+        danger: '#e46464', // optional
+        customOne: '#3ebb1a', // optional
+        customTwo: '#bd47fa', // optional (up to custom five)
+      },
+    }),
+    ConfirmBoxConfigModule.forRoot(),
+
+    DialogConfigModule.forRoot(), // optional
+    ToastNotificationConfigModule.forRoot(), // optional
   ],
   providers: [AuthService,SiteService],
   bootstrap: [AppComponent]
