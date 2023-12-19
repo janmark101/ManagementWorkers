@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { SiteService } from 'src/app/Services/site.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DayComponent } from '../day/day.component';
+import { TaskComponent } from '../task/task.component';
 
 @Component({
   selector: 'app-team',
@@ -25,9 +26,7 @@ export class TeamComponent implements OnInit{
     this.Site.getTaskForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
       this.TeamTasks = data;
       this.TaskCounter();
-      console.log(this.currentMonthTasks);
-      console.log(this.TaskCounterMap);
-      
+      console.log(data);
     },(error:any) =>{
       console.error(error);
       
@@ -136,6 +135,26 @@ export class TeamComponent implements OnInit{
       }
     });
   }
+  AddTaskPopup(){
+    const dialogRef = this.dialog.open(TaskComponent, {
+      width: '700px',
+      data:{
+        team_id:this.route.snapshot.params['id']
+      }
+    });
 
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result === 'confirm') {
+              //reload() po dodoaniu teamu
+        console.log('Potwierdzono');
+      } else if (result === 'cancel') {
+        console.log("nie potwierdzono");
+        
+      }
+    });
+
+          //reload() po dodaniu teamu
+  }
+  
 
 }

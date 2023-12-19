@@ -18,6 +18,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JoinTeamComponent } from './Site/join-team/join-team.component';
 import { DayComponent } from './Site/day/day.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
 
 import {
   ConfirmBoxConfigModule,
@@ -25,6 +29,7 @@ import {
   NgxAwesomePopupModule,
   ToastNotificationConfigModule,
 } from '@costlydeveloper/ngx-awesome-popup';
+import { TaskComponent } from './Site/task/task.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,7 @@ import {
     CreateComponent,
     JoinTeamComponent,
     DayComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +65,11 @@ import {
     ConfirmBoxConfigModule.forRoot(),
 
     DialogConfigModule.forRoot(), // optional
-    ToastNotificationConfigModule.forRoot(), // optional
+    ToastNotificationConfigModule.forRoot(),
+    MatFormFieldModule,
+    MatInputModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule, // optional
   ],
   providers: [AuthService,SiteService],
   bootstrap: [AppComponent]

@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <h1 style="text-align: center;">Add Task</h1>
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+        
+      <div class="mb-3">
+        <label for="Title" class="form-label">Task name:</label>
+        <input type="text" class="form-control" id="Title" ngModel name="name">
+      </div>
+      <div class="mb-3">
+        <label for="Title" class="form-label">Task description: </label>
+        <textarea class="form-control" id="Description"  rows="4" ngModel name="description"></textarea>
+      </div>
+      <div class="mb-3">
+        <mat-form-field>
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" ngModel name="date" >
+            <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker #picker ></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <p style="text-align: center;">{{message}}  </p>
+      <div class="button-container" style="margin-top: 15%;">
+        <button class="confirm-button" type="submit">Save</button>
+        <button class="cancel-button" type="button"(click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  
