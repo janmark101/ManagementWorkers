@@ -58,4 +58,14 @@ export class SiteService {
     });
     return this.http.get(`${this.api_url}teams/${id}/tasks/`,{headers})
   }
+
+  addTaskForTeam(id:number, data:any){
+    let user = this.Auth.getUserFromLocalStorage();
+    console.log(user.token);
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${id}/tasks/`,data,{headers})
+  }
 }

@@ -35,8 +35,6 @@ export class CreateComponent {
         this.message = "Something went wrong!";
       });
 
-      //reload() po dodoaniu teamu
-
     }
 
     onCancel(){

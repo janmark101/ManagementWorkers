@@ -2,8 +2,9 @@
 
 body {
 	display: flex;
-	flex-flow: column;
-	align-items: center;
+    // flex-flow: row wrap;
+    // align-items: flex-start;
+    // justify-content: space-between;
 	font-family: "Poppins", serif;
 	background: rgb(178, 165, 155);
 	background: radial-gradient(
@@ -13,9 +14,65 @@ body {
     	rgba(96, 114, 116, 1) 120%
 	);
 }
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 30px;
+	margin-top: 2%;
+	flex: 1;
+}
+.calendar-container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+.employee_list_container {
+    height: 100%; /* Dodane: maksymalna wysokość diva z listą pracowników */
+    overflow-y: auto; /* Dodane: dodaje pasek przewijania, gdy lista przekracza max-height */
+	margin-top: 15%;
+}
+.employee_list{
+	display: flex;
+	flex-flow: column;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.employee_list li {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.addTask{
+	background-color: #7b4e34;  
+	color: white;
+	border: none;
+	padding: 8px 20px;
+	margin-left: 10px;
+	font-size: 1.2em;
+	border-radius: 8px;	
+}
+.addTask:hover{
+	background-color: rgb(182,139,114);
+}
+.workers_list {
+    display: flex;
+	flex-direction: column;
+    align-items: flex-end;
+	flex-grow: 1;
+    padding: 50px;
+	background-color: rgb(178, 165, 155);
+	border-radius: 8px;	
+	margin-left: 50px;
+	height: 75vh;
+	width: 60%;
+	
+}
 h1 {
 	font-weight: 800;
-	margin: 1rem 0 0;
+	margin-bottom: 3%;
+	font-size: 40px;
 }
 
 ul {
@@ -23,7 +80,7 @@ ul {
 	grid-template-columns: repeat(7, 1fr);
 	flex-wrap: wrap;
 	list-style: none;
-
+	gap: 15px;
 	div {
         cursor: pointer;
 		display: flex;
@@ -37,9 +94,7 @@ ul {
 		font-size: 0.8rem;
 		box-sizing: border-box;
 		background: rgba(222, 208, 182, 0.75);
-		box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.50);
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
+		box-shadow: 0 8px 15px 0 rgba(67, 67, 68, 0.5);
 		border-radius: 10px;
 		border: 1px solid rgba(255, 255, 255, 0.18);
 
@@ -58,4 +113,5 @@ ul {
 		}
 		background: rgb(178, 165, 155);
 	}
+	
 }

@@ -1,4 +1,4 @@
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;800&display=swap");
   .back{
     background: rgb(178, 165, 155);
 	  background: radial-gradient(
@@ -10,6 +10,7 @@
     width: 100%;
     height: 100%;
     padding-top: 50px;
+    
     
   }
 
@@ -25,6 +26,14 @@
     
   }
 
+  .header{
+    font-family: "Poppins", serif;
+    text-align: center;
+    font-weight: 800;
+	  margin-bottom: 3%;
+	  font-size: 40px;
+    
+  }
 
   .content {
     display: grid;
@@ -70,6 +79,7 @@
   
   .songs-box{
     margin-top: 1%;
+    padding-top: 2%;
     padding-bottom: 1%;
     padding-left: 10px;
     margin-left: 1%;
