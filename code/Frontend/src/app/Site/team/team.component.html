@@ -22,7 +22,7 @@
         <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
             <ul class="employee_list">
                 <li>
-                    <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked" (change)="checkSelectedUser()">
+                    <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked" (change)="checkSelectedUser(i)">
                     <label for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
                 </li>
             </ul>

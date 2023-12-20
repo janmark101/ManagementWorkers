@@ -23,6 +23,7 @@ export class TeamComponent implements OnInit{
   TeamUsers : any = [];
   currentMonthTasks: any=[];
   isManager : boolean = false;
+  Tasks : any = [];
   ngOnInit(): void {
     
     this.Site.getUsersForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
@@ -36,6 +37,7 @@ export class TeamComponent implements OnInit{
 
     this.Site.getTaskForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
       this.TeamTasks = data;
+      this.Tasks = data;
       this.TaskCounter();
       console.log(data);
     },(error:any) =>{
@@ -167,9 +169,56 @@ export class TeamComponent implements OnInit{
           //reload() po dodaniu teamu
   }
   
-  checkSelectedUser(){
-    const selectedUser = this.TeamUsers.filter((user:any)=>user.isChecked);
-    console.log(selectedUser)
+  checkSelectedUser(index: number){
+    this.TeamUsers.forEach((user:any,i:number) => {
+      if (i !== index) {
+        user.isChecked = false;
+      }
+    });
+    const selectedUser = this.TeamUsers.find((user:any)=>user.isChecked);
+    this.resetMap();
+    if (selectedUser){
+      this.TeamTasks = this.Tasks.filter((task: any) => task.workers_id == selectedUser.id);
+      console.log(this.TeamTasks);
+    }else {
+      this.TeamTasks = this.Tasks;
+    }
+    this.TaskCounter();
+    
   }
-
+ resetMap(){
+  this.TaskCounterMap = new Map([
+    [1, 0], // Assuming a non-leap year for simplicity
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [5, 0],
+    [6, 0], // Changed from "July"
+    [7, 0], // Changed from "August"
+    [8, 0], // Changed from "September"
+    [9, 0], // Changed from "October"
+    [10, 0], // Changed from "November"
+    [11, 0], // Changed from "December"
+    [12, 0], // Changed from "January"
+    [13, 0], // Changed from "February"
+    [14, 0], // Changed from "March"
+    [15, 0], // Changed from "April"
+    [16, 0], // Changed from "May"
+    [17, 0], // Changed from "June"
+    [18, 0], // Changed from "July"
+    [19, 0], // Changed from "August"
+    [20, 0], // Changed from "September"
+    [21, 0], // Changed from "October"
+    [22, 0], // Changed from "November"
+    [23, 0], // Changed from "December"
+    [24, 0], // Changed from "January"
+    [25, 0], // Changed from "February"
+    [26, 0], // Changed from "March"
+    [27, 0], // Changed from "April"
+    [28, 0], // Changed from "May"
+    [29, 0], // Changed from "June"
+    [30, 0], // Changed from "July"
+    [31, 0], // Changed from "August"
+  ]);
+ }
 }
