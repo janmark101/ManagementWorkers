@@ -20,9 +20,20 @@ export class TeamComponent implements OnInit{
   currentDay : any;
   constructor(private Site:SiteService,private route:ActivatedRoute,private dialog: MatDialog){};
   TeamTasks : any = [];
+  TeamUsers : any = [];
   currentMonthTasks: any=[];
+  isManager : boolean = false;
   ngOnInit(): void {
     
+    this.Site.getUsersForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
+      this.isManager = true;
+      this.TeamUsers = data;
+      console.log(data);
+    },(error:any) =>{
+      console.error(error);
+      this.isManager = false;
+    });
+
     this.Site.getTaskForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
       this.TeamTasks = data;
       this.TaskCounter();
@@ -30,7 +41,7 @@ export class TeamComponent implements OnInit{
     },(error:any) =>{
       console.error(error);
       
-    })
+    });
     this.currentMonthDays=this.monthDaysMap.get(this.now.getMonth()); 
     this.currentYear=this.now.getFullYear();
     this.currentMonth=this.monthDaysMap2.get(this.now.getMonth());
@@ -156,5 +167,9 @@ export class TeamComponent implements OnInit{
           //reload() po dodaniu teamu
   }
   
+  checkSelectedUser(){
+    const selectedUser = this.TeamUsers.filter((user:any)=>user.isChecked);
+    console.log(selectedUser)
+  }
 
 }
