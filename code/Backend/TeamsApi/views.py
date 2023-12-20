@@ -7,16 +7,18 @@ from . models import Team, Task
 from .serializers import TeamSerializer,TaskSerializer
 from django.utils.crypto import get_random_string
 from django.db.models import Q
-
-
+from Authentication.serializers import UserSerializer
+from itertools import chain
 class TeamsView(APIView):
     permission_classes=[CustomPersmissions]
 
     def get(self,request,format=None):
         self.check_permissions(self.request)
         user = request.user.id
-        teams = Team.objects.filter(Q(workers__id=user) | Q(manager=user)) 
-        serializer = TeamSerializer(teams,many=True)
+        teams = Team.objects.filter(manager=user)
+        teams2 = Team.objects.filter(workers__id=user)
+        combined_teams = list(chain(teams, teams2))
+        serializer = TeamSerializer(combined_teams,many=True)
         return Response(serializer.data)
 
     def post(self,request,format=None):
@@ -80,3 +82,18 @@ class JoinTeamView(APIView):
             else:
                 team.workers.add(user)
                 return Response({"message" : 'Joined team!'},status=status.HTTP_200_OK)
+
+
+class TeamUsersView(APIView):
+    permission_classes=[CustomPersmissions]
+
+    def get(self, request, pk,format=None):
+        self.check_permissions(self.request)
+        team = get_object_or_404(Team,pk=pk) 
+
+        if self.request.user == team.manager:
+            workers = team.workers.all()
+            serializer = UserSerializer(workers, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
