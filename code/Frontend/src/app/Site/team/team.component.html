@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="team.component.scss" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;800&display=swap" rel="stylesheet">
-</head>
-<body>
+
+<div class = "body">
     <div class="container">
         <div class="calendar-container">
             <h1>{{currentMonth}} {{currentYear}}</h1>
@@ -18,17 +10,17 @@
             </ul>
         </div>
         <div class="workers_list">
-        <button class="addTask" (click)="AddTaskPopup()">Add task</button>
-        <div class="employee_list_container">
-            <ul class="employee_list">
-                <!-- Dodaj elementy listy pracowników jako checkbox -->
-                <li><input type="checkbox" id="employee1"><label for="employee1">Pracownik 1</label></li>
-                <li><input type="checkbox" id="employee2"><label for="employee2">Pracownik 2</label></li>
-                <li><input type="checkbox" id="employee3"><label for="employee3">Pracownik 3</label></li>
-                <!-- ... i tak dalej ... -->
-            </ul>
-        </div>
-        </div>   
-        </div>
-</body>
-</html>
+            <button class="addTask" (click)="AddTaskPopup()">Add task</button>
+            <div class="employee_list_container">
+                <ul class="employee_list">
+                    <!-- Dodaj elementy listy pracowników jako checkbox -->
+                    <li><input type="checkbox" id="employee1"><label for="employee1">Pracownik 1</label></li>
+                    <li><input type="checkbox" id="employee2"><label for="employee2">Pracownik 2</label></li>
+                    <li><input type="checkbox" id="employee3"><label for="employee3">Pracownik 3</label></li>
+                    <!-- ... i tak dalej ... -->
+                </ul>
+            </div>
+        </div>  
+    </div>        
+</div>
+
