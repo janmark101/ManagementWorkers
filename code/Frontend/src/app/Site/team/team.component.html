@@ -17,15 +17,14 @@
                 </div>
             </ul>
         </div>
-        <div class="workers_list">
+        <div class="workers_list" *ngIf="isManager">
         <button class="addTask" (click)="AddTaskPopup()">Add task</button>
-        <div class="employee_list_container">
+        <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
             <ul class="employee_list">
-                <!-- Dodaj elementy listy pracowników jako checkbox -->
-                <li><input type="checkbox" id="employee1"><label for="employee1">Pracownik 1</label></li>
-                <li><input type="checkbox" id="employee2"><label for="employee2">Pracownik 2</label></li>
-                <li><input type="checkbox" id="employee3"><label for="employee3">Pracownik 3</label></li>
-                <!-- ... i tak dalej ... -->
+                <li>
+                    <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked" (change)="checkSelectedUser()">
+                    <label for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
+                </li>
             </ul>
         </div>
         </div>   
