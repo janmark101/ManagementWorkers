@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="team.component.scss" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;800&display=swap" rel="stylesheet">
-</head>
-<body>
+
+<div class = "body">
     <div class="container">
         <div class="calendar-container">
             <h1>{{currentMonth}} {{currentYear}}</h1>
@@ -17,7 +9,8 @@
                 </div>
             </ul>
         </div>
-        <div class="workers_list" *ngIf="isManager">
+
+         <div class="workers_list" *ngIf="isManager">
         <button class="addTask" (click)="AddTaskPopup()">Add task</button>
         <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
             <ul class="employee_list">
@@ -31,3 +24,7 @@
         </div>
 </body>
 </html>
+
+
+
+
