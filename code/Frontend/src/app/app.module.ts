@@ -22,6 +22,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import {
   ConfirmBoxConfigModule,
@@ -63,7 +64,7 @@ import { TaskComponent } from './Site/task/task.component';
       },
     }),
     ConfirmBoxConfigModule.forRoot(),
-
+    NgMultiSelectDropDownModule.forRoot(),
     DialogConfigModule.forRoot(), // optional
     ToastNotificationConfigModule.forRoot(),
     MatFormFieldModule,

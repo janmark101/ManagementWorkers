@@ -152,7 +152,8 @@ export class TeamComponent implements OnInit{
     const dialogRef = this.dialog.open(TaskComponent, {
       width: '700px',
       data:{
-        team_id:this.route.snapshot.params['id']
+        team_id:this.route.snapshot.params['id'],
+        userList:this.TeamUsers
       }
     });
 
@@ -178,7 +179,7 @@ export class TeamComponent implements OnInit{
     const selectedUser = this.TeamUsers.find((user:any)=>user.isChecked);
     this.resetMap();
     if (selectedUser){
-      this.TeamTasks = this.Tasks.filter((task: any) => task.workers_id == selectedUser.id);
+      this.TeamTasks = this.Tasks.filter((task: any) => task.workers_id.includes(selectedUser.id));
       console.log(this.TeamTasks);
     }else {
       this.TeamTasks = this.Tasks;
@@ -186,6 +187,7 @@ export class TeamComponent implements OnInit{
     this.TaskCounter();
     
   }
+  
  resetMap(){
   this.TaskCounterMap = new Map([
     [1, 0], // Assuming a non-leap year for simplicity

@@ -10,6 +10,16 @@
         <label for="Title" class="form-label">Task description: </label>
         <textarea class="form-control" id="Description"  rows="4" ngModel name="description"></textarea>
       </div>
+      <ng-multiselect-dropdown
+        [placeholder]="'custom placeholder'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList"
+        [(ngModel)]="selectedItems"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+        (onDeSelect)="onItemDeSelect($event)"
+        >
+      </ng-multiselect-dropdown>
       <div class="mb-3">
         <mat-form-field>
             <mat-label>Choose a date</mat-label>
