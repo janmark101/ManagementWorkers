@@ -1,30 +1,27 @@
-
-<div class = "body">
+<div class="body">
     <div class="container">
         <div class="calendar-container">
             <h1>{{currentMonth}} {{currentYear}}</h1>
             <ul>
-                <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of currentMonthDays;let i = index" [ngClass]="{'today': i === currentDay-1}">
-                    <time>{{i+1}}</time><p *ngIf="TaskCounterMap.get(i+1)!=0">Tasks to do:{{TaskCounterMap.get(i+1)}}</p>
+                <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of currentMonthDays;let i = index"
+                    [ngClass]="{'today': i === currentDay-1}">
+                    <time>{{i+1}}</time>
+                    <p *ngIf="TaskCounterMap.get(i+1)!=0">Tasks to do:{{TaskCounterMap.get(i+1)}}</p>
                 </div>
             </ul>
         </div>
 
-         <div class="workers_list" *ngIf="isManager">
-        <button class="addTask" (click)="AddTaskPopup()">Add task</button>
-        <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
-            <ul class="employee_list">
-                <li>
-                    <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"  (change)="checkSelectedUser(i)">
-                    <label for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
-                </li>
-            </ul>
+        <div class="workers_list" *ngIf="isManager">
+            <button class="addTask" (click)="AddTaskPopup()">Add task</button>
+            <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
+                <ul class="employee_list">
+                    <li>
+                        <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"
+                            (change)="checkSelectedUser(i)">
+                        <label for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
+                    </li>
+                </ul>
+            </div>
         </div>
-        </div>   
-        </div>
-</body>
-</html>
-
-
-
-
+    </div>
+</div>
