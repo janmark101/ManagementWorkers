@@ -24,13 +24,13 @@
 
 
 .container {
-	
+	margin-top:5%;
 	width:100vw;
 	display: grid;
-	grid-template-columns: 1fr 20%;
+	grid-template-columns: 1fr 30%;
 	column-gap: 10%;
-	min-width: 800px;
-	border: 1px solid red;
+	min-width: 1000px;
+	
 	//margin-right: 0;
 
 	// width: 100vw;
@@ -58,12 +58,13 @@
 	display: flex;
 	flex-flow: column;
 	list-style: none;
-	padding: 0;
+	padding-top: 8%;
+
 	margin: 0;
 }
 .employee_list li {
     font-size: 1.5vw;
-    margin-bottom: 5px;
+    margin-bottom: 7%;
 }
 
 .addTask{
@@ -71,12 +72,14 @@
 	color: white;
 	border: none;
 	padding: 8px 20px;
-	font-size: 0.8vw;
-	// border-radius: 8px;	
-	// width:50%;
+	font-size: 1.5vw;
+	border-radius: 10px;	
+	margin-bottom: 5%;
+
 }
 .addTask:hover{
 	background-color: rgb(182,139,114);
+
 }
 .workers_list {
 	display: flex;
@@ -85,16 +88,15 @@
 	background-color: rgb(178, 165, 155);
 	padding-top: 5%;
 	border-radius: 8px;	
-	height: 50vw;
+	height: auto;
 	min-width: 150px;
-	margin-right: 7vw;
-	
+	margin-right: 5vw;
+	margin-left: 5vw;
+	min-height: 190px;
+
 	// height: 75vh;
 	// padding-top:1vh;
 	// margin-left: 8vw;
-	
-	
-	
 }
 h1 {
 	font-weight: 800;
@@ -112,19 +114,20 @@ ul {
 	div {
         cursor: pointer;
 		display: flex;
-		max-width: 7vw;
-		max-height: 7vw;
-		width: 20vw;		
-		height: 20vw;
+
+		width: 7vw;		
+		height: 7vw;
 		margin: 0.25rem;
 		flex-flow: column;
 		border-radius: 0.2rem;
-		padding: 1rem;
+		padding-top: 0.7vw;
 
 		min-width: 70px;
 		min-height: 70px;
 		
 		font-size: 0.8vw;
+		white-space: nowrap;
+
 		box-sizing: border-box;
 		background: rgba(222, 208, 182, 0.75);
 		box-shadow: 0 8px 15px 0 rgba(67, 67, 68, 0.5);

@@ -1,4 +1,31 @@
+.container {
+  width:auto;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #7b4e34; 
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+.form-container{
+  width: 20vw;
+}
+.div{
+  
+  display:flex;
+  flex-direction: column;
+  margin-bottom:15px;
+}
 
+
+.form-label{
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
 
 .button-container {
     display: flex;
@@ -6,6 +33,14 @@
     gap: 10px;
     margin-bottom: 10px;
   }
+.form-control{
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #7b4e34;
+  box-sizing: border-box;
+  resize: vertical; 
+}
   
   .confirm-button,
   .cancel-button {
@@ -15,14 +50,22 @@
     width: 100px;
   }
   
-  .confirm-button {
-    border-radius: 5px;
-    background-color: #4caf50;
-    color: white;
-  }
   
-  .cancel-button {
-    border-radius: 5px;
-    background-color: #f44336;
+  .button {
+    margin:10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #7b4e34; 
     color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border:1px solid  rgb(250, 238, 209);
+  }
+
+  .button:hover {
+    background-color: rgb(250, 238, 209);
+    color: #7b4e34;
+    border:1px solid #7b4e34;
+
   }
