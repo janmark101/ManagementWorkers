@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,14 @@ export class SiteService {
       'Authorization': `Token ${user.token}`
     });
     return this.http.get(`${this.api_url}teams/${id}/users/`,{headers})
+  }
+
+  deleteTask(taskId: number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.delete(`${this.api_url}teams/${taskId}/delete/`,{headers});
   }
 }

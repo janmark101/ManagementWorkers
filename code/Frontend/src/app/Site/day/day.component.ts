@@ -26,6 +26,7 @@ export class DayComponent implements OnInit {
   currentMonthTasks: any;
   day: any;
   tasks: any;
+  taskId:any;
   constructor(
     private dialogRef: MatDialogRef<DayComponent>,
     private confirmBoxEvokeService: ConfirmBoxEvokeService,
@@ -61,26 +62,23 @@ export class DayComponent implements OnInit {
       // Simply open the popup
       
       newConfirmBox.openConfirmBox$()
-      // newConfirmBox.openConfirmBox$().subscribe((result: any) => {
-      //   if (result.button === 'Delete') {
-      //     // Użytkownik kliknął "Delete"
-      //     console.log('User clicked Delete');
-      //     // Tutaj możesz umieścić kod obsługujący kliknięcie "Delete"
-      //   } else if (result.button === 'Cancel') {
-      //     // Użytkownik kliknął "Cancel"
-      //     console.log('User clicked Cancel');
-      //     // Tutaj możesz umieścić kod obsługujący kliknięcie "Cancel"
-      //   }
-      // });
+    
     }
-      Delete(text:string){
+      Delete(text:string, index:number){
         this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to delete it?', 'Confirm', 'Decline')
         .subscribe(resp => {
     
           if(resp.success === true){
           switch(text){
             case "expense" : {
-              console.log("DZIALA");
+              console.log(this.tasks);
+              this.Service.deleteTask(index).subscribe((data:any) =>{
+                console.log(data);
+                this.message = `Task deleted`;
+              },(error:any)=>{
+                console.error(error);
+                this.message = "Something went wrong!";
+              });
               break;
             }
           }
