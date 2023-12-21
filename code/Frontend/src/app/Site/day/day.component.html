@@ -8,7 +8,7 @@
             <div class="task-description">{{ task.description }}</div>
             <div class="CRUD">             
                 <fa-icon [icon]="editicon" size="xl" style="cursor: pointer;"></fa-icon>
-                <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete('expense')"></fa-icon>
+                <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete('expense',task.id)"></fa-icon>
             </div>
             
         </div>

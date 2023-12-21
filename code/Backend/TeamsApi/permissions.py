@@ -14,9 +14,9 @@ class CustomPersmissions(permissions.BasePermission):
     
     def has_object_permission(self,request,view,object):
         if request.method in ['DELETE','PATCH']:
+            user = self.user(request)
+            return user == object.manager
             
-            user_id = self.user(request)
-            return user_id == object.manager
         
     def has_permission(self,request,view):
         if request.method == ['GET','POST']:
