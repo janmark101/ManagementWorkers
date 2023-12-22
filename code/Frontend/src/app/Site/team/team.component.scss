@@ -66,21 +66,26 @@
     font-size: 1.5vw;
     margin-bottom: 7%;
 }
+.button {
+    margin:10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #7b4e34; 
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border:1px solid  #7b4e34;
+  }
+  
+  .button:hover {
+    background-color: rgb(250, 238, 209);
+    color: #7b4e34;
+    border:1px solid #7b4e34;
 
-.addTask{
-	background-color: #7b4e34;  
-	color: white;
-	border: none;
-	padding: 8px 20px;
-	font-size: 1.5vw;
-	border-radius: 10px;	
-	margin-bottom: 5%;
+  }
 
-}
-.addTask:hover{
-	background-color: rgb(182,139,114);
 
-}
 .workers_list {
 	display: flex;
 	align-items: center;

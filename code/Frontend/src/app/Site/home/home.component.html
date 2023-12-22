@@ -7,7 +7,7 @@
      <div class="test"*ngFor="let team of userTeams;let i = index" >
         
   
-        <div class="card custom-card" style="width: 25rem;  box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.3) ;margin-top: 10px; cursor: pointer;" [routerLink]="['/team',team.id]"  >
+        <div class="card custom-card" style="width: 25rem; background-color:rgb(250, 238, 209);  box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.3) ;margin-top: 10px; cursor: pointer;" [routerLink]="['/team',team.id]"  >
             <div class="card-body">
                 <h4 class="card-title" style="font-weight: bold;">{{team.name}}</h4>
                 <div class="event-card">
