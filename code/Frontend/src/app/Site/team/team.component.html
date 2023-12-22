@@ -12,7 +12,7 @@
         </div>
 
         <div class="workers_list" *ngIf="isManager">
-            <button class="addTask" (click)="AddTaskPopup()">Add task</button>
+            <button class="button" (click)="AddTaskPopup()">Add task</button>
             <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
                 <ul class="employee_list">
                     <li>
