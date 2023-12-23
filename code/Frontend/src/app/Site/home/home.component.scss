@@ -14,17 +14,7 @@
     
   }
 
-  .background-container {
-    background-color: rgb(178, 165, 155);;
-    padding: 40px;
-    margin-top: 50px;
-    border-radius: 15px;
-    box-sizing: border-box;
-    width: 90%;
-    display: flex;
-    margin: 2% auto;
-    
-  }
+
 
   .header{
     font-family: "Poppins", serif;
@@ -35,48 +25,24 @@
     
   }
 
-  .content {
-    display: grid;
-    flex-wrap: wrap;
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
-    padding-top: 30px;
-    
-  }
-  
-  .square {
-    width: 150px;
-    height: 150px;
-    background-color: #c4e1e8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .square:hover {
-    background-color: #a3c1c9;
-  }
   
  
   .event-card {
-    
-    width: 260px; /* Dostosuj szerokość do swoich potrzeb */
     height: 205px; /* Dostosuj wysokość do swoich potrzeb */
-    padding: 10px; /* Dodaj odstępy wokół tekstu */
+    width: 90%; /* Dostosuj szerokość do swoich potrzeb */
+    padding: 15px; /* Dodaj odstępy wokół tekstu */
     overflow: hidden;  
     flex-direction: column;
     justify-content: center;
   }
   .card-title{
-    padding:5%
+    padding:5%;
+    font-size:2rem;
   }
   .card-text {
     font-size: 1rem; /* Wielkość tekstu w odniesieniu do rozmiaru kontenera */
-    margin: 0; /* Resetuj margines, aby uniknąć niepotrzebnych odstępów */
+    padding-top: 5%;
+    padding-right: 5%;
   }
   
   .songs-box{
@@ -103,6 +69,7 @@
   .custom-card {
     box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.3s, transform 0.3s;
+   
 }
 
   .custom-card:hover {

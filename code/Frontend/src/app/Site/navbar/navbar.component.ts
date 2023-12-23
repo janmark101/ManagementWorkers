@@ -48,15 +48,13 @@ export class NavbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result === 'confirm') {
-              //reload() po dodoaniu teamu
-        console.log('Potwierdzono');
+        location.reload();
       } else if (result === 'cancel') {
-        console.log("nie potwierdzono");
         
       }
     });
 
-          //reload() po dodaniu teamu
+      
   }
 
   JoinTeam(){
@@ -67,9 +65,8 @@ export class NavbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result === 'confirm') {
-        console.log('Potwierdzono');
+        location.reload();
       } else if (result === 'cancel') {
-        console.log("nie potwierdzono");
         
       }
     });

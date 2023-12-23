@@ -23,4 +23,4 @@ class Task(models.Model):
     
     
     def __str__(self):
-        return "Task " + self.description
+        return "Task " + self.name

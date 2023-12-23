@@ -12,7 +12,7 @@ export class CreateComponent {
 
   
   message : string = "";
-
+  success : boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreateComponent>,
@@ -29,16 +29,22 @@ export class CreateComponent {
       this.Service.createTeam(data).subscribe((data:any) =>{
         console.log(data);
         this.message = `Team created successfully! Unique code : ${data.unique_code}`;
+        this.success = true;
 
       },(error:any)=>{
         console.error(error);
         this.message = "Something went wrong!";
+        this.success = false;
       });
 
     }
 
     onCancel(){
       this.dialogRef.close();
+    }
+
+    onClose(){
+      this.dialogRef.close('confirm');
     }
 
 }

@@ -1,6 +1,18 @@
 <div class="container mt-5">
-    <h1 style="text-align: center;">Tasks</h1>
-    
+  <h1 style="text-align: center;" [ngSwitch]="true">
+    <ng-container *ngSwitchCase="day==1 || day==21 || day==31">
+      {{day}}st of {{month}}
+    </ng-container>
+    <ng-container *ngSwitchCase="day==2 || day ==22">
+      {{day}}nd of {{month}}
+    </ng-container>
+    <ng-container *ngSwitchCase="day==3 || day==23">
+      {{day}}rd of {{month}}
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      {{day}}th of {{month}}
+    </ng-container>
+  </h1>
       <div class="tasks-container">
         <div class="task" *ngFor="let task of tasks;let i = index">
           <div class="task-info">
@@ -14,6 +26,7 @@
         </div>
       </div>
       </div>
+      <p style="text-align: center;">{{message}}</p>
       <div class="button-container">
         <button class="cancel-button" type="button" (click)="onCancel()">Ok</button>
       </div>

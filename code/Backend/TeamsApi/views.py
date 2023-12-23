@@ -75,13 +75,13 @@ class JoinTeamView(APIView):
         team = get_object_or_404(Team,unique_code=unique_code)
         user = request.user
         if user in team.workers.all():
-            return Response({"message" : 'Already in team!'},status=status.HTTP_200_OK)
+            return Response({"message" : f"Already in team '{team.name}'!"},status=status.HTTP_200_OK)
         else :
             if team.manager == user:
                 return Response({"message" : 'You are manager of this team!'},status=status.HTTP_200_OK)
             else:
                 team.workers.add(user)
-                return Response({"message" : 'Joined team!'},status=status.HTTP_200_OK)
+                return Response({"message" : f"Joined team : '{team.name}'!"},status=status.HTTP_200_OK)
 
 
 class TeamUsersView(APIView):
@@ -107,3 +107,25 @@ class TaskObjectView(APIView):
         self.check_object_permissions(self.request,team)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class TeamCodeObject(APIView):
+    permission_classes=[CustomPersmissions]
+    
+    def get(self,request,pk,format=None):
+        team = get_object_or_404(Team,pk=pk)
+        if team.manager == request.user:
+            return Response({'code':team.unique_code},status=status.HTTP_200_OK)
+        return Response({'error':'You dont have permissions'},status=status.HTTP_403_FORBIDDEN)
+    
+    def post(self,request,pk,format=None):
+        team = get_object_or_404(Team,pk=pk)
+        if team.manager == request.user:
+            while True:
+                unique_code = get_random_string(8)
+                if not Team.objects.filter(unique_code=unique_code).exists():
+                    break
+            team.unique_code = unique_code
+            team.save()
+            return Response({'code':team.unique_code},status=status.HTTP_200_OK)
+        return Response({'error':'You dont have permissions'},status=status.HTTP_403_FORBIDDEN)
+    
