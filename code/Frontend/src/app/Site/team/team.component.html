@@ -1,10 +1,10 @@
 <div class="body">
     <div class="container">
         <div class="calendar-container">
-            <h1>{{currentMonth}} {{currentYear}}</h1>
+            <h1>{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
             <ul>
-                <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of currentMonthDays;let i = index"
-                    [ngClass]="{'today': i === currentDay-1}">
+                <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of dateInformation.currentMonthDays;let i = index"
+                    [ngClass]="{'today': i === dateInformation.currentDay-1}">
                     <time>{{i+1}}</time>
                     <p *ngIf="TaskCounterMap.get(i+1)!=0">Tasks to do:{{TaskCounterMap.get(i+1)}}</p>
                 </div>
@@ -12,6 +12,7 @@
         </div>
 
         <div class="workers_list" *ngIf="isManager">
+            <button class="button" (click)="showUniqueCode()">Unique code</button>
             <button class="button" (click)="AddTaskPopup()">Add task</button>
             <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
                 <ul class="employee_list">

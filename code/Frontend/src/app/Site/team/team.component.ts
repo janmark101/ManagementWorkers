@@ -1,11 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route } from '@angular/router';
 import { take } from 'rxjs';
-import { AuthService } from 'src/app/Services/auth.service';
 import { SiteService } from 'src/app/Services/site.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DayComponent } from '../day/day.component';
 import { TaskComponent } from '../task/task.component';
+import {
+  ConfirmBoxInitializer,
+  DialogLayoutDisplay,
+  DisappearanceAnimation,
+  AppearanceAnimation,
+  ConfirmBoxEvokeService,
+  
+} from '@costlydeveloper/ngx-awesome-popup';
+
+
 
 @Component({
   selector: 'app-team',
@@ -14,24 +23,24 @@ import { TaskComponent } from '../task/task.component';
 })
 export class TeamComponent implements OnInit{
   now = new Date();
-  currentMonthDays : any;
-  currentMonth : any;
-  currentYear : any;
-  currentDay : any;
-  constructor(private Site:SiteService,private route:ActivatedRoute,private dialog: MatDialog){};
+  dateInformation : any = {'currentMonthDays':0,'currentMonth' : "",'currentYear':0,'currentDay':0};
+
+
   TeamTasks : any = [];
   TeamUsers : any = [];
   currentMonthTasks: any=[];
   isManager : boolean = false;
   Tasks : any = [];
+
+  constructor(private Site:SiteService,private route:ActivatedRoute,private dialog: MatDialog){};
+
   ngOnInit(): void {
+    console.log(this.dateInformation);
     
     this.Site.getUsersForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
       this.isManager = true;
       this.TeamUsers = data;
-      console.log(data);
     },(error:any) =>{
-      console.error(error);
       this.isManager = false;
     });
 
@@ -39,16 +48,14 @@ export class TeamComponent implements OnInit{
       this.TeamTasks = data;
       this.Tasks = data;
       this.TaskCounter();
-      console.log(data);
     },(error:any) =>{
-      console.error(error);
       
     });
-    this.currentMonthDays=this.monthDaysMap.get(this.now.getMonth()); 
-    this.currentYear=this.now.getFullYear();
-    this.currentMonth=this.monthDaysMap2.get(this.now.getMonth());
-    this.currentDay=this.now.getDate();
-    console.log(this.currentDay); 
+    this.dateInformation.currentMonthDays=this.monthDaysMap.get(this.now.getMonth()); 
+    this.dateInformation.currentYear=this.now.getFullYear();
+    this.dateInformation.currentMonth=this.monthDaysMap2.get(this.now.getMonth());
+    this.dateInformation.currentDay=this.now.getDate();
+
   }
   list30 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,
   26,27,28,29,30];
@@ -59,7 +66,7 @@ export class TeamComponent implements OnInit{
   
   monthDaysMap: Map<number, number[]> = new Map([
     [0, this.list31],
-    [1, this.list28], // Assuming a non-leap year for simplicity
+    [1, this.list28], 
     [2, this.list31],
     [3, this.list30],
     [4, this.list31],
@@ -73,7 +80,7 @@ export class TeamComponent implements OnInit{
   ]);
   monthDaysMap2: Map<number, string> = new Map([
     [0, "January"],
-    [1, "February"], // Assuming a non-leap year for simplicity
+    [1, "February"],
     [2, "March"],
     [3, "April"],
     [4, "May"],
@@ -127,7 +134,7 @@ export class TeamComponent implements OnInit{
       if (itemDate.getMonth() + 1 === 12){
         this.TaskCounterMap.set(dayOfMonth, this.TaskCounterMap.get(dayOfMonth)! + 1);
       }
-      return itemDate.getMonth() + 1 === 12; // Dodaj 1, ponieważ getMonth() zwraca wartość od 0 do 11
+      return itemDate.getMonth() + 1 === 12; 
     });
   }
 
@@ -135,12 +142,12 @@ export class TeamComponent implements OnInit{
     const dialogRef = this.dialog.open(DayComponent, {
       width: '700px',
       data: {currentMonthTasks: this.currentMonthTasks,
-      day: day}
+      day: day,
+      month: this.dateInformation.currentMonth}
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result === 'confirm') {
-              //reload() po dodoaniu teamu
         console.log('Potwierdzono');
       } else if (result === 'cancel') {
         console.log("nie potwierdzono");
@@ -159,15 +166,12 @@ export class TeamComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result === 'confirm') {
-              //reload() po dodoaniu teamu
-        console.log('Potwierdzono');
+        location.reload();
       } else if (result === 'cancel') {
-        console.log("nie potwierdzono");
         
       }
     });
 
-          //reload() po dodaniu teamu
   }
   
   checkSelectedUser(index: number){
@@ -185,6 +189,43 @@ export class TeamComponent implements OnInit{
       this.TeamTasks = this.Tasks;
     }
     this.TaskCounter();
+    
+  }
+
+  showUniqueCode(){
+    let uniqueCode : any;
+    this.Site.UniqueCode(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
+      uniqueCode = data.code;
+      
+      const newConfirmBox = new ConfirmBoxInitializer();
+
+      newConfirmBox.setTitle('Unique code: ');
+      newConfirmBox.setMessage(`${uniqueCode!}`);
+
+      // Choose layout color type
+      newConfirmBox.setConfig({
+      layoutType: DialogLayoutDisplay.NONE, // SUCCESS | INFO | NONE | DANGER | WARNING
+      animationIn: AppearanceAnimation.BOUNCE_IN, // BOUNCE_IN | SWING | ZOOM_IN | ZOOM_IN_ROTATE | ELASTIC | JELLO | FADE_IN | SLIDE_IN_UP | SLIDE_IN_DOWN | SLIDE_IN_LEFT | SLIDE_IN_RIGHT | NONE
+      animationOut: DisappearanceAnimation.FLIP_OUT, // BOUNCE_OUT | ZOOM_OUT | ZOOM_OUT_WIND | ZOOM_OUT_ROTATE | FLIP_OUT | SLIDE_OUT_UP | SLIDE_OUT_DOWN | SLIDE_OUT_LEFT | SLIDE_OUT_RIGHT | NONE
+      });
+      newConfirmBox.setButtonLabels('Regenerate', 'Cancel');
+      // Simply open the popup
+      
+      newConfirmBox.openConfirmBox$()
+      
+    },(error:any) =>{
+      console.log(error);
+      
+    });
+
+    // this.Site.RegenerateUniqueCode(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
+    //   console.log(data);
+      
+    // },(error:any) =>{
+    //   console.log(error);
+      
+    // });
+
     
   }
   

@@ -1,10 +1,8 @@
 import { Component,Inject, OnInit} from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SiteService } from 'src/app/Services/site.service';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-
 import {
   ConfirmBoxInitializer,
   DialogLayoutDisplay,
@@ -27,6 +25,7 @@ export class DayComponent implements OnInit {
   day: any;
   tasks: any;
   taskId:any;
+  month : any;
   constructor(
     private dialogRef: MatDialogRef<DayComponent>,
     private confirmBoxEvokeService: ConfirmBoxEvokeService,
@@ -35,14 +34,14 @@ export class DayComponent implements OnInit {
   ngOnInit(): void {
     this.currentMonthTasks=this.data.currentMonthTasks;
     this.day=this.data.day;
+    this.month = this.data.month;
     //console.log(this.currentMonthTasks);
     this.tasks = this.currentMonthTasks.filter((item:any) => {
       const itemDate = new Date(item.date);
-      const dayOfMonth = itemDate.getDate();
-      
+        
       return itemDate.getDate() === this.day; // Dodaj 1, ponieważ getMonth() zwraca wartość od 0 do 11
     });
-    console.log(this.tasks)
+
   }
 
     
@@ -73,10 +72,8 @@ export class DayComponent implements OnInit {
             case "expense" : {
               console.log(this.tasks);
               this.Service.deleteTask(index).subscribe((data:any) =>{
-                console.log(data);
-                this.message = `Task deleted`;
+                location.reload();
               },(error:any)=>{
-                console.error(error);
                 this.message = "Something went wrong!";
               });
               break;

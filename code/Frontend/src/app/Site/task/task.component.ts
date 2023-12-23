@@ -1,38 +1,36 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { SiteService } from 'src/app/Services/site.service';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { TeamComponent } from '../team/team.component';
+
+
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit{
-  @ViewChild(TeamComponent, { static: true }) teamComponent: TeamComponent | undefined;
+
   message : string = "";
   dropdownList:any = [];
   selectedItems:any = [];
   dropdownSettings:any = {};
   userSelected:any=[];
+  success : boolean = false;
+
   constructor(
     private dialogRef: MatDialogRef<TaskComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService,private route:ActivatedRoute
+    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
   ) {}
 
 
     ngOnInit(): void {
-      console.log(this.data);
       this.UsersForTask();
-      console.log(this.dropdownList);
-      
+
     }
     onItemSelect(item : any) {
       
       this.userSelected.push(item.item_id);
-      console.log(this.userSelected);
     }
 
     onItemDeSelect(item:any){
@@ -41,11 +39,19 @@ export class TaskComponent implements OnInit{
       if (indexToRemove!==-1){
         this.userSelected.splice(indexToRemove, 1);
       }
-      console.log(this.userSelected);
     }
 
     onSelectAll(items: any) {
-      console.log(items);
+
+      for(let item of items){
+        this.userSelected.push(item.item_id);
+      }
+      
+    }
+
+    onItemDeSelectAll(item:any){
+      this.userSelected = [];
+      
     }
 
     
@@ -60,17 +66,16 @@ export class TaskComponent implements OnInit{
         "workers_id": this.userSelected
       }
       
-      console.log(data);
       this.Service.addTaskForTeam(this.data.team_id,data).subscribe((data:any) =>{
-        console.log(data);
+        this.success = true;
         this.message = `Task created`;
       },(error:any)=>{
-        console.error(error);
+        this.success = false;
         this.message = "Something went wrong!";
       });
 
       
-      //reload() po dodoaniu teamu
+
 
     }
 
@@ -79,8 +84,7 @@ export class TaskComponent implements OnInit{
         
       ];
       this.selectedItems = [
-        { item_id: 3, item_text: 'Pune' },
-        { item_id: 4, item_text: 'Navsari' }
+
       ];
       this.dropdownSettings = {
         singleSelection: false,
@@ -102,5 +106,9 @@ export class TaskComponent implements OnInit{
     
     onCancel(){
       this.dialogRef.close();
+    }
+
+    onClose(){
+      this.dialogRef.close('confirm');
     }
 }

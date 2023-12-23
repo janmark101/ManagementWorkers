@@ -11,11 +11,11 @@ import { NgForm } from '@angular/forms';
 
 export class JoinTeamComponent {
   message : string = "";
-
+  success : boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<JoinTeamComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
+    @Inject(MAT_DIALOG_DATA) private Service : SiteService
   ) {}
 
     onSubmit(form:NgForm){
@@ -26,10 +26,10 @@ export class JoinTeamComponent {
 
       this.Service.joinTeam(data).subscribe((data:any) =>{
         console.log(data);
-        this.message = `Team ${data.name} joined succesfully`;
-
+        this.message = data.message;
+        this.success = true;
       },(error:any)=>{
-        console.error(error);
+        this.success = false;
         this.message = "Something went wrong!";
       });
 
@@ -39,5 +39,9 @@ export class JoinTeamComponent {
 
     onCancel(){
       this.dialogRef.close();
+    }
+
+    onClose(){
+      this.dialogRef.close('confirm');
     }
 }

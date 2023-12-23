@@ -88,4 +88,22 @@ export class SiteService {
     });
     return this.http.delete(`${this.api_url}teams/${taskId}/delete/`,{headers});
   }
+
+  UniqueCode(teamId: number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.get(`${this.api_url}teams/${teamId}/uniquecode/`,{headers});
+  }
+
+  RegenerateUniqueCode(teamId: number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${teamId}/uniquecode/`,null,{headers});
+  }
 }
