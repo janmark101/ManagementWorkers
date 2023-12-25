@@ -106,4 +106,13 @@ export class SiteService {
     });
     return this.http.post(`${this.api_url}teams/${teamId}/uniquecode/`,null,{headers});
   }
+
+  deleteTeam(teamId: number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.delete(`${this.api_url}teams/${teamId}/`,{headers});
+  }
 }

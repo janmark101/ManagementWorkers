@@ -21,6 +21,8 @@ export class LoginComponent {
   constructor(private Auth : AuthService,private router: Router){};
 
   user : User = { token: '', user_id: 0 ,firstname: '',lastname:''};
+  error = "";
+
 
   onSubmit(form: NgForm){
 
@@ -44,7 +46,8 @@ export class LoginComponent {
       
     },(error:any) =>{
       console.error(error);
-      
+      this.error = 'Invalid credentials!';
+      form.reset();
     });
 
   }
