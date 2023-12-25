@@ -30,6 +30,7 @@ import {
   ToastNotificationConfigModule,
 } from '@costlydeveloper/ngx-awesome-popup';
 import { TaskComponent } from './Site/task/task.component';
+import { UniqueCodeComponent } from './Site/unique-code/unique-code.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { TaskComponent } from './Site/task/task.component';
     JoinTeamComponent,
     DayComponent,
     TaskComponent,
+    UniqueCodeComponent,
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import {
   ConfirmBoxEvokeService,
   
 } from '@costlydeveloper/ngx-awesome-popup';
+import { UniqueCodeComponent } from '../unique-code/unique-code.component';
 
 
 
@@ -31,20 +32,21 @@ export class TeamComponent implements OnInit{
   currentMonthTasks: any=[];
   isManager : boolean = false;
   Tasks : any = [];
+  teamId : number | any;
 
   constructor(private Site:SiteService,private route:ActivatedRoute,private dialog: MatDialog){};
 
   ngOnInit(): void {
-    console.log(this.dateInformation);
+    this.teamId = this.route.snapshot.params['id'];
     
-    this.Site.getUsersForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
+    this.Site.getUsersForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
       this.isManager = true;
       this.TeamUsers = data;
     },(error:any) =>{
       this.isManager = false;
     });
 
-    this.Site.getTaskForTeam(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
+    this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
       this.TeamTasks = data;
       this.Tasks = data;
       this.TaskCounter();
@@ -159,7 +161,7 @@ export class TeamComponent implements OnInit{
     const dialogRef = this.dialog.open(TaskComponent, {
       width: '700px',
       data:{
-        team_id:this.route.snapshot.params['id'],
+        team_id:this.teamId,
         userList:this.TeamUsers
       }
     });
@@ -193,40 +195,17 @@ export class TeamComponent implements OnInit{
   }
 
   showUniqueCode(){
-    let uniqueCode : any;
-    this.Site.UniqueCode(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
-      uniqueCode = data.code;
-      
-      const newConfirmBox = new ConfirmBoxInitializer();
-
-      newConfirmBox.setTitle('Unique code: ');
-      newConfirmBox.setMessage(`${uniqueCode!}`);
-
-      // Choose layout color type
-      newConfirmBox.setConfig({
-      layoutType: DialogLayoutDisplay.NONE, // SUCCESS | INFO | NONE | DANGER | WARNING
-      animationIn: AppearanceAnimation.BOUNCE_IN, // BOUNCE_IN | SWING | ZOOM_IN | ZOOM_IN_ROTATE | ELASTIC | JELLO | FADE_IN | SLIDE_IN_UP | SLIDE_IN_DOWN | SLIDE_IN_LEFT | SLIDE_IN_RIGHT | NONE
-      animationOut: DisappearanceAnimation.FLIP_OUT, // BOUNCE_OUT | ZOOM_OUT | ZOOM_OUT_WIND | ZOOM_OUT_ROTATE | FLIP_OUT | SLIDE_OUT_UP | SLIDE_OUT_DOWN | SLIDE_OUT_LEFT | SLIDE_OUT_RIGHT | NONE
+    this.Site.UniqueCode(this.teamId).pipe(take(1)).subscribe((data:any) =>{
+      const dialogRef = this.dialog.open(UniqueCodeComponent, {
+        width: '400px',
+        data:{
+          code:data.code,
+        teamId:this.teamId}
       });
-      newConfirmBox.setButtonLabels('Regenerate', 'Cancel');
-      // Simply open the popup
-      
-      newConfirmBox.openConfirmBox$()
-      
     },(error:any) =>{
       console.log(error);
       
     });
-
-    // this.Site.RegenerateUniqueCode(this.route.snapshot.params['id']).pipe(take(1)).subscribe((data:any) =>{
-    //   console.log(data);
-      
-    // },(error:any) =>{
-    //   console.log(error);
-      
-    // });
-
-    
   }
   
  resetMap(){
@@ -264,4 +243,15 @@ export class TeamComponent implements OnInit{
     [31, 0], // Changed from "August"
   ]);
  }
+
+ deleteTeam(){
+  this.Site.deleteTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
+    console.log(data);
+    
+  },(error:any) =>{
+    console.log(error);
+    
+  });
+ }
+
 }

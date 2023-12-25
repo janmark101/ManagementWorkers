@@ -82,6 +82,7 @@ class JoinTeamView(APIView):
             else:
                 team.workers.add(user)
                 return Response({"message" : f"Joined team : '{team.name}'!"},status=status.HTTP_200_OK)
+    
 
 
 class TeamUsersView(APIView):
@@ -97,6 +98,8 @@ class TeamUsersView(APIView):
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
+        
+
         
 class TaskObjectView(APIView):
     permission_classes=[CustomPersmissions]
@@ -128,4 +131,14 @@ class TeamCodeObject(APIView):
             team.save()
             return Response({'code':team.unique_code},status=status.HTTP_200_OK)
         return Response({'error':'You dont have permissions'},status=status.HTTP_403_FORBIDDEN)
+    
+    
+class TeamObjectView(APIView):
+    permisson_classes = [CustomPersmissions]
+    
+    def delete(self,request,pk,format=None):
+        team = get_object_or_404(Team,pk=pk) 
+        self.check_object_permissions(self.request,team)
+        team.delete()
+        return Response({'message':'Team delated!'},status=status.HTTP_204_NO_CONTENT)
     

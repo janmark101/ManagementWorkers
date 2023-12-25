@@ -5,7 +5,7 @@ import { RegisterComponent } from './Site/register/register.component';
 import { HomeComponent } from './Site/home/home.component';
 import { authGuard } from './Services/auth.guard';
 import { TeamComponent } from './Site/team/team.component';
-import { CreateComponent } from './Site/create/create.component';
+
 
 
 const routes: Routes = [
