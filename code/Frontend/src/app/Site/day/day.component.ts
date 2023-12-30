@@ -1,5 +1,5 @@
 import { Component,Inject, OnInit} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SiteService } from 'src/app/Services/site.service';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,7 @@ import {
   ConfirmBoxEvokeService,
   
 } from '@costlydeveloper/ngx-awesome-popup';
+import { EditTaskComponent } from '../edit-task/edit-task.component';
 
 @Component({
   selector: 'app-day',
@@ -28,6 +29,7 @@ export class DayComponent implements OnInit {
   month : any;
   constructor(
     private dialogRef: MatDialogRef<DayComponent>,
+    private dialog: MatDialog,
     private confirmBoxEvokeService: ConfirmBoxEvokeService,
     @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
   ) {}
@@ -88,7 +90,22 @@ export class DayComponent implements OnInit {
       this.dialogRef.close();
     }
 
-    deleteTask(){
-      console.log('ddas');
+    EditTaskPopup(day:number){
+      console.log("JD");
+      const dialogRef = this.dialog.open(EditTaskComponent, {
+        width: '700px',
+        data: {
+          day: day,
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result:any) => {
+        if (result === 'confirm') {
+          console.log('Potwierdzono');
+        } else if (result === 'cancel') {
+          console.log("nie potwierdzono");
+          
+        }
+      });
     }
 }
