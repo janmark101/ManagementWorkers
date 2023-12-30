@@ -31,6 +31,7 @@ import {
 } from '@costlydeveloper/ngx-awesome-popup';
 import { TaskComponent } from './Site/task/task.component';
 import { UniqueCodeComponent } from './Site/unique-code/unique-code.component';
+import { EditTaskComponent } from './Site/edit-task/edit-task.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { UniqueCodeComponent } from './Site/unique-code/unique-code.component';
     DayComponent,
     TaskComponent,
     UniqueCodeComponent,
+    EditTaskComponent,
   ],
   imports: [
     BrowserModule,
