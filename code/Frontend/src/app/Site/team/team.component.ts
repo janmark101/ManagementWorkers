@@ -29,11 +29,12 @@ export class TeamComponent implements OnInit{
 
   TeamTasks : any = [];
   TeamUsers : any = [];
-  currentMonthTasks: any=[];
+  currentMonthTasks : any = [];
   isManager : boolean = false;
   Tasks : any = [];
   teamId : number | any;
-
+  monthValuesArray : any;
+  currentMonthNumber : any;
   constructor(private Site:SiteService,private route:ActivatedRoute,private dialog: MatDialog){};
 
   ngOnInit(): void {
@@ -46,17 +47,21 @@ export class TeamComponent implements OnInit{
       this.isManager = false;
     });
 
-    this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
-      this.TeamTasks = data;
-      this.Tasks = data;
-      this.TaskCounter();
-    },(error:any) =>{
-      
-    });
     this.dateInformation.currentMonthDays=this.monthDaysMap.get(this.now.getMonth()); 
     this.dateInformation.currentYear=this.now.getFullYear();
     this.dateInformation.currentMonth=this.monthDaysMap2.get(this.now.getMonth());
     this.dateInformation.currentDay=this.now.getDate();
+    this.monthValuesArray = Array.from(this.monthDaysMap2.values());
+    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth)+1; 
+    this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
+      this.TeamTasks = data;
+      this.Tasks = data;
+      this.TaskCounter();
+      
+    },(error:any) =>{
+    });
+   
+   
 
   }
   list30 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,
@@ -133,10 +138,11 @@ export class TeamComponent implements OnInit{
     this.currentMonthTasks = this.TeamTasks.filter((item:any) => {
       const itemDate = new Date(item.date);
       const dayOfMonth = itemDate.getDate();
-      if (itemDate.getMonth() + 1 === 12){
+      console.log(this.dateInformation.currentMonth);
+      if (itemDate.getMonth() + 1 === this.currentMonthNumber){
         this.TaskCounterMap.set(dayOfMonth, this.TaskCounterMap.get(dayOfMonth)! + 1);
       }
-      return itemDate.getMonth() + 1 === 12; 
+      return itemDate.getMonth() + 1 === this.currentMonthNumber; 
     });
   }
 
