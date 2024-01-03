@@ -151,7 +151,9 @@ export class TeamComponent implements OnInit{
       width: '700px',
       data: {currentMonthTasks: this.currentMonthTasks,
       day: day,
-      month: this.dateInformation.currentMonth}
+      month: this.dateInformation.currentMonth,
+      teamID: this.teamId}
+      
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {

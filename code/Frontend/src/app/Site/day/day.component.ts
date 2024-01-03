@@ -90,12 +90,12 @@ export class DayComponent implements OnInit {
       this.dialogRef.close();
     }
 
-    EditTaskPopup(day:number){
-      console.log("JD");
+    EditTaskPopup(taskID:number){
       const dialogRef = this.dialog.open(EditTaskComponent, {
         width: '700px',
         data: {
-          day: day,
+          taskID: taskID,
+          teamID: this.data.teamID,
         }
       });
   

@@ -86,7 +86,16 @@ export class SiteService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.delete(`${this.api_url}teams/${taskId}/delete/`,{headers});
+    return this.http.delete(`${this.api_url}teams/${taskId}/object/`,{headers});
+  }
+
+  getTask(taskId: number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.get(`${this.api_url}teams/${taskId}/object/`,{headers});
   }
 
   UniqueCode(teamId: number){

@@ -111,6 +111,14 @@ class TaskObjectView(APIView):
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+    def get(self,request,pk,format=None):
+        task = get_object_or_404(Task,pk=pk)
+        # team = get_object_or_404(Team,pk=task.team_id.id)
+        # self.check_object_permissions(self.request,team)
+        serializer = TaskSerializer(task,many=False)
+        return Response(serializer.data)
+
+
 class TeamCodeObject(APIView):
     permission_classes=[CustomPersmissions]
     
