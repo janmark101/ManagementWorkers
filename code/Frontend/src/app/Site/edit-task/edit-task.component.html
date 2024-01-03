@@ -4,34 +4,34 @@
   
       <div class="div">
         <label for="Title" class="form-label">Task name:</label>
-        <input type="text" class="form-control" id="Title" ngModel name="name">
+        <input type="text" class="form-control" id="Title" ngModel name="name" [(ngModel)]="task.name">
       </div>
       <div class="div">
         <label for="Title" class="form-label">Task description: </label>
-        <textarea class="form-control" id="Description" rows="4" ngModel name="description"></textarea>
+        <textarea class="form-control" id="Description" rows="4" ngModel name="description" [(ngModel)]="task.description"></textarea>
       </div>
       <div class = "dropDown-div">
-        <!-- <ng-multiselect-dropdown [placeholder]="'Select employees'" [settings]="dropdownSettings" [data]="dropdownList"
-          [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+        <ng-multiselect-dropdown [placeholder]="'Select employees'" [settings]="dropdownSettings" [data]="dropdownList"
+          [(ngModel)]="userSelected" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
           (onDeSelect)="onItemDeSelect($event)" (onDeSelectAll)="onItemDeSelectAll($event)">
-        </ng-multiselect-dropdown> -->
+        </ng-multiselect-dropdown>
       </div>
       <div class="div">
         <mat-form-field>
           <mat-label>Choose a date</mat-label>
-          <input matInput [matDatepicker]="picker" ngModel name="date">
+          <input matInput [matDatepicker]="picker" ngModel name="date" [(ngModel)]="task.date">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
-      <!-- <p style="text-align: center;">{{message}} </p>
+      <p style="text-align: center;">{{message}} </p>
       <div class="button-container" style="margin-top: 15%;" *ngIf="!success">
         <button class="button" type="submit">Save</button>
         <button class="button" type="button" (click)="onCancel()">Cancel</button>
       </div>
       <div class="button-container" style="margin-top: 15%;" *ngIf="success">
         <button class="button" type="button" (click)="onClose()">OK</button>
-      </div> -->
+      </div>
     </form>
   </div>
