@@ -9,6 +9,8 @@ from rest_framework import status
 from django.contrib.auth import authenticate, logout
 from .serializers import UserSerializer
 from .models import UserProfile
+from .emails import send_verify_email
+
 
 class Login(APIView):
     permission_classes=()
@@ -25,10 +27,10 @@ class Login(APIView):
         if not user:
             return Response({'error' : 'Invalid credentials!'},status=status.HTTP_400_BAD_REQUEST)
         
-        
+        user_profile = get_object_or_404(UserProfile,user=user)
         token,created = Token.objects.get_or_create(user=user)
         
-        return Response({'message' : 'Logged in succesfully!','token' : token.key,'user_id':user.id,'firstname' : user.first_name,'lastname': user.last_name}, status=status.HTTP_200_OK)
+        return Response({'message' : 'Logged in succesfully!','token' : token.key,'user_id':user.id,'firstname' : user.first_name,'lastname': user.last_name, 'verified' : user_profile.is_verified}, status=status.HTTP_200_OK)
 
 class Logout(APIView):
     permission_classes=[IsAuthenticated]
@@ -48,7 +50,9 @@ class Register(APIView):
     def post(self,request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            UserProfile.objects.create(user=user)
+            send_verify_email(serializer.data['email'])
             return Response ({'message' : 'Registered succesfully.'},status=status.HTTP_201_CREATED)
         return Response ({'error' : serializer.errors},status=status.HTTP_400_BAD_REQUEST)
     
@@ -65,5 +69,5 @@ class VerifyAccountView(APIView):
             user_profile.verify_code = ''
             user_profile.save()
             return Response({'message':'Your account has been activated!'},status=status.HTTP_200_OK)  
-        return Response({'error':'Something went wrong! Try again.'},status=status.HTTP_400_BAD_REQUEST)  
+        return Response({'error':'Wrong code! Try again.'},status=status.HTTP_400_BAD_REQUEST)  
         
