@@ -5,9 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
-from rest_framework import status, generics
+from rest_framework import status
 from django.contrib.auth import authenticate, logout
 from .serializers import UserSerializer
+from .models import UserProfile
 
 class Login(APIView):
     permission_classes=()
@@ -34,20 +35,35 @@ class Logout(APIView):
     authentication_classes=[TokenAuthentication]
     
     def post(self,request):
-        auth_token = request.META.get('HTTP_AUTHORIZATION')
-        token_key = auth_token.split(' ')[1]
+        token = get_object_or_404(Token,user=request.user)
+        token.delete()
+        logout(request)
+        return Response({'message':'Logged out succesfully!'},status=status.HTTP_200_OK)
+  
         
-        try :
-            token = Token.objects.get(key=token_key)
-            token.delete()
-            logout(request)
-            return Response({'message':'Logged out succesfully!'},status=status.HTTP_200_OK)
-        except Token.DoesNotExists:
-            pass
-        return Response({'error':'Something went wrong!'},status=status.HTTP_400_BAD_REQUEST)   
-    
-class Register(generics.CreateAPIView):
+class Register(APIView):
     authentication_classes = ()
     permission_classes = ()
-    serializer_class = UserSerializer 
-    #dodac przy rejetrowaniu podawanie imienia i nazwiska
+    
+    def post(self,request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response ({'message' : 'Registered succesfully.'},status=status.HTTP_201_CREATED)
+        return Response ({'error' : serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class VerifyAccountView(APIView):
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    
+    def post(self,request):
+        code = request.data.get('verify_code')
+        user_profile = get_object_or_404(UserProfile,user=request.user)
+        if user_profile.verify_code == code:
+            user_profile.is_verified = True
+            user_profile.verify_code = ''
+            user_profile.save()
+            return Response({'message':'Your account has been activated!'},status=status.HTTP_200_OK)  
+        return Response({'error':'Something went wrong! Try again.'},status=status.HTTP_400_BAD_REQUEST)  
+        
