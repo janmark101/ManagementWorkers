@@ -20,6 +20,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.user=this.Auth.getUserFromLocalStorage();
+
   }
 
   Logout(){

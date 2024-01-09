@@ -7,21 +7,18 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
-export class  authGuard implements CanActivate {
+export class  verifyGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
     const user = this.authService.getUserFromLocalStorage();
-    if (user) {
-      if(user.verified === true){
-        return true
+    if(user){
+      if(user.verified == true){
+        this.router.navigate(['/home']);
+        return false
       }
-
-      this.router.navigate(['/accverify']);
-      return false
+      return true
     }
-
-    this.router.navigate(['']); 
-    return false;
+    return false
   }
 }

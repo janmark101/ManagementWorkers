@@ -32,6 +32,7 @@ import {
 import { TaskComponent } from './Site/task/task.component';
 import { UniqueCodeComponent } from './Site/unique-code/unique-code.component';
 import { EditTaskComponent } from './Site/edit-task/edit-task.component';
+import { VerifyAccountComponent } from './Site/verify-account/verify-account.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { EditTaskComponent } from './Site/edit-task/edit-task.component';
     TaskComponent,
     UniqueCodeComponent,
     EditTaskComponent,
+    VerifyAccountComponent,
   ],
   imports: [
     BrowserModule,

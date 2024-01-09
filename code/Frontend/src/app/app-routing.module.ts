@@ -5,13 +5,17 @@ import { RegisterComponent } from './Site/register/register.component';
 import { HomeComponent } from './Site/home/home.component';
 import { authGuard } from './Services/auth.guard';
 import { TeamComponent } from './Site/team/team.component';
+import { VerifyAccountComponent } from './Site/verify-account/verify-account.component';
+import { verifyGuard } from './Services/verify.guard';
+import { loggedGuard } from './Services/logged.guard';
 
 
 
 const routes: Routes = [
-  {path: '', component:LoginComponent,pathMatch : 'full'},
-  {path: 'register',component:RegisterComponent},
+  {path: '', component:LoginComponent,pathMatch : 'full',canActivate: [loggedGuard],},
+  {path: 'register',component:RegisterComponent, canActivate: [loggedGuard,]},
   {path: 'home',component:HomeComponent, canActivate : [authGuard],},
+  {path: 'accverify', component:VerifyAccountComponent,canActivate: [verifyGuard], },
   {path: 'team/:id',component: TeamComponent,canActivate : [authGuard],},
 ];
 
