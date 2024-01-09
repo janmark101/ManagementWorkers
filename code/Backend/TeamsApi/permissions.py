@@ -6,7 +6,7 @@ from rest_framework.exceptions import PermissionDenied
 
 class CustomPersmissions(permissions.BasePermission):
     def has_object_permission(self,request,view,object):
-        if request.method in ['DELETE','PATCH','POST']:
+        if request.method in ['DELETE','PATCH','POST','PUT']:
             return request.user == object.manager
             
         

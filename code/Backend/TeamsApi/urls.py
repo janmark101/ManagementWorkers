@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import TeamsView, TasksForTeamView, JoinTeamView, TeamUsersView, TaskObjectView, TeamCodeObject,TeamObjectView, RemoveUserFromTeamView, ChangeTaskStatusView
+from .views import TeamsView, TasksForTeamView, JoinTeamView, TeamUsersView, TaskObjectView, TeamCodeObject,TeamObjectView, RemoveUserFromTeamView, ChangeTaskStatusView \
+    , ClearErrorView, ReportErrorView
 
 urlpatterns = [
     path('teams/',TeamsView.as_view()),
@@ -12,6 +13,8 @@ urlpatterns = [
     path('teams/<int:pk>/',TeamObjectView.as_view()),
     path('teams/<int:pk>/removeuser/<int:id>/',RemoveUserFromTeamView.as_view()),
     path('teams/<int:pk>/task/<int:id>/changestatus/',ChangeTaskStatusView.as_view()),
+    path('teams/<int:pk>/task/<int:id>/reporterror/',ReportErrorView.as_view()),
+    path('teams/<int:pk>/task/<int:id>/clearerror/',ClearErrorView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

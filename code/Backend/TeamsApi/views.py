@@ -73,10 +73,10 @@ class JoinTeamView(APIView):
         team = get_object_or_404(Team,unique_code=unique_code)
         user = request.user
         if user in team.workers.all():
-            return Response({"message" : f"Already in team '{team.name}'!"},status=status.HTTP_200_OK)
+            return Response({"message" : f"Already in team '{team.name}'!"},status=status.HTTP_400_BAD_REQUEST)
         else :
             if team.manager == user:
-                return Response({"message" : 'You are manager of this team!'},status=status.HTTP_200_OK)
+                return Response({"message" : 'You are manager of this team!'},status=status.HTTP_400_BAD_REQUEST)
             else:
                 team.workers.add(user)
                 return Response({"message" : f"Joined team : '{team.name}'!"},status=status.HTTP_200_OK)
@@ -117,8 +117,19 @@ class TaskObjectView(APIView):
         task = get_object_or_404(Task,pk=id)
         task.delete()
         return Response({'message' : 'Task sucessfully deleted!'},status=status.HTTP_200_OK)
-
     
+    
+    def put(self,request,pk,id,format=None):
+        team = get_object_or_404(Team,pk=pk)
+        self.check_object_permissions(request,team)
+        task = get_object_or_404(Task,pk=id)
+        
+        serializer = TaskSerializer(task,data=request.data,context={'team' : team})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message' : 'Task sucessfully edited!'},status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_200_OK)
+            
 
 class TeamCodeObject(APIView):
     permission_classes=[CustomPersmissions]
@@ -144,10 +155,12 @@ class TeamCodeObject(APIView):
     
     
 class TeamObjectView(APIView):
-    permisson_classes = [CustomPersmissions]
+    permission_classes = [CustomPersmissions]
     
     def post(self,request,pk,format=None):
         team = get_object_or_404(Team,pk=pk)
+        if request.user == team.manager:
+            return Response({'message' : 'Manager can not leave the team!'},status=status.HTTP_400_BAD_REQUEST)
         if request.user in team.workers.all():
             team.workers.remove(request.user)
             return Response({'message' : 'You have left the team.'},status=status.HTTP_200_OK)
@@ -161,7 +174,7 @@ class TeamObjectView(APIView):
     
     
 class RemoveUserFromTeamView(APIView):
-    permisson_classes = [CustomPersmissions]
+    permission_classes = [CustomPersmissions]
     
     def post(self,request,pk,id,format=None):
         team = get_object_or_404(Team,pk=pk)
@@ -174,7 +187,7 @@ class RemoveUserFromTeamView(APIView):
     
     
 class ChangeTaskStatusView(APIView):
-    permisson_classes = [CustomPersmissions]
+    permission_classes = [CustomPersmissions]
 
     def post(self,request,pk,id,format=None):
         team = get_object_or_404(Team,pk=pk)
@@ -192,5 +205,24 @@ class ReportErrorView(APIView):
     def post(self,request,pk,id):
         team = get_object_or_404(Team,pk=pk)
         task = get_object_or_404(Task,pk=id)
-        
+        if request.user == team.manager or (request.user in team.workers.all() and request.user in task.workers_id.all()):
+            task.error = request.data.get('error')
+            task.save()
+            return Response({'message' : 'Error changed.'},status=status.HTTP_200_OK) 
+        return Response (status=status.HTTP_403_FORBIDDEN)
+
+
+class ClearErrorView(APIView):
+    permission_classes = [CustomPersmissions]
+    
+    def post(self,request,pk,id):
+        team = get_object_or_404(Team,pk=pk)
+        task = get_object_or_404(Task,pk=id)  
+        if request.user == team.manager or (request.user in team.workers.all() and request.user in task.workers_id.all()):      
+            task.error = ''
+            task.save()
+            return Response({'message' : 'Cleared error.'},status=status.HTTP_200_OK) 
+        return Response (status=status.HTTP_403_FORBIDDEN)
+            
+
         
