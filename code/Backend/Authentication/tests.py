@@ -2,8 +2,8 @@ from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from django.contrib.auth.models import User
-
-
+from django.db import transaction
+from .models import UserProfile
 
 class RegistrationTest(APITestCase):
     def setUp(self):
@@ -41,7 +41,8 @@ class RegistrationTest(APITestCase):
         
 class LoginTest(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='test',password='123',email='test@gmail.com')
+        self.user = User.objects.create_user(username='test',password='123',email='test@gmail.com',first_name='test',last_name='test')
+        UserProfile.objects.create(user=self.user)
         self.client = self.client_class()
         
     def test_login_username(self):
@@ -69,3 +70,42 @@ class LogoutTest(APITestCase):
     def test_logout(self):
         response = self.client.post('/auth/logout/')
         self.assertEqual(response.status_code,status.HTTP_200_OK)
+        
+class VerifyAccTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test',password='123',email='test@gmail.com')
+        self.user_profile = UserProfile.objects.create(user=self.user)
+        token = Token.objects.create(user=self.user)
+        self.user_profile.verify_code = '123'
+        self.user_profile.save()
+        self.client = self.client_class(HTTP_AUTHORIZATION=f'Token {token.key}') 
+        
+    @transaction.atomic
+    def test_verify_code(self):
+        data = {"verify_code": "123"}
+        self.assertFalse(self.user_profile.is_verified)
+        response = self.client.post('/auth/verifyacc/',data,format='json')
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        self.user_profile.refresh_from_db()
+        self.assertTrue(self.user_profile.is_verified)
+        
+    @transaction.atomic
+    def test_verify_code_invalid_code(self):
+        data = {"verify_code": "12345"}
+        self.assertFalse(self.user_profile.is_verified)
+        response = self.client.post('/auth/verifyacc/',data,format='json')
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+        self.user_profile.refresh_from_db()
+        self.assertFalse(self.user_profile.is_verified)
+        
+class TestNoPermissionURLS(APITestCase):
+    def setUp(self):
+        self.client = self.client_class() 
+        
+    def test_post_logout_url(self):
+        response = self.client.post('/auth/logout/',None,format='json')
+        self.assertEqual(response.status_code,status.HTTP_401_UNAUTHORIZED)
+        
+    def test_post_verifyacc_url(self):
+        response = self.client.post('/auth/verifyacc/',None,format='json')
+        self.assertEqual(response.status_code,status.HTTP_401_UNAUTHORIZED)
