@@ -43,6 +43,16 @@ export class AuthService {
     this.user = user;
   }
 
+  verifyAccount(data:any){
+    let user = this.getUserFromLocalStorage();
+    console.log(user.token);
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+
+    return this.http.post(`${this.api_url}verifyacc/`,data,{headers})
+  }
  
 
 }

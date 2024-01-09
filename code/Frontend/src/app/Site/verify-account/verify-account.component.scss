@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #f4f4f4;
+  }
+
+  .activation-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .activation-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 24px;
+    margin: 0 10px;
+  }
+
+  .activate-button {
+    margin-top: 6%;
+    background-color: #7b4e34; 
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+  .activate-button:hover{
+    background-color: rgb(250, 238, 209);
+    color: #7b4e34;
+
+  }

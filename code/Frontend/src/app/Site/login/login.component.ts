@@ -9,6 +9,7 @@ interface User {
   user_id : number;
   firstname: string;
   lastname : string;
+  verified : boolean;
 }
 
 @Component({
@@ -20,7 +21,7 @@ export class LoginComponent {
 
   constructor(private Auth : AuthService,private router: Router){};
 
-  user : User = { token: '', user_id: 0 ,firstname: '',lastname:''};
+  user : User = { token: '', user_id: 0 ,firstname: '',lastname:'',verified:false};
   error = "";
 
 
@@ -37,6 +38,7 @@ export class LoginComponent {
       this.user.user_id = data.user_id;
       this.user.firstname = data.firstname;
       this.user.lastname = data.lastname;
+      this.user.verified = data.verified
             
       localStorage.setItem('user',JSON.stringify(this.user));
 

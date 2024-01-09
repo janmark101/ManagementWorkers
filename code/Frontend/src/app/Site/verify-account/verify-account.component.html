@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="activation-container">
+        <h2 style="font-size: 2rem;">You need to verify your account!</h2>
+      <h1 for="activation-code" style="font-size: 1.5rem;">Verification code:</h1>
+      <br>
+      <input *ngFor="let index of [1, 2, 3, 4, 5, 6]" 
+           type="text" 
+           id="activation-code-{{index}}" 
+           class="activation-input" 
+           maxlength="1" 
+           [(ngModel)]="activationCode[index - 1]"
+           (input)="moveToNextInput(index)">
+    <br>
+    <button class="activate-button" (click)="activate()">Activate</button>
+    </div>
+  </div>

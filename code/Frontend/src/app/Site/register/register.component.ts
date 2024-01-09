@@ -21,13 +21,6 @@ export class RegisterComponent {
       
     }
     else{
-      if (form.value.username.length <5 ){
-        this.error = "Username must have at least 6 chars!";
-      }
-      else if (form.value.password.length <5){
-        this.error = "Password must have at least 6 chars!";
-      }
-      else {
         let data = {
           "username" : form.value.username,
           "first_name" : form.value.firstname,
@@ -41,6 +34,8 @@ export class RegisterComponent {
           this.error = 'Registered succesfully!';
           form.reset();
         },(error:any)=>{
+          console.log(error);
+          
           if(error.error){
             if(error.error.email){
               this.error = error.error.email;
@@ -51,7 +46,7 @@ export class RegisterComponent {
           }
           
         });
-      }
+
     }
 
   }
