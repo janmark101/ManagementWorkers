@@ -80,22 +80,31 @@ export class SiteService {
     return this.http.get(`${this.api_url}teams/${id}/users/`,{headers})
   }
 
-  deleteTask(taskId: number){
+  deleteTask(taskId: number,teamId : number){
     let user = this.Auth.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.delete(`${this.api_url}teams/${taskId}/object/`,{headers});
+    return this.http.delete(`${this.api_url}teams/${teamId}/task/${taskId}/`,{headers});
   }
 
-  getTask(taskId: number){
+  getTask(taskId: number,teamId:number){
     let user = this.Auth.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.get(`${this.api_url}teams/${taskId}/object/`,{headers});
+    return this.http.get(`${this.api_url}teams/${teamId}/task/${taskId}`,{headers});
+  }
+
+  editTask(taskId: number,teamId : number,data:any){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.put(`${this.api_url}teams/${teamId}/task/${taskId}/`,data,{headers});
   }
 
   UniqueCode(teamId: number){
@@ -123,5 +132,23 @@ export class SiteService {
       'Authorization': `Token ${user.token}`
     });
     return this.http.delete(`${this.api_url}teams/${teamId}/`,{headers});
+  }
+
+  removeUserFromTeam(teamId:number,userID:number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${teamId}/removeuser/${userID}`,{headers});
+  }
+
+  leaveTeam(teamId:number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${teamId}/}`,{headers});
   }
 }

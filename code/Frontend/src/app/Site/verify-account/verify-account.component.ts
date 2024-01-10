@@ -14,7 +14,7 @@ export class VerifyAccountComponent implements OnInit{
   activationCode: string[] = ['', '', '', '', '', ''];
 
   user :any;
-
+  message = '';
 
   moveToNextInput(index: number): void {
     if (this.activationCode[index - 1].length === 1) {
@@ -35,9 +35,11 @@ export class VerifyAccountComponent implements OnInit{
       const user = this.Auth.getUserFromLocalStorage();
       user.verified = true
       localStorage.setItem('user',JSON.stringify(user));
+      location.reload();
       this.router.navigate(['/home']);
     },(error:any)=>{
       console.log(error)
+      this.message = error.error.error;
     });
   }
 

@@ -62,7 +62,6 @@ export class TaskComponent implements OnInit{
         "name" : form.value.name,
         "description" : form.value.description,
         "date": form.value.date,
-        "team_id": this.data.team_id,
         "workers_id": this.userSelected
       }
       

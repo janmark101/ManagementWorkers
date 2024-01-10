@@ -24,10 +24,8 @@ export class HomeComponent implements OnInit{
 
     this.Site.getUserTeams().pipe(take(1)).subscribe((data:any) =>{
       this.userTeams = data;
-      console.log(data);
       
     },(error:any) =>{
-      console.error(error);
       
     })
   }

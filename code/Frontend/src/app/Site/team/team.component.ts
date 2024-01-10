@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { SiteService } from 'src/app/Services/site.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,16 +35,18 @@ export class TeamComponent implements OnInit{
   teamId : number | any;
   monthValuesArray : any;
   currentMonthNumber : any;
-  constructor(private Site:SiteService,private route:ActivatedRoute,private dialog: MatDialog){};
+  constructor(private Site:SiteService,private route:ActivatedRoute,
+    private dialog: MatDialog,private confirmBoxEvokeService: ConfirmBoxEvokeService,
+    private router: Router){};
 
   ngOnInit(): void {
     this.teamId = this.route.snapshot.params['id'];
-    
+
     this.Site.getUsersForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
-      this.isManager = true;
-      this.TeamUsers = data;
+      this.isManager = data.manager;
+      this.TeamUsers = data.data;
     },(error:any) =>{
-      this.isManager = false;
+      console.log(error);
     });
 
     this.dateInformation.currentMonthDays=this.monthDaysMap.get(this.now.getMonth()); 
@@ -53,6 +55,7 @@ export class TeamComponent implements OnInit{
     this.dateInformation.currentDay=this.now.getDate();
     this.monthValuesArray = Array.from(this.monthDaysMap2.values());
     this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth)+1; 
+
     this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
       this.TeamTasks = data;
       this.Tasks = data;
@@ -252,14 +255,21 @@ export class TeamComponent implements OnInit{
   ]);
  }
 
+
+ 
  deleteTeam(){
-  this.Site.deleteTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
-    console.log(data);
+  this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to delete it?', 'Confirm', 'Decline')
+  .subscribe(resp => {
+
+    if(resp.success === true){
     
-  },(error:any) =>{
-    console.log(error);
-    
+        this.Site.deleteTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
+          this.router.navigate(['/home'])
+        },(error:any) =>{
+          
+        });
+  }
   });
- }
+}
 
 }
