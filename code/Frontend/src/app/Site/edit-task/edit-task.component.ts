@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
+import { switchMap, take } from 'rxjs';
 import { SiteService } from 'src/app/Services/site.service';
 
 @Component({
@@ -19,35 +19,33 @@ export class EditTaskComponent implements OnInit{
   TeamUsers:any=[];
   message : string = "";
   success : boolean = false;
-  isManager : boolean = false;
+
   task : any;
+
   constructor(
+    private Service : SiteService,
     private dialogRef: MatDialogRef<EditTaskComponent>,
     private route:ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) private data: any,private Site : SiteService
   ) {}
-  
+
   ngOnInit(): void {
-    this.Site.getUsersForTeam(this.data.teamID).pipe(take(1)).subscribe((data:any) =>{
-      this.isManager = true;
-      this.TeamUsers = data;
-      
-      
-      //console.log(data)
-    },(error:any) =>{
-      this.isManager = false;
-    });
+    this.Site.getUsersForTeam(this.data.teamID).pipe(
+      take(1),
+      switchMap((teamUsers: any) => {
+        this.TeamUsers = teamUsers;
+        return this.Site.getTask(this.data.taskID, this.data.teamID).pipe(take(1));
+      })
+    ).subscribe(
+      (taskData: any) => {
+        this.task = taskData;       
+        this.UsersForTask();
 
-
-    this.Site.getTask(this.data.taskID).pipe(take(1)).subscribe((data:any) =>{
-      this.task = data;
-      this.UsersForTask();
-      
-      
-      console.log(data.workers_id);
-    },(error:any) =>{
-      
-    });
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
     
   }
 
@@ -56,11 +54,15 @@ export class EditTaskComponent implements OnInit{
       "name" : form.value.name,
       "description" : form.value.description,
       "date": form.value.date,
-      "team_id": this.data.team_id,
       "workers_id": this.userSelected,
-      "task_id": this.data.taskID
     }
     
+    this.Service.editTask(this.task.id,this.data.teamID,data).subscribe((data:any) =>{
+      this.message = data.message;
+      
+    },(error:any)=>{
+      this.message = "Something went wrong!";
+    });
     
   }
 

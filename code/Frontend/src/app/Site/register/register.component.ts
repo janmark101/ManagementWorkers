@@ -36,13 +36,17 @@ export class RegisterComponent {
         },(error:any)=>{
           console.log(error);
           
-          if(error.error){
-            if(error.error.email){
-              this.error = error.error.email;
+          if(error.error.error){
+            if (error.error.error.email){
+              this.error = error.error.error.email
             }
-            else if (error.error.username){
-              this.error = error.error.username;
+            if (error.error.error.username){
+              this.error = error.error.error.username
             }
+            if (error.error.error.password){
+              this.error = error.error.error.password
+            }
+
           }
           
         });

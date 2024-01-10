@@ -92,7 +92,10 @@ class TeamUsersView(APIView):
         if request.user == team.manager or request.user in team.workers.all():
             workers = team.workers.all()
             serializer = UserSerializer(workers, many=True)
-            return Response(serializer.data)
+            if request.user == team.manager:
+                return Response({'data': serializer.data,'manager':True},status=status.HTTP_200_OK)
+            else:
+                return Response({'data': serializer.data,'manager':False},status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
         
