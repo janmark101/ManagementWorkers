@@ -8,6 +8,7 @@ import { TeamComponent } from './Site/team/team.component';
 import { VerifyAccountComponent } from './Site/verify-account/verify-account.component';
 import { verifyGuard } from './Services/verify.guard';
 import { loggedGuard } from './Services/logged.guard';
+import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.component';
 
 
 
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'home',component:HomeComponent, canActivate : [authGuard],},
   {path: 'accverify', component:VerifyAccountComponent,canActivate: [verifyGuard], },
   {path: 'team/:id',component: TeamComponent,canActivate : [authGuard],},
+  {path: 'team/:id/options',component: TeamOptionssComponent,canActivate : [authGuard],},
 ];
 
 @NgModule({

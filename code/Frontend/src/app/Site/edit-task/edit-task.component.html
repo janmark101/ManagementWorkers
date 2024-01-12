@@ -12,7 +12,7 @@
       </div>
       <div class = "dropDown-div">
         <ng-multiselect-dropdown [placeholder]="'Select employees'" [settings]="dropdownSettings" [data]="dropdownList"
-          [(ngModel)]="userSelected" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+        name ="myDropdown" [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
           (onDeSelect)="onItemDeSelect($event)" (onDeSelectAll)="onItemDeSelectAll($event)">
         </ng-multiselect-dropdown>
       </div>

@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Site/login/login.component';
 import { RegisterComponent } from './Site/register/register.component';
-import { FormsModule } from '@angular/forms';
+  import { FormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './Services/auth.service';
 import { HomeComponent } from './Site/home/home.component';
@@ -33,6 +33,7 @@ import { TaskComponent } from './Site/task/task.component';
 import { UniqueCodeComponent } from './Site/unique-code/unique-code.component';
 import { EditTaskComponent } from './Site/edit-task/edit-task.component';
 import { VerifyAccountComponent } from './Site/verify-account/verify-account.component';
+import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { VerifyAccountComponent } from './Site/verify-account/verify-account.com
     UniqueCodeComponent,
     EditTaskComponent,
     VerifyAccountComponent,
+    TeamOptionssComponent,
   ],
   imports: [
     BrowserModule,

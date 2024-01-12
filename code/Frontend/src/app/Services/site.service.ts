@@ -140,7 +140,7 @@ export class SiteService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.post(`${this.api_url}teams/${teamId}/removeuser/${userID}`,{headers});
+    return this.http.post(`${this.api_url}teams/${teamId}/removeuser/${userID}/`,null,{headers});
   }
 
   leaveTeam(teamId:number){
