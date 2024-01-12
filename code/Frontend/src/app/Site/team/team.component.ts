@@ -5,14 +5,6 @@ import { SiteService } from 'src/app/Services/site.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DayComponent } from '../day/day.component';
 import { TaskComponent } from '../task/task.component';
-import {
-  ConfirmBoxInitializer,
-  DialogLayoutDisplay,
-  DisappearanceAnimation,
-  AppearanceAnimation,
-  ConfirmBoxEvokeService,
-  
-} from '@costlydeveloper/ngx-awesome-popup';
 import { UniqueCodeComponent } from '../unique-code/unique-code.component';
 
 
@@ -36,7 +28,7 @@ export class TeamComponent implements OnInit{
   monthValuesArray : any;
   currentMonthNumber : any;
   constructor(private Site:SiteService,private route:ActivatedRoute,
-    private dialog: MatDialog,private confirmBoxEvokeService: ConfirmBoxEvokeService,
+    private dialog: MatDialog,
     private router: Router){};
 
   ngOnInit(): void {
@@ -257,19 +249,6 @@ export class TeamComponent implements OnInit{
 
 
  
- deleteTeam(){
-  this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to delete it?', 'Confirm', 'Decline')
-  .subscribe(resp => {
 
-    if(resp.success === true){
-    
-        this.Site.deleteTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
-          this.router.navigate(['/home'])
-        },(error:any) =>{
-          
-        });
-  }
-  });
-}
 
 }

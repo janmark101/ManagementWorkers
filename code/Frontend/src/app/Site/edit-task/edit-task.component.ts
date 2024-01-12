@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -13,9 +13,11 @@ import { SiteService } from 'src/app/Services/site.service';
 export class EditTaskComponent implements OnInit{
 
   dropdownList:any = [];
-  selectedItems:any = [];
   dropdownSettings:any = {};
+  selectedItems:any=[];
+
   userSelected:any=[];
+
   TeamUsers:any=[];
   message : string = "";
   success : boolean = false;
@@ -26,6 +28,7 @@ export class EditTaskComponent implements OnInit{
     private Service : SiteService,
     private dialogRef: MatDialogRef<EditTaskComponent>,
     private route:ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) private data: any,private Site : SiteService
   ) {}
 
@@ -33,7 +36,9 @@ export class EditTaskComponent implements OnInit{
     this.Site.getUsersForTeam(this.data.teamID).pipe(
       take(1),
       switchMap((teamUsers: any) => {
-        this.TeamUsers = teamUsers;
+        this.TeamUsers = teamUsers.data;
+
+        
         return this.Site.getTask(this.data.taskID, this.data.teamID).pipe(take(1));
       })
     ).subscribe(
@@ -49,6 +54,8 @@ export class EditTaskComponent implements OnInit{
     
   }
 
+
+
   OnSubmit(form:NgForm){
     let data = {
       "name" : form.value.name,
@@ -63,14 +70,13 @@ export class EditTaskComponent implements OnInit{
     },(error:any)=>{
       this.message = "Something went wrong!";
     });
+
     
   }
 
-  onItemSelect(item : any) {
-      
-    this.userSelected.push(item.item_id);
-    console.log(this.userSelected, "ONSELECT")
-    console.log(this.selectedItems);
+  onItemSelect(item : any) {   
+      this.userSelected.push(item.item_id)
+
   }
 
   onItemDeSelect(item:any){
@@ -79,6 +85,7 @@ export class EditTaskComponent implements OnInit{
     if (indexToRemove!==-1){
       this.userSelected.splice(indexToRemove, 1);
     }
+      
   }
 
   onSelectAll(items: any) {
@@ -91,17 +98,28 @@ export class EditTaskComponent implements OnInit{
 
   onItemDeSelectAll(item:any){
     this.userSelected = [];
-    
   }
 
   UsersForTask(){
-    this.dropdownList = [
-      
+
+    for (const user of this.TeamUsers) {
+      this.dropdownList.push({
+        item_id: user.id,
+        item_text: `${user.first_name} ${user.last_name}`
+      });
+    }
+    this.selectedItems = [
+       
     ];
-    
-    this.userSelected = [
-     
-    ];
+
+    this.userSelected=this.task.workers_id;
+
+    for ( const user of this.dropdownList){
+        if(this.task.workers_id.includes(user.item_id)){
+          this.selectedItems.push(user)
+        }
+    }
+
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -113,13 +131,6 @@ export class EditTaskComponent implements OnInit{
       allowSearchFilter: true
     };
 
-    for (const user of this.TeamUsers) {
-      this.dropdownList.push({
-        item_id: user.id,
-        item_text: `${user.first_name} ${user.last_name}`
-      });
-    }
-    
   }
 
   onCancel(){
