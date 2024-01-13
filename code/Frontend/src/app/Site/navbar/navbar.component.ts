@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {  Router } from '@angular/router';
 import { delay } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
-import { CreateComponent } from '../create/create.component';
-import { MatDialog } from '@angular/material/dialog';
-import { JoinTeamComponent } from '../join-team/join-team.component';
+
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +11,7 @@ import { JoinTeamComponent } from '../join-team/join-team.component';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private Auth:AuthService,private router : Router,private dialog: MatDialog){}
+  constructor(private Auth:AuthService,private router : Router){}
 
   user :any;
 
@@ -41,36 +39,6 @@ export class NavbarComponent implements OnInit {
     })
   }
 
-  CreateTeam(){
-    const dialogRef = this.dialog.open(CreateComponent, {
-      width: '700px',
-      
-    });
-
-    dialogRef.afterClosed().subscribe((result:any) => {
-      if (result === 'confirm') {
-        location.reload();
-      } else if (result === 'cancel') {
-        
-      }
-    });
-
-      
-  }
-
-  JoinTeam(){
-    const dialogRef = this.dialog.open(JoinTeamComponent, {
-      width: '700px',
-      
-    });
-
-    dialogRef.afterClosed().subscribe((result:any) => {
-      if (result === 'confirm') {
-        location.reload();
-      } else if (result === 'cancel') {
-        
-      }
-    });
-  }
+  
 
 }

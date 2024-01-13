@@ -3,6 +3,11 @@ import { SiteService } from 'src/app/Services/site.service';
 import { delay, take } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Router } from '@angular/router';
+import { faPeopleGroup,faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateComponent } from '../create/create.component';
+import { JoinTeamComponent } from '../join-team/join-team.component';
+
 
 @Component({
   selector: 'app-home',
@@ -11,8 +16,10 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
 
-  constructor(private Site: SiteService,private Auth:AuthService,private router: Router){};
+  constructor(private Site: SiteService,private Auth:AuthService,private router: Router,private dialog: MatDialog){};
 
+  plus = faPeopleGroup;
+  join = faSquarePlus
 
   userTeams : any = [];
   user:any;
@@ -54,6 +61,40 @@ export class HomeComponent implements OnInit{
       
     })
   }
+
+
+  CreateTeam(){
+    const dialogRef = this.dialog.open(CreateComponent, {
+      width: '700px',
+      
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result === 'confirm') {
+        location.reload();
+      } else if (result === 'cancel') {
+        
+      }
+    });
+
+      
+  }
+
+  JoinTeam(){
+    const dialogRef = this.dialog.open(JoinTeamComponent, {
+      width: '700px',
+      
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result === 'confirm') {
+        location.reload();
+      } else if (result === 'cancel') {
+        
+      }
+    });
+  }
+
 
 
 }

@@ -1,17 +1,17 @@
 
 <div class="navbar">
     <div class="brand">
-      <div class="logo">
-        <img style="cursor: pointer;" routerLink="/home" src="/assets/img/logo.png" alt="Logo Projektu"/>
+      <div class="logo" routerLink="/home">
+        <img  src="/assets/img/logo.png" alt="Logo Projektu"/>
+        <div style="flex-grow: 1;text-align: center;margin-top: 5%;margin-left: -15%;">
+          <h1 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Workers Management </h1>
+        </div>
       </div>
     </div>
       
     
     <div class="user-info">
-        <div class="buttons">
-            <button class="button" (click)="CreateTeam()" *ngIf="user.verified">Create</button>
-            <button class="button" (click)="JoinTeam()" *ngIf="user.verified">Join</button>
-          </div>
+
       <span style="margin-left: 20px;font-size: 1.2em;">Hello, {{user.firstname}} {{user.lastname}}!</span>
       <button class ="button" (click)="Logout()">Log out</button>
     </div>
