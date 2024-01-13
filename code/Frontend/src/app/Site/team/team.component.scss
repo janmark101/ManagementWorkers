@@ -24,6 +24,7 @@
 	justify-content: space-between;
 	padding-left:5%;
 	padding-right:5%;
+	
 }
 .calendar-container {	
 	display:flex;
@@ -34,13 +35,15 @@
 	padding-right:5%;
 	padding-bottom:5%;	
 	padding-left:1.5%;
-	padding-top:1%;
-	
-	
+	padding-top:1%;	
 }
-.employee_list_container {
 
+.button-container{
+	display: flex;
+    justify-content: space-between;
+    
 }
+
 .employee_list{
 	display: flex;
 	flex-flow: column;
@@ -53,7 +56,9 @@
     font-size: 1.5vw;
     margin-bottom: 7%;
 }
-.button {
+
+
+.button{
     margin:10px;
     padding: 10px 20px;
     border: none;
@@ -63,6 +68,8 @@
     cursor: pointer;
     transition: background-color 0.3s;
     border:1px solid  #667DB8;
+	font-size: 2vh;
+	
   }
   
   .button:hover {
@@ -71,7 +78,9 @@
     border:1px solid #667DB8;
 
   }
-
+.label{
+	color:white;
+}
 
 .workers_list {
 	display: flex;
