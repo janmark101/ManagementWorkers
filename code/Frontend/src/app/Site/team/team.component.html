@@ -14,13 +14,13 @@
         <div class="workers_list" *ngIf="isManager">
             <button class="button" (click)="showUniqueCode()">Unique code</button>
             <button class="button" (click)="AddTaskPopup()">Add task</button>
-            <button class="button"  [routerLink]="['/team',teamId,'options']" >ziut</button>
+            <button class="button"  [routerLink]="['/team',teamId,'options']" >Settings</button>
             <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
                 <ul class="employee_list">
                     <li>
                         <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"
                             (change)="checkSelectedUser(i)">
-                        <label for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
+                        <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
                     </li>
                 </ul>
             </div>
