@@ -3,17 +3,13 @@
 .body {
 	// display: flex;
 	
-	background: rgb(178, 165, 155);
-	 background: radial-gradient(
-		circle,
-		rgba(178, 165, 155, 1) 0%,
-		rgba(250, 238, 209, 1) 75%,
-		rgba(96, 114, 116, 1) 120%
-	);
+	background: #07090C;
+
+	
 	width: 100%;
 	height: 100%;
 	padding-top: 50px;
-	justify-content: center;
+	// justify-content: center;
 	// display:flex;
 	content: flex;
     // // flex-flow: row wrap;
@@ -24,35 +20,26 @@
 
 
 .container {
-	margin-top:5%;
-	width:100vw;
-	display: grid;
-	grid-template-columns: 1fr 30%;
-	column-gap: 10%;
-	min-width: 1000px;
-	
-	//margin-right: 0;
-
-	// width: 100vw;
-	// height: 50vh;
-    // display: flex;
-	// margin-top: 2%;
-	// min-width: 700px;
-	
+	display:flex;
+	justify-content: space-between;
+	padding-left:5%;
+	padding-right:5%;
 }
 .calendar-container {	
-    display: flex;
-    flex-flow: column;
-    align-items: center;	
-	min-width: 300px;
-	
+	display:flex;
+	flex-direction: column;
+	align-items:center;
+	background-color: rgb(13,17,23);
+	border-radius: 8px;
+	padding-right:5%;
+	padding-bottom:5%;	
+	padding-left:1.5%;
+	padding-top:1%;
 	
 	
 }
 .employee_list_container {
-    // height: 100%; /* Dodane: maksymalna wysokość diva z listą pracowników */
-    // overflow-y: auto; /* Dodane: dodaje pasek przewijania, gdy lista przekracza max-height */
-	// margin-top: 15%;
+
 }
 .employee_list{
 	display: flex;
@@ -71,17 +58,17 @@
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #7b4e34; 
+    background-color: rgb(22,28,42);
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
-    border:1px solid  #7b4e34;
+    border:1px solid  #667DB8;
   }
   
   .button:hover {
-    background-color: rgb(250, 238, 209);
-    color: #7b4e34;
-    border:1px solid #7b4e34;
+    background-color: #667DB8;
+    color: white;
+    border:1px solid #667DB8;
 
   }
 
@@ -90,23 +77,19 @@
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	background-color: rgb(178, 165, 155);
+	background-color: rgb(13,17,23);
 	padding-top: 5%;
 	border-radius: 8px;	
 	height: auto;
+	width: 20%;
 	min-width: 150px;
-	margin-right: 5vw;
-	margin-left: 5vw;
 	min-height: 190px;
-
-	// height: 75vh;
-	// padding-top:1vh;
-	// margin-left: 8vw;
 }
 h1 {
-	font-weight: 800;
+	
 	margin-bottom: 3%;
 	font-size: 40px;
+	color: white;
 }
 
 ul {
@@ -116,6 +99,7 @@ ul {
 	list-style: none;
 	column-gap: 1%;
 	row-gap:1%;
+	padding-left:0;
 	div {
         cursor: pointer;
 		display: flex;
@@ -126,7 +110,7 @@ ul {
 		flex-flow: column;
 		border-radius: 0.2rem;
 		padding-top: 0.7vw;
-
+		color: white;
 		min-width: 70px;
 		min-height: 70px;
 		
@@ -134,10 +118,10 @@ ul {
 		white-space: nowrap;
 
 		box-sizing: border-box;
-		background: rgba(222, 208, 182, 0.75);
-		box-shadow: 0 8px 15px 0 rgba(67, 67, 68, 0.5);
+		background: rgb(22,28,42);
+		// box-shadow: 0 8px 15px 0 rgba(67, 67, 68, 0.5);
 		border-radius: 10px;
-		border: 1px solid rgba(255, 255, 255, 0.18);
+		// border: 1px solid #667DB8;
 
 		time {
 			font-size: 2vw;
@@ -146,13 +130,13 @@ ul {
 		}
 	}
     div:hover{
-        background-color: rgb(255, 25, 25),;   
+        background-color: rgb(37, 47, 63)  
     }
 	.today {
 		time {
 			font-weight: 800;
 		}
-		background: rgb(120, 120, 120);
+		background: #667DB8;
 	}
 	
 }
