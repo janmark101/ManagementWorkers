@@ -6,8 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DayComponent } from '../day/day.component';
 import { TaskComponent } from '../task/task.component';
 import { UniqueCodeComponent } from '../unique-code/unique-code.component';
-
-
+import { faGears } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-team',
@@ -18,7 +18,8 @@ export class TeamComponent implements OnInit{
   now = new Date();
   dateInformation : any = {'currentMonthDays':0,'currentMonth' : "",'currentYear':0,'currentDay':0};
 
-
+  plus = faSquarePlus;
+  gearIcon = faGears 
   TeamTasks : any = [];
   TeamUsers : any = [];
   currentMonthTasks : any = [];
@@ -197,19 +198,6 @@ export class TeamComponent implements OnInit{
     
   }
 
-  showUniqueCode(){
-    this.Site.UniqueCode(this.teamId).pipe(take(1)).subscribe((data:any) =>{
-      const dialogRef = this.dialog.open(UniqueCodeComponent, {
-        width: '400px',
-        data:{
-          code:data.code,
-        teamId:this.teamId}
-      });
-    },(error:any) =>{
-      console.log(error);
-      
-    });
-  }
   
  resetMap(){
   this.TaskCounterMap = new Map([

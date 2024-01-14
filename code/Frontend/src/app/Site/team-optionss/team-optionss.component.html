@@ -1,10 +1,27 @@
 <div class="body">
-<button [routerLink]="['/team',teamId]"  class="button">back</button>
+<fa-icon class="icon" [icon]="backIcon" [routerLink]="['/team',teamId]"style="margin-top:0%;margin-left:1%; color:white; font-size:2vw"></fa-icon>
+    <div class="container">
+        
+        <div class="buttons-box">
+            <div class="buttonCode">
+                <fa-icon class="icon" [icon]="codeIcon" style="color:white;font-size: 10vh;"(click)="showUniqueCode()"></fa-icon>
+                <p class="button-name">Team Code</p>
+            </div>
+            <div class="buttonCode">
+                <fa-icon class="icon" [icon]="deleteIcon" style="color:white;font-size: 10vh;"(click)="deleteTeam()"></fa-icon>
+                <p class="button-name">Delete Team</p>
+            </div>
+        </div>
+        <div class="team-info">
+            
 
-<div>
-    <button class="button" (click)="deleteTeam()">Delete team</button>
-    <button class="button" (click)="removeUser(9)">remove user</button>
-</div>
-
-
+            
+            <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
+                <ul class="employee_list"> 
+                    <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
+                    <button class= "button-delete" (click)="removeUser(9)">remove user</button>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

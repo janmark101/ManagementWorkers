@@ -44,19 +44,59 @@
     
 }
 
-.employee_list{
+.employee_list_container{
+	width:100%;
 	display: flex;
-	flex-flow: column;
-	list-style: none;
-	padding-top: 8%;
+	align-items: center;
+	justify-content: space-between;
+}
 
-	margin: 0;
+.employee_list {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    list-style: none;
+    padding-top: 8%;
+    margin: 0;
+    width: 100%;
 }
 .employee_list li {
-    font-size: 1.5vw;
-    margin-bottom: 7%;
+
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.3vw;
+
+
+}
+.icon{
+	transition: transform 0.3s;
 }
 
+.teamName{
+	color:white;
+	font-size: 2vw;
+	margin-bottom:10%;
+}
+
+.icon:hover{
+	transform: scale(1.07);
+}
+
+.button-container2{
+	padding-top: 5%;
+	padding-bottom: 5%;
+	background-color: rgb(22,28,42);
+	padding-left: 8%;
+    padding-right: 8%;
+	border-radius: 15px;
+    display:flex;
+    justify-content: space-between;
+	width:70%;
+	margin-bottom: 8%;
+
+    
+  }
 
 .button{
     margin:10px;
@@ -82,12 +122,17 @@
 	color:white;
 }
 
+.checkbox{
+	accent-color:#667DB8;
+	margin-right:5%;
+}
+
 .workers_list {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
 	background-color: rgb(13,17,23);
-	padding-top: 5%;
+	padding-top: 3%;
 	border-radius: 8px;	
 	height: auto;
 	width: 20%;
