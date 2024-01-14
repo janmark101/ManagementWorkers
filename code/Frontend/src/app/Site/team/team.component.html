@@ -12,13 +12,16 @@
         </div>
 
         <div class="workers_list" *ngIf="isManager">
-            <button class="button" (click)="showUniqueCode()">Unique code</button>
-            <button class="button" (click)="AddTaskPopup()">Add task</button>
-            <button class="button"  [routerLink]="['/team',teamId,'options']" >Settings</button>
+            <h1 class="teamName"> Nazwa Druzyny </h1>
+            <!-- <button class="button" (click)="showUniqueCode()">Unique code</button> -->
+            <div class="button-container2">            
+                <fa-icon class="icon" [icon]="plus" style="color:white;font-size: 10vh;"(click)="AddTaskPopup()"style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+                <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']" style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+            </div>
             <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
                 <ul class="employee_list">
                     <li>
-                        <input type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"
+                        <input class="checkbox" type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"
                             (change)="checkSelectedUser(i)">
                         <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
                     </li>
