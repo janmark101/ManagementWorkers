@@ -14,9 +14,15 @@
         <div class="workers_list" *ngIf="isManager">
             <h1 class="teamName"> Nazwa Druzyny </h1>
             <!-- <button class="button" (click)="showUniqueCode()">Unique code</button> -->
-            <div class="button-container2">            
-                <fa-icon class="icon" [icon]="plus" style="color:white;font-size: 10vh;"(click)="AddTaskPopup()"style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
-                <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']" style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+            <div class="button-container2">
+                <div style="display:flex; flex-direction: column;align-items: center;">            
+                    <fa-icon class="icon" [icon]="plus" style="color:white;font-size: 10vh;"(click)="AddTaskPopup()"style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+                <p style="color:white;font-size: smaller;padding-top:5px;">Add task</p>
+                </div>
+                <div style="display:flex; flex-direction: column;align-items: center;">            
+                    <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']" style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+                    <p style="color:white;font-size: smaller;padding-top: 5px;">Edit Team</p>
+                </div>
             </div>
             <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
                 <ul class="employee_list">

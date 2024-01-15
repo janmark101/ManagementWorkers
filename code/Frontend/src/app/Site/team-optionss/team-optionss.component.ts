@@ -20,7 +20,7 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 })
 export class TeamOptionssComponent implements OnInit{
 
-  // codeIcon = faBarcode to albo to
+  //codeIcon = faBarcode 
   codeIcon = faQrcode
   backIcon = faAngleLeft
   deleteIcon = faTrashCan
