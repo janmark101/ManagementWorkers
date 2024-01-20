@@ -19,7 +19,7 @@
             <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
                 <ul class="employee_list"> 
                     <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
-                    <button class= "button-delete" (click)="removeUser(9)">remove user</button>
+                    <button class= "button-delete" (click)="removeUser(user.id)">remove user</button>
                 </ul>
             </div>
         </div>

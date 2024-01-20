@@ -193,6 +193,7 @@ class ChangeTaskStatusView(APIView):
     permission_classes = [CustomPersmissions]
 
     def post(self,request,pk,id,format=None):
+        print(request.user)
         team = get_object_or_404(Team,pk=pk)
         task = get_object_or_404(Task,pk=id)
         if request.user == team.manager or (request.user in team.workers.all() and request.user in task.workers_id.all()):

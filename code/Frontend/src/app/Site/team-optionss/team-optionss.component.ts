@@ -59,13 +59,21 @@ export class TeamOptionssComponent implements OnInit{
   }
 
   removeUser(userId:number){
-    this.Site.removeUserFromTeam(this.teamId,userId).pipe(take(1)).subscribe((data:any) =>{
-      console.log(data);
+    this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to delete this user?', 'Confirm', 'Decline')
+    .subscribe(resp => {
+  
+      if(resp.success === true){
       
-    },(error:any) =>{
-      console.error(error);
-      
+        this.Site.removeUserFromTeam(this.teamId,userId).pipe(take(1)).subscribe((data:any) =>{
+          location.reload();
+          
+        },(error:any) =>{
+          console.error(error);
+          
+        });
+    }
     });
+    
   }
 
   showUniqueCode(){
