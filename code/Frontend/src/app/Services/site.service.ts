@@ -149,6 +149,33 @@ export class SiteService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.post(`${this.api_url}teams/${teamId}/}`,{headers});
+    return this.http.post(`${this.api_url}teams/${teamId}/`,{headers});
+  }
+
+  changeTaskStatus(teamId:number,data:any,taskId:number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/changestatus/`,data,{headers});
+  } 
+
+  reportError(teamId:number,taskId:number,data:any){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/reporterror/`,data,{headers});
+  }
+
+  clearError(teamId:number,taskId:number){
+    let user = this.Auth.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/clearerror/`,{headers});
   }
 }

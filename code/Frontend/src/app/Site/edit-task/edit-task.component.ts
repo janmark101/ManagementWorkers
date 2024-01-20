@@ -22,6 +22,8 @@ export class EditTaskComponent implements OnInit{
   message : string = "";
   success : boolean = false;
 
+
+
   task : any;
 
   constructor(
@@ -45,7 +47,6 @@ export class EditTaskComponent implements OnInit{
       (taskData: any) => {
         this.task = taskData;       
         this.UsersForTask();
-
       },
       (error: any) => {
         console.error(error);
@@ -66,9 +67,10 @@ export class EditTaskComponent implements OnInit{
     
     this.Service.editTask(this.task.id,this.data.teamID,data).subscribe((data:any) =>{
       this.message = data.message;
-      
+      this.success = true;
     },(error:any)=>{
       this.message = "Something went wrong!";
+      this.success = false;
     });
 
     
@@ -140,4 +142,8 @@ export class EditTaskComponent implements OnInit{
   onClose(){
     this.dialogRef.close('confirm');
   }
+
+
+  
+
 }

@@ -154,7 +154,7 @@ export class TeamComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result === 'confirm') {
-        console.log('Potwierdzono');
+        location.reload()
       } else if (result === 'cancel') {
         console.log("nie potwierdzono");
         
@@ -235,6 +235,16 @@ export class TeamComponent implements OnInit{
   ]);
  }
 
+
+  leaveTeam(){
+    this.Site.leaveTeam(this.teamId).subscribe((data:any)=>{
+      console.log(data);
+      
+    },(eror:any)=>{
+      console.error(eror);
+      
+    })
+  }
 
  
 

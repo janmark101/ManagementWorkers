@@ -30,6 +30,9 @@ export class DayComponent implements OnInit {
   month : any;
   teamId : any;
 
+  statuses = ['Not started', 'In progress', 'Finished'];
+  selectedStatus :String | any;
+
   constructor(
     private dialogRef: MatDialogRef<DayComponent>,
     private dialog: MatDialog,
@@ -47,7 +50,8 @@ export class DayComponent implements OnInit {
         
       return itemDate.getDate() === this.day; 
     });
-
+    console.log(this.tasks);
+    
   }
 
     
@@ -90,7 +94,7 @@ export class DayComponent implements OnInit {
 
   
     onCancel(){
-      this.dialogRef.close();
+      this.dialogRef.close('confirm');
     }
 
     EditTaskPopup(taskID:number){
@@ -104,11 +108,54 @@ export class DayComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe((result:any) => {
         if (result === 'confirm') {
-          console.log('Potwierdzono');
+          location.reload();
         } else if (result === 'cancel') {
-          console.log("nie potwierdzono");
+
           
         }
+      });
+    }
+
+    update(e:any,taskId:number){ 
+      let status : string = e.target.value;
+      let data = {'status' : status};
+      this.Service.changeTaskStatus(this.data.teamID,data,taskId).subscribe((data:any) => {
+        
+      },(error:any)=>{
+        console.error(error);
+    
+      });
+    } 
+
+
+    changeStatus(status:string,taskId:number){
+
+      let data = {"status" : status};
+      console.log(data);
+      
+      
+    }
+  
+    reportError(){
+  
+      let data = {"error" : "error jakiks tam"};
+  
+      this.Service.reportError(this.data.teamID,this.data.taskID,data).subscribe((data:any) => {
+        console.log(data);
+        
+      },(error:any)=>{
+        console.error(error);
+    
+      });
+    }
+  
+    clearError(){
+      this.Service.clearError(this.data.teamID,this.data.taskID).subscribe((data:any) => {
+        console.log(data);
+        
+      },(error:any)=>{
+        console.error(error);
+    
       });
     }
 }
