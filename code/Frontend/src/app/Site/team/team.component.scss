@@ -36,6 +36,7 @@
 	padding-bottom:5%;	
 	padding-left:1.5%;
 	padding-top:1%;	
+	max-height: 38vw;
 }
 
 .button-container{
@@ -44,35 +45,43 @@
     
 }
 
-.employee_list_container{
+
+
+.scroll{
 	width:100%;
+	Overflow-y:scroll;
+  }
+
+.employee_list_container {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
+	margin-left: 15%;
+	width: 70%; 
+	height:auto;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	border-bottom: 1px solid #667DB8;
+	margin-bottom:2%;
+	height:2vw;
+	
+  }
 
-.employee_list {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    list-style: none;
-    padding-top: 8%;
-    margin: 0;
-    width: 100%;
-}
-.employee_list li {
-
-	display:flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 1.3vw;
-
-
-}
 .icon{
 	transition: transform 0.3s;
 }
 
+.name-list{
+	padding-top: 7%;
+}
+
+.employee_list{	
+	flex-flow: row;	
+	list-style: none;  
+	padding-top: 5%;
+	padding-bottom: 1%;
+	align-items: center;  
+	margin-right: 5%;
+	height: 100%;
+}
 .teamName{
 	color:white;
 	font-size: 2vw;
@@ -118,13 +127,19 @@
     border:1px solid #667DB8;
 
   }
-.label{
+  .label{
+	
 	color:white;
+  margin-right: 5%;
+  font-size: 1.1vw;
 }
 
 .checkbox{
 	accent-color:#667DB8;
 	margin-right:5%;
+	height:1.1vw;
+	width:1.1vw;
+	
 }
 
 .workers_list {
@@ -134,10 +149,11 @@
 	background-color: rgb(13,17,23);
 	padding-top: 3%;
 	border-radius: 8px;	
-	height: auto;
+	max-height: 41vw;
 	width: 20%;
 	min-width: 150px;
 	min-height: 190px;
+	
 }
 h1 {
 	

@@ -12,16 +12,20 @@
                 <p class="button-name">Delete Team</p>
             </div>
         </div>
-        <div class="team-info">
-            
-
-            
-            <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
-                <ul class="employee_list"> 
-                    <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
-                    <button class= "button-delete" (click)="removeUser(user.id)">remove user</button>
-                </ul>
+        <div class="team-info"> 
+            <h1 class="teamName">{{teamName}}</h1> 
+            <div class="scroll">           
+                <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
+                    <div class="employee_list"> 
+                        <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
+                    </div>
+                    <div>
+                        <fa-icon class="deleteIcon" [icon]="deleteUser" (click)="removeUser(user.id)"> </fa-icon>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+

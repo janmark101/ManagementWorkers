@@ -12,7 +12,7 @@
         </div>
 
         <div class="workers_list" *ngIf="isManager">
-            <h1 class="teamName"> Nazwa Druzyny </h1>
+            <h1 class="teamName"> {{teamName}}</h1>
             <!-- <button class="button" (click)="showUniqueCode()">Unique code</button> -->
             <div class="button-container2">
                 <div style="display:flex; flex-direction: column;align-items: center;">            
@@ -21,17 +21,23 @@
                 </div>
                 <div style="display:flex; flex-direction: column;align-items: center;">            
                     <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']" style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
-                    <p style="color:white;font-size: smaller;padding-top: 5px;">Edit Team</p>
+                    <p style="color:white;font-size: smaller;padding-top: 5px;">Settings</p>
                 </div>
             </div>
-            <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
-                <ul class="employee_list">
-                    <li>
+            <div class="scroll">
+            
+                <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
+                    <div class="employee_list"> 
+                        
                         <input class="checkbox" type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"
-                            (change)="checkSelectedUser(i)">
+                        (change)="checkSelectedUser(i)">
+                    </div>
+                    <div class="name-list">
+                        
                         <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
-                    </li>
-                </ul>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

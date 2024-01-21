@@ -12,6 +12,7 @@ import { faBarcode } from '@fortawesome/free-solid-svg-icons';
 import { faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faUserXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-team-optionss',
@@ -21,6 +22,7 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 export class TeamOptionssComponent implements OnInit{
 
   //codeIcon = faBarcode 
+  deleteUser = faUserXmark
   codeIcon = faQrcode
   backIcon = faAngleLeft
   deleteIcon = faTrashCan
@@ -28,6 +30,7 @@ export class TeamOptionssComponent implements OnInit{
   isManager : boolean = false;
   TeamUsers : any = [];
 
+  teamName : String = ''
 
   constructor(private route:ActivatedRoute,private Site:SiteService,private router: Router,private confirmBoxEvokeService: ConfirmBoxEvokeService,private dialog: MatDialog){}
 
@@ -40,6 +43,13 @@ export class TeamOptionssComponent implements OnInit{
     },(error:any) =>{
       console.log(error);
     });
+
+    this.Site.getTeamName(this.teamId).pipe(take(1)).subscribe((data:any)=>{
+      this.teamName = data.name
+    },(error:any)=>{
+      console.error(error);
+      
+    })
   }
 
 
