@@ -18,6 +18,8 @@ export class TeamComponent implements OnInit{
   now = new Date();
   dateInformation : any = {'currentMonthDays':0,'currentMonth' : "",'currentYear':0,'currentDay':0};
 
+  teamName : String = ''
+
   plus = faSquarePlus;
   gearIcon = faGears 
   TeamTasks : any = [];
@@ -34,6 +36,13 @@ export class TeamComponent implements OnInit{
 
   ngOnInit(): void {
     this.teamId = this.route.snapshot.params['id'];
+
+    this.Site.getTeamName(this.teamId).pipe(take(1)).subscribe((data:any)=>{
+      this.teamName = data.name
+    },(error:any)=>{
+      console.error(error);
+      
+    })
 
     this.Site.getUsersForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
       this.isManager = data.manager;
@@ -144,7 +153,7 @@ export class TeamComponent implements OnInit{
 
   DisplayDay(day:number){
     const dialogRef = this.dialog.open(DayComponent, {
-      width: '700px',
+      width: '1200px',
       data: {currentMonthTasks: this.currentMonthTasks,
       day: day,
       month: this.dateInformation.currentMonth,
@@ -163,7 +172,8 @@ export class TeamComponent implements OnInit{
   }
   AddTaskPopup(){
     const dialogRef = this.dialog.open(TaskComponent, {
-      width: '700px',
+      width: '1000px',
+      height:'1000px',
       data:{
         team_id:this.teamId,
         userList:this.TeamUsers

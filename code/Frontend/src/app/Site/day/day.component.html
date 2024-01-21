@@ -18,12 +18,14 @@
           <div class="task-info">
             <div class="task-name">{{ task.name }}</div>
             <div class="task-description">{{ task.description }}</div>
-            <select (change)="update($event,task.id)"> 
+            <div>
+            <select class="select" (change)="update($event,task.id)"> 
               <option value="default">{{task.status}}</option> 
               <option *ngFor="let status of statuses" [value]="status"> 
                   {{status}} 
               </option> 
-          </select> 
+          </select>
+        </div> 
             <div class="CRUD">             
               <fa-icon [icon]="editicon" size="xl" style="cursor: pointer;" (click)="EditTaskPopup(task.id)"></fa-icon>
                 <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete('expense',task.id)"></fa-icon>

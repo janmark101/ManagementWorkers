@@ -37,6 +37,13 @@ class TeamsView(APIView):
             return Response({"message" : 'Team created!',"unique_code" : unique_code},status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
+
+class TeamNameView(TeamsView):
+    permission_classes=[CustomPersmissions]
+
+    def get(self,request,pk,format=None):
+        team = get_object_or_404(Team,pk=pk)
+        return Response({"name" : team.name},status=status.HTTP_200_OK)
     
 class TasksForTeamView(APIView):
     permission_classes=[CustomPersmissions]

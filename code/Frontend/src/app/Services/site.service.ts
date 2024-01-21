@@ -50,6 +50,16 @@ export class SiteService {
     return this.http.post(`${this.api_url}teams/join/`,data,{headers})
   }
 
+  getTeamName(id:number){
+    let user = this.Auth.getUserFromLocalStorage();
+    console.log(user.token);
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.get(`${this.api_url}teams/${id}/name/`,{headers})
+  }
+
   getTaskForTeam(id:number){
     let user = this.Auth.getUserFromLocalStorage();
     console.log(user.token);

@@ -12,6 +12,7 @@ import {
   
 } from '@costlydeveloper/ngx-awesome-popup';
 import { EditTaskComponent } from '../edit-task/edit-task.component';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-day',
@@ -29,6 +30,8 @@ export class DayComponent implements OnInit {
   taskId:any;
   month : any;
   teamId : any;
+
+
 
   statuses = ['Not started', 'In progress', 'Finished'];
   selectedStatus :String | any;
@@ -51,7 +54,9 @@ export class DayComponent implements OnInit {
       return itemDate.getDate() === this.day; 
     });
     console.log(this.tasks);
-    
+
+
+
   }
 
     
