@@ -173,6 +173,9 @@ class TeamObjectView(APIView):
             return Response({'message' : 'Manager can not leave the team!'},status=status.HTTP_400_BAD_REQUEST)
         if request.user in team.workers.all():
             team.workers.remove(request.user)
+            tasks = Task.objects.filter(Q(team_id=team) & Q(workers_id__id=request.user.id))
+            for task in tasks:
+                task.workers_id.remove(request.user)
             return Response({'message' : 'You have left the team.'},status=status.HTTP_200_OK)
         return Response({'message' : 'You are not in this team!'},status=status.HTTP_400_BAD_REQUEST)
     
@@ -192,6 +195,9 @@ class RemoveUserFromTeamView(APIView):
         user = get_object_or_404(User,pk=id)
         if user in team.workers.all():
             team.workers.remove(user)
+            tasks = Task.objects.filter(Q(team_id=team) & Q(workers_id__id=user.id))
+            for task in tasks:
+                task.workers_id.remove(user)
             return Response({'message' : 'User removed from team.'},status=status.HTTP_200_OK)
         return Response({'message' : 'User is not in team!'},status=status.HTTP_400_BAD_REQUEST)
     

@@ -49,7 +49,6 @@ export class HomeComponent implements OnInit{
 
   Logout(){
     this.Auth.logout().subscribe((data:any) =>{
-      console.log(data);
       localStorage.removeItem('user');
       delay(1500);
       this.router.navigate(['']).then(() => {

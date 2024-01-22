@@ -1,17 +1,17 @@
-<div class="container">
-    <h1 style="text-align: center;">Join team</h1>
+<div class="window">
+    <h1 style="text-align: center; color:black;font-weight  :bold;">Join team</h1>
     <form class = "form-container"(ngSubmit)="onSubmit(form)" #form="ngForm">
         
-      <div class="mb-3">
+      <div class="div">
         <label for="Title" class="form-label">Unique team code:</label>
         <input type="text" class="form-control" id="Title" ngModel name="unique_code">
       </div>
-      <p style="text-align: center;">{{message}}  </p>
-      <div class="button-container" style="margin-top: 15%;" *ngIf="!success">
+      <p style="text-align: center;margin:0;font-size:20px;">{{message}}  </p>
+      <div class="button-container" style="margin-top: 8%;" *ngIf="!success">
         <button class="button" type="submit">Join</button>
         <button class="button" type="button"(click)="onCancel()">Cancel</button>
       </div>
-      <div class="button-container" style="margin-top: 15%;"  *ngIf="success">
+      <div class="button-container" style="margin-top: 8%;"  *ngIf="success">
         <button class="button" type="button"(click)="onClose()">OK</button>
       </div>
     </form>

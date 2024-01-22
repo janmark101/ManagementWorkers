@@ -17,8 +17,7 @@ export class VerifyAccountComponent implements OnInit{
   message = '';
 
   moveToNextInput(index: number): void {
-    console.log(index);
-    console.log(this.activationCode)
+
     if (this.activationCode[index - 1].length === 1) {
       if (index < this.activationCode.length) {
         const nextInput = document.getElementById(`activation-code-${index + 1}`) as HTMLInputElement;
@@ -34,7 +33,6 @@ export class VerifyAccountComponent implements OnInit{
     const data = {'verify_code' : this.activationCode.join('')}
 
     this.Auth.verifyAccount(data).subscribe((data:any) =>{
-      console.log(data);
       const user = this.Auth.getUserFromLocalStorage();
       user.verified = true
       localStorage.setItem('user',JSON.stringify(user));

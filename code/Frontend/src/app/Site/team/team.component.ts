@@ -178,7 +178,6 @@ export class TeamComponent implements OnInit{
       const dayOfMonth = itemDate.getDate();
 
       
-      console.log(this.dateInformation.currentMonth);
       if ((itemDate.getMonth() + 1 === this.currentMonthNumber) && (itemDate.getFullYear() == this.dateInformation.currentYear)){
         this.TaskCounterMap.set(dayOfMonth, this.TaskCounterMap.get(dayOfMonth)! + 1);
       }

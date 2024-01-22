@@ -6,14 +6,14 @@
     <div class="container">
         <div class="calendar-container">
             <div>
-                <h1 style="font-size: 5vh;">{{teamName}}</h1>
+                <h1 style="font-size: 3vw;">{{teamName}}</h1>
             </div>
             <div style="display: flex; justify-content: space-between;width: 20%;align-items: center;">
                 <fa-icon [icon]="backIcon" (click)="prevMonth()" style="cursor: pointer;color: white;" size="xl"></fa-icon>
-                <h1 style="padding-top: 6%;">{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
+                <h1 style="padding-top: 6%;font-size: 1vw;">{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
                 <fa-icon [icon]="nextIcon" (click)="nextMonth()" style="cursor: pointer;color: white;" size="xl"></fa-icon>
             </div>
-            <div class="iconBox"><fa-icon class="info" [icon]="info" matTooltip = "The colors correspond  to the number of tasks to be performed" 
+            <div class="iconBox"><fa-icon class="info" [icon]="info" matTooltip = "The colors correspond to the number of tasks to be performed:&#10;1 task: green flag&#10;2 tasks: orange flag&#10;3 or more tasks: red flag&#10;"
                 [matTooltipClass]="'custom-tooltip'"> </fa-icon></div>
                 
 
@@ -25,10 +25,9 @@
                     <fa-icon class="tasks" [icon]="tasks" *ngIf="TaskCounterMap.get(i+1) != 0"
                             [ngStyle]="{
                                 'color':    
-                                            TaskCounterMap.get(i+1) === 1 ? 'rgb(31, 89, 47)' : 
-                                            TaskCounterMap.get(i+1) === 2 ? 'rgb(145, 86, 38)' : 
-                                            'rgb(117, 33, 32)'
-                            }">
+                                TaskCounterMap.get(i+1) === 1 ? 'rgb(31, 89, 47)' : 
+                                TaskCounterMap.get(i+1) === 2 ? 'rgb(145, 86, 38)' : 
+                                'rgb(117, 33, 32)'}">
                     </fa-icon>
                 </div>
             </ul>

@@ -13,12 +13,11 @@ class Team(models.Model):
     
     
 class Task(models.Model):
-    name=models.CharField(max_length=50,null=False,blank=False)
+    name=models.CharField(max_length=500,null=False,blank=False)
     description = models.CharField(max_length=500,null=False,blank=False)
     team_id = models.ForeignKey(Team,null=False,blank=False,on_delete=models.CASCADE)
     workers_id = models.ManyToManyField(User,blank=True)
-    status = models.CharField(max_length=20,default="Not started")
-    error = models.CharField(max_length=500,null=True,blank=True)
+    status = models.CharField(max_length=20,default="Not started")   
     date = models.DateTimeField(null=False,blank=False)
     
     
