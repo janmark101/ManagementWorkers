@@ -2,11 +2,23 @@
     <div class="container">
         <div class="calendar-container">
             <h1>{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
+            <div class="iconBox"><fa-icon class="info" [icon]="info" matTooltip = "The colors correspond  to the number of tasks to be performed" 
+                [matTooltipClass]="'custom-tooltip'"> </fa-icon></div>
+                
+           
             <ul>
                 <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of dateInformation.currentMonthDays;let i = index"
                     [ngClass]="{'today': i === dateInformation.currentDay-1}">
-                    <time>{{i+1}}</time>
-                    <p *ngIf="TaskCounterMap.get(i+1)!=0">Tasks to do:{{TaskCounterMap.get(i+1)}}</p>
+                    <time class="time">{{i+1}}</time>
+
+                    <fa-icon class="tasks" [icon]="tasks" 
+                            [ngStyle]="{
+                                'color':    TaskCounterMap.get(i+1) === 0 ? 'white' : 
+                                            TaskCounterMap.get(i+1) === 1 ? 'rgb(31, 89, 47)' : 
+                                            TaskCounterMap.get(i+1) === 2 ? 'rgb(145, 86, 38)' : 
+                                            'rgb(117, 33, 32)'
+                            }">
+                    </fa-icon>
                 </div>
             </ul>
         </div>
@@ -16,11 +28,11 @@
             <!-- <button class="button" (click)="showUniqueCode()">Unique code</button> -->
             <div class="button-container2">
                 <div style="display:flex; flex-direction: column;align-items: center;">            
-                    <fa-icon class="icon" [icon]="plus" style="color:white;font-size: 10vh;"(click)="AddTaskPopup()"style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+                    <fa-icon class="icon" [icon]="plus"(click)="AddTaskPopup()"></fa-icon>
                 <p style="color:white;font-size: smaller;padding-top:5px;">Add task</p>
                 </div>
                 <div style="display:flex; flex-direction: column;align-items: center;">            
-                    <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']" style="color:white; font-size: 5vw; cursor: pointer;"></fa-icon>
+                    <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']"></fa-icon>
                     <p style="color:white;font-size: smaller;padding-top: 5px;">Settings</p>
                 </div>
             </div>

@@ -15,7 +15,9 @@ export class JoinTeamComponent {
 
   constructor(
     private dialogRef: MatDialogRef<JoinTeamComponent>,
-    @Inject(MAT_DIALOG_DATA) private Service : SiteService
+    
+    @Inject(MAT_DIALOG_DATA) private data:any, private Service : SiteService,
+    
   ) {}
 
     onSubmit(form:NgForm){
@@ -23,12 +25,14 @@ export class JoinTeamComponent {
         "unique_code" : form.value.unique_code,
       }
       
-
+      console.log(data)
+      
       this.Service.joinTeam(data).subscribe((data:any) =>{
         console.log(data);
         this.message = data.message;
         this.success = true;
       },(error:any)=>{
+        console.error(error);
         this.success = false;
         this.message = "Something went wrong!";
       });

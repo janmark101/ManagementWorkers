@@ -39,12 +39,13 @@
   margin-left:1%; 
   color:white; 
   font-size:2vw;
+  transition: transform 0.3s;
 
 }
 .icon:hover {
 
   color: #667DB8;
-  transform: scale(1.02);
+  transform: scale(1.07);
 }
 
 .buttons-box {
@@ -80,6 +81,8 @@
   height: 80%;
   
 }
+
+
 
 .scroll{
   width:100%;
