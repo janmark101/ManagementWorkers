@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { SiteService } from 'src/app/Services/site.service';
@@ -8,18 +8,25 @@ import { TaskComponent } from '../task/task.component';
 import { UniqueCodeComponent } from '../unique-code/unique-code.component';
 import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
+  
   selector: 'app-team',
   templateUrl: './team.component.html',
-  styleUrls: ['./team.component.scss']
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./team.component.scss'
+]
 })
 export class TeamComponent implements OnInit{
   now = new Date();
   dateInformation : any = {'currentMonthDays':0,'currentMonth' : "",'currentYear':0,'currentDay':0};
 
   teamName : String = ''
-
+  info = faCircleInfo
+  tasks = faBookmark
   plus = faSquarePlus;
   gearIcon = faGears 
   TeamTasks : any = [];

@@ -22,6 +22,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
   ConfirmBoxConfigModule,
@@ -53,6 +54,7 @@ import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.compon
     TeamOptionssComponent,
   ],
   imports: [
+    MatTooltipModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
