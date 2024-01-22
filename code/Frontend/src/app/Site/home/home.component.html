@@ -4,17 +4,17 @@
   
     <div class="buttons">
         <div class="buttons-container">
-            <div class="button-create" (click)="CreateTeam()">
-                <fa-icon [icon]="join" style="color:white;font-size: 10vh;">
-                    
-                </fa-icon>
+            <div class="button-create" style="display:flex; flex-direction: column; justify-content: center;" (click)="CreateTeam()">
+                <fa-icon [icon]="join" style="color:white;font-size: 10vh;"></fa-icon>
+                <p style="color:white;font-size: smaller;padding-top:5px;">Create Team</p>   
+                
       
             </div>
 
-            <div class="button-create" (click)="JoinTeam()">
-                <fa-icon [icon]="plus" style="color:white;font-size: 10vh;">
-                    
-                </fa-icon>
+            <div class="button-create" style="display:flex; flex-direction: column; justify-content: center;" (click)="JoinTeam()">
+                <fa-icon [icon]="plus" style="color:white;font-size: 10vh;"></fa-icon>
+                <p style="color:white;font-size: smaller;padding-top:5px;">Join Team</p>
+               
             </div>
         </div>
 
