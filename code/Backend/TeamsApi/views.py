@@ -210,30 +210,5 @@ class ChangeTaskStatusView(APIView):
             return Response({'message' : 'Status changed.'},status=status.HTTP_200_OK) 
         return Response (status=status.HTTP_403_FORBIDDEN)
     
-class ReportErrorView(APIView):
-    permission_classes = [CustomPersmissions]
-    
-    def post(self,request,pk,id):
-        team = get_object_or_404(Team,pk=pk)
-        task = get_object_or_404(Task,pk=id)
-        if request.user == team.manager or (request.user in team.workers.all() and request.user in task.workers_id.all()):
-            task.error = request.data.get('error')
-            task.save()
-            return Response({'message' : 'Error changed.'},status=status.HTTP_200_OK) 
-        return Response (status=status.HTTP_403_FORBIDDEN)
-
-
-class ClearErrorView(APIView):
-    permission_classes = [CustomPersmissions]
-    
-    def post(self,request,pk,id):
-        team = get_object_or_404(Team,pk=pk)
-        task = get_object_or_404(Task,pk=id)  
-        if request.user == team.manager or (request.user in team.workers.all() and request.user in task.workers_id.all()):      
-            task.error = ''
-            task.save()
-            return Response({'message' : 'Cleared error.'},status=status.HTTP_200_OK) 
-        return Response (status=status.HTTP_403_FORBIDDEN)
-            
 
         

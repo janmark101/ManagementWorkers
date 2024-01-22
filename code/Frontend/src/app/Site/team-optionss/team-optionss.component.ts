@@ -58,7 +58,6 @@ export class TeamOptionssComponent implements OnInit{
     .subscribe(resp => {
   
       if(resp.success === true){
-      
           this.Site.deleteTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
             this.router.navigate(['/home'])
           },(error:any) =>{

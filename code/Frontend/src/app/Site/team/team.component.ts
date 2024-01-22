@@ -11,7 +11,16 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  ConfirmBoxInitializer,
+  DialogLayoutDisplay,
+  DisappearanceAnimation,
+  AppearanceAnimation,
+  ConfirmBoxEvokeService,
+  
+} from '@costlydeveloper/ngx-awesome-popup';
+
 
 @Component({
   
@@ -26,11 +35,14 @@ export class TeamComponent implements OnInit{
   dateInformation : any = {'currentMonthDays':0,'currentMonth' : "",'currentYear':0,'currentDay':0};
 
   backIcon = faAngleLeft
+  nextIcon = faAngleRight
+
   teamName : String = ''
   info = faCircleInfo
   tasks = faBookmark
   plus = faSquarePlus;
   gearIcon = faGears 
+
   TeamTasks : any = [];
   TeamUsers : any = [];
   currentMonthTasks : any = [];
@@ -39,12 +51,20 @@ export class TeamComponent implements OnInit{
   teamId : number | any;
   monthValuesArray : any;
   currentMonthNumber : any;
+
+  month : any;
+  year : any;
+
   constructor(private Site:SiteService,private route:ActivatedRoute,
     private dialog: MatDialog,
-    private router: Router){};
+    private router: Router,
+    private confirmBoxEvokeService: ConfirmBoxEvokeService,){};
 
   ngOnInit(): void {
     this.teamId = this.route.snapshot.params['id'];
+
+    this.month = this.now.getMonth();
+    this.year = this.now.getFullYear();
 
     this.Site.getTeamName(this.teamId).pipe(take(1)).subscribe((data:any)=>{
       this.teamName = data.name
@@ -60,17 +80,19 @@ export class TeamComponent implements OnInit{
       console.log(error);
     });
 
-    this.dateInformation.currentMonthDays=this.monthDaysMap.get(this.now.getMonth()); 
-    this.dateInformation.currentYear=this.now.getFullYear();
-    this.dateInformation.currentMonth=this.monthDaysMap2.get(this.now.getMonth());
+    this.dateInformation.currentMonthDays=this.monthDaysMap.get(this.month); 
+    this.dateInformation.currentYear=this.year;
+    this.dateInformation.currentMonth=this.monthDaysMap2.get(this.month);
     this.dateInformation.currentDay=this.now.getDate();
     this.monthValuesArray = Array.from(this.monthDaysMap2.values());
+
     this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth)+1; 
 
     this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data:any) =>{
       this.TeamTasks = data;
       this.Tasks = data;
       this.TaskCounter();
+
       
     },(error:any) =>{
     });
@@ -115,45 +137,49 @@ export class TeamComponent implements OnInit{
   ]);
   
   TaskCounterMap: Map<number, number> = new Map([
-    [1, 0], // Assuming a non-leap year for simplicity
+    [1, 0], 
     [2, 0],
     [3, 0],
     [4, 0],
     [5, 0],
-    [6, 0], // Changed from "July"
-    [7, 0], // Changed from "August"
-    [8, 0], // Changed from "September"
-    [9, 0], // Changed from "October"
-    [10, 0], // Changed from "November"
-    [11, 0], // Changed from "December"
-    [12, 0], // Changed from "January"
-    [13, 0], // Changed from "February"
-    [14, 0], // Changed from "March"
-    [15, 0], // Changed from "April"
-    [16, 0], // Changed from "May"
-    [17, 0], // Changed from "June"
-    [18, 0], // Changed from "July"
-    [19, 0], // Changed from "August"
-    [20, 0], // Changed from "September"
-    [21, 0], // Changed from "October"
-    [22, 0], // Changed from "November"
-    [23, 0], // Changed from "December"
-    [24, 0], // Changed from "January"
-    [25, 0], // Changed from "February"
-    [26, 0], // Changed from "March"
-    [27, 0], // Changed from "April"
-    [28, 0], // Changed from "May"
-    [29, 0], // Changed from "June"
-    [30, 0], // Changed from "July"
-    [31, 0], // Changed from "August"
+    [6, 0], 
+    [7, 0], 
+    [8, 0], 
+    [9, 0], 
+    [10, 0],
+    [11, 0],
+    [12, 0],
+    [13, 0],
+    [14, 0],
+    [15, 0],
+    [16, 0],
+    [17, 0],
+    [18, 0],
+    [19, 0],
+    [20, 0],
+    [21, 0],
+    [21, 0],
+    [21, 0],
+    [22, 0], 
+    [23, 0], 
+    [24, 0],
+    [25, 0], 
+    [26, 0], 
+    [27, 0], 
+    [28, 0], 
+    [29, 0], 
+    [30, 0], 
+    [31, 0], 
   ]);
   
   TaskCounter() {
     this.currentMonthTasks = this.TeamTasks.filter((item:any) => {
       const itemDate = new Date(item.date);
       const dayOfMonth = itemDate.getDate();
+
+      
       console.log(this.dateInformation.currentMonth);
-      if (itemDate.getMonth() + 1 === this.currentMonthNumber){
+      if ((itemDate.getMonth() + 1 === this.currentMonthNumber) && (itemDate.getFullYear() == this.dateInformation.currentYear)){
         this.TaskCounterMap.set(dayOfMonth, this.TaskCounterMap.get(dayOfMonth)! + 1);
       }
       return itemDate.getMonth() + 1 === this.currentMonthNumber; 
@@ -166,15 +192,17 @@ export class TeamComponent implements OnInit{
       data: {currentMonthTasks: this.currentMonthTasks,
       day: day,
       month: this.dateInformation.currentMonth,
-      teamID: this.teamId}
+      teamID: this.teamId,
+      isManager: this.isManager,
+    }
       
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result === 'confirm') {
-        location.reload()
+
       } else if (result === 'cancel') {
-        console.log("nie potwierdzono");
+
         
       }
     });
@@ -209,7 +237,7 @@ export class TeamComponent implements OnInit{
     this.resetMap();
     if (selectedUser){
       this.TeamTasks = this.Tasks.filter((task: any) => task.workers_id.includes(selectedUser.id));
-      console.log(this.TeamTasks);
+
     }else {
       this.TeamTasks = this.Tasks;
     }
@@ -220,52 +248,128 @@ export class TeamComponent implements OnInit{
   
  resetMap(){
   this.TaskCounterMap = new Map([
-    [1, 0], // Assuming a non-leap year for simplicity
+    [1, 0], 
     [2, 0],
     [3, 0],
     [4, 0],
     [5, 0],
-    [6, 0], // Changed from "July"
-    [7, 0], // Changed from "August"
-    [8, 0], // Changed from "September"
-    [9, 0], // Changed from "October"
-    [10, 0], // Changed from "November"
-    [11, 0], // Changed from "December"
-    [12, 0], // Changed from "January"
-    [13, 0], // Changed from "February"
-    [14, 0], // Changed from "March"
-    [15, 0], // Changed from "April"
-    [16, 0], // Changed from "May"
-    [17, 0], // Changed from "June"
-    [18, 0], // Changed from "July"
-    [19, 0], // Changed from "August"
-    [20, 0], // Changed from "September"
-    [21, 0], // Changed from "October"
-    [22, 0], // Changed from "November"
-    [23, 0], // Changed from "December"
-    [24, 0], // Changed from "January"
-    [25, 0], // Changed from "February"
-    [26, 0], // Changed from "March"
-    [27, 0], // Changed from "April"
-    [28, 0], // Changed from "May"
-    [29, 0], // Changed from "June"
-    [30, 0], // Changed from "July"
-    [31, 0], // Changed from "August"
+    [6, 0], 
+    [7, 0], 
+    [8, 0], 
+    [9, 0], 
+    [10, 0],
+    [11, 0],
+    [12, 0],
+    [13, 0],
+    [14, 0],
+    [15, 0],
+    [16, 0],
+    [17, 0],
+    [18, 0],
+    [19, 0],
+    [20, 0],
+    [21, 0],
+    [22, 0],
+    [23, 0],
+    [24, 0],
+    [25, 0],
+    [26, 0],
+    [27, 0],
+    [28, 0],
+    [29, 0],
+    [30, 0],
+    [31, 0],
   ]);
  }
 
 
-  leaveTeam(){
-    this.Site.leaveTeam(this.teamId).subscribe((data:any)=>{
-      console.log(data);
-      
-    },(eror:any)=>{
-      console.error(eror);
-      
-    })
+
+
+  openConfirmBox() {
+    const newConfirmBox = new ConfirmBoxInitializer();
+
+    newConfirmBox.setTitle('Confirm leave team');
+    newConfirmBox.setMessage('');
+
+
+    newConfirmBox.setConfig({
+    layoutType: DialogLayoutDisplay.DANGER, 
+    animationIn: AppearanceAnimation.BOUNCE_IN, 
+    animationOut: DisappearanceAnimation.FLIP_OUT, 
+    });
+    newConfirmBox.setButtonLabels('Leave', 'Cancel');
+
+    
+    newConfirmBox.openConfirmBox$()
+  
   }
+  
+  leaveTeam(){
+      this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to leave team?', 'Confirm', 'Decline')
+      .subscribe(resp => {
+        if(resp.success === true){
+              this.Site.leaveTeam(this.teamId).subscribe((data:any)=>{
+                this.router.navigate(['/home'])
+                
+              },(eror:any)=>{
+                console.error(eror);
+              });
+            }
+        });
+    }
 
  
+  nextMonth(){
+    if (this.month == 11){
+      this.month = 0;
+      this.year += 1;
+    }
+    else{
+      this.month = this.month + 1;
+    }
 
+
+    this.dateInformation.currentMonthDays = this.monthDaysMap.get(this.month);
+    this.dateInformation.currentMonth = this.monthDaysMap2.get(this.month);
+    this.dateInformation.currentYear=this.year;
+    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth)+1; 
+
+    if (this.month == this.now.getMonth()){
+      this.dateInformation.currentDay = this.now.getDate();
+    }
+    else{
+      this.dateInformation.currentDay=null;
+    }
+
+    this.resetMap();
+    this.TaskCounter();
+
+  }
+
+  prevMonth(){
+    if (this.month == 0){
+      this.month = 11;
+      this.year -= 1;
+    }
+    else{
+      this.month = this.month - 1;
+    }
+
+    this.dateInformation.currentMonthDays = this.monthDaysMap.get(this.month);
+    this.dateInformation.currentMonth = this.monthDaysMap2.get(this.month);
+    this.dateInformation.currentYear=this.year;
+    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth)+1; 
+   
+    if (this.month == this.now.getMonth()){
+      this.dateInformation.currentDay = this.now.getDate();
+    }
+    else{
+      this.dateInformation.currentDay=null;
+    }
+
+    this.resetMap();
+    this.TaskCounter();
+
+  }
 
 }

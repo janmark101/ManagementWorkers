@@ -408,107 +408,8 @@ class ChangeTaskStatusView(APITestCase):
         task_2.refresh_from_db()
         self.assertNotEqual('In progres',task_2.status)
         
-class ReportErrorView(APITestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username='test',password='123',email='test@gmail.com')
-        self.user_profile = UserProfile.objects.create(user=self.user,is_verified=True)
-        token = Token.objects.create(user=self.user)
-        self.client = self.client_class(HTTP_AUTHORIZATION=f'Token {token.key}')
+
         
-    @transaction.atomic  
-    def test_post_report_error_manager(self):
-        data = {'error' : 'test error'}
-        team = Team.objects.create(name='test',description='test',manager=self.user,unique_code='123') 
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/reporterror/',data,format='json')
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
-        task_2.refresh_from_db()
-        self.assertEqual('test error',task_2.error)
-        
-    @transaction.atomic  
-    def test_post_report_error_worker_in_team_in_task(self):
-        data = {'error' : 'test error'}
-        user_2 = User.objects.create_user(username='test2',password='123',email='test2@gmail.com')
-        team = Team.objects.create(name='test',description='test',manager=user_2,unique_code='123')
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        team.workers.add(self.user)
-        task_2.workers_id.add(self.user)
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/reporterror/',data,format='json')
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
-        task_2.refresh_from_db()
-        self.assertEqual('test error',task_2.error)
-        
-    @transaction.atomic  
-    def test_post_report_error_worker_not_in_team(self):
-        data = {'error' : 'test error'}
-        user_2 = User.objects.create_user(username='test2',password='123',email='test2@gmail.com')
-        team = Team.objects.create(name='test',description='test',manager=user_2,unique_code='123')
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/reporterror/',data,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-        task_2.refresh_from_db()
-        self.assertNotEqual('test error',task_2.error)
-        
-    @transaction.atomic  
-    def test_post_report_error_worker_in_team_not_in_task(self):
-        data = {'error' : 'test error'}
-        user_2 = User.objects.create_user(username='test2',password='123',email='test2@gmail.com')
-        team = Team.objects.create(name='test',description='test',manager=user_2,unique_code='123')
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        team.workers.add(self.user)
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/reporterror/',data,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-        task_2.refresh_from_db()
-        self.assertNotEqual('test error',task_2.error)
-        
-class ClearErrorView(APITestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username='test',password='123',email='test@gmail.com')
-        self.user_profile = UserProfile.objects.create(user=self.user,is_verified=True)
-        token = Token.objects.create(user=self.user)
-        self.client = self.client_class(HTTP_AUTHORIZATION=f'Token {token.key}')
-        
-    @transaction.atomic  
-    def test_post_clear_error_manager(self):
-        team = Team.objects.create(name='test',description='test',manager=self.user,unique_code='123') 
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/clearerror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
-        task_2.refresh_from_db()
-        self.assertEqual('',task_2.error)
-        
-    @transaction.atomic  
-    def test_post_clear_error_worker_in_team_in_task(self):
-        user_2 = User.objects.create_user(username='test2',password='123',email='test2@gmail.com')
-        team = Team.objects.create(name='test',description='test',manager=user_2,unique_code='123')
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        team.workers.add(self.user)
-        task_2.workers_id.add(self.user)
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/clearerror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
-        task_2.refresh_from_db()
-        self.assertEqual('',task_2.error)
-        
-    @transaction.atomic  
-    def test_post_clear_error_worker_not_in_team(self):
-        user_2 = User.objects.create_user(username='test2',password='123',email='test2@gmail.com')
-        team = Team.objects.create(name='test',description='test',manager=user_2,unique_code='123')
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/clearerror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-        task_2.refresh_from_db()
-        self.assertNotEqual('',task_2.error)
-        
-    @transaction.atomic  
-    def test_post_clear_error_worker_in_team_not_in_task(self):
-        user_2 = User.objects.create_user(username='test2',password='123',email='test2@gmail.com')
-        team = Team.objects.create(name='test',description='test',manager=user_2,unique_code='123')
-        task_2 = Task.objects.create(name='test',description='test',team_id=team,date='2023-11-27T16:00:03Z')
-        team.workers.add(self.user)
-        response = self.client.post(f'/api/teams/{team.id}/task/{task_2.id}/clearerror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-        task_2.refresh_from_db()
-        self.assertNotEqual('',task_2.error)
         
 class TestPermissionsNotLoggedURLS(APITestCase):
     def setUp(self):
@@ -574,13 +475,7 @@ class TestPermissionsNotLoggedURLS(APITestCase):
         response = self.client.post('/api/teams/1/task/1/changestatus/',None,format='json')
         self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
     
-    def test_post_teams_teamid_task_taskid_reporterror_url(self):
-        response = self.client.post('/api/teams/1/task/1/reporterror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-        
-    def test_post_teams_teamid_task_taskid_reporterror_url(self):
-        response = self.client.post('/api/teams/1/task/1/reporterror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
+
         
         
 class TestPermissionsNotVerifiedURLS(APITestCase):
@@ -650,10 +545,3 @@ class TestPermissionsNotVerifiedURLS(APITestCase):
         response = self.client.post('/api/teams/1/task/1/changestatus/',None,format='json')
         self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
     
-    def test_post_teams_teamid_task_taskid_reporterror_url(self):
-        response = self.client.post('/api/teams/1/task/1/reporterror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-        
-    def test_post_teams_teamid_task_taskid_reporterror_url(self):
-        response = self.client.post('/api/teams/1/task/1/reporterror/',None,format='json')
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
