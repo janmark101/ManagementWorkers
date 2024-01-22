@@ -10,7 +10,6 @@ export class AuthService {
   constructor(private http:HttpClient) { }
   api_url = 'http://localhost:8000/auth/'
 
-  private user : any | undefined;
 
   getUserFromLocalStorage() {
     const userString = localStorage.getItem('user');
@@ -27,25 +26,16 @@ export class AuthService {
 
   logout(){
     let user = this.getUserFromLocalStorage();
-    console.log(user.token);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
 
-    console.log(headers);
-    
-
     return this.http.post(`${this.api_url}logout/`,null,{headers})
-  }
-
-  setUser(user:any){
-    this.user = user;
   }
 
   verifyAccount(data:any){
     let user = this.getUserFromLocalStorage();
-    console.log(user.token);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`

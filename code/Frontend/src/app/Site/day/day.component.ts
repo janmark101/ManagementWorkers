@@ -30,7 +30,7 @@ export class DayComponent implements OnInit {
   taskId:any;
   month : any;
   teamId : any;
-
+  isManager : boolean | any;
 
 
   statuses = ['Not started', 'In progress', 'Finished'];
@@ -42,23 +42,39 @@ export class DayComponent implements OnInit {
     private confirmBoxEvokeService: ConfirmBoxEvokeService,
     @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
   ) {}
+
   ngOnInit(): void {
     this.currentMonthTasks=this.data.currentMonthTasks;
     this.day=this.data.day;
     this.month = this.data.month;
     this.teamId = this.data.teamID;
+    this.isManager = this.data.isManager;
 
     this.tasks = this.currentMonthTasks.filter((item:any) => {
       const itemDate = new Date(item.date);
         
       return itemDate.getDate() === this.day; 
     });
-    console.log(this.tasks);
 
+    this.sortListByName();
+    
 
 
   }
 
+  sortListByName() {
+    this.tasks.sort((a:any, b:any) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+  }
     
     openConfirmBox() {
       const newConfirmBox = new ConfirmBoxInitializer();
@@ -78,22 +94,17 @@ export class DayComponent implements OnInit {
       newConfirmBox.openConfirmBox$()
     
     }
-      Delete(text:string, index:number){
+      Delete( index:number){
         this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to delete it?', 'Confirm', 'Decline')
         .subscribe(resp => {
     
           if(resp.success === true){
-          switch(text){
-            case "expense" : {
               this.Service.deleteTask(index,this.teamId).subscribe((data:any) =>{
                 location.reload();
               },(error:any)=>{
                 this.message = "Something went wrong!";
               });
-              break;
-            }
           }
-        }
         });
       }
 
@@ -125,6 +136,8 @@ export class DayComponent implements OnInit {
       let status : string = e.target.value;
       let data = {'status' : status};
       this.Service.changeTaskStatus(this.data.teamID,data,taskId).subscribe((data:any) => {
+        let task = this.tasks.find((task:any) => task.id === taskId);
+        task.status = status;
         
       },(error:any)=>{
         console.error(error);
@@ -133,34 +146,6 @@ export class DayComponent implements OnInit {
     } 
 
 
-    changeStatus(status:string,taskId:number){
-
-      let data = {"status" : status};
-      console.log(data);
-      
-      
-    }
   
-    reportError(){
   
-      let data = {"error" : "error jakiks tam"};
-  
-      this.Service.reportError(this.data.teamID,this.data.taskID,data).subscribe((data:any) => {
-        console.log(data);
-        
-      },(error:any)=>{
-        console.error(error);
-    
-      });
-    }
-  
-    clearError(){
-      this.Service.clearError(this.data.teamID,this.data.taskID).subscribe((data:any) => {
-        console.log(data);
-        
-      },(error:any)=>{
-        console.error(error);
-    
-      });
-    }
 }

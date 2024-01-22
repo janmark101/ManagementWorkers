@@ -34,10 +34,8 @@ export class JoinTeamComponent {
       },(error:any)=>{
         console.error(error);
         this.success = false;
-        this.message = "Something went wrong!";
+        this.message = error.error.message;
       });
-
-      //reload() po dodoaniu teamu
 
     }
 

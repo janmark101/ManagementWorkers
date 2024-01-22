@@ -3,38 +3,45 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: #f4f4f4;
+    background-color: #07090C;
+    color: #667DB8;;
   }
 
   .activation-container {
     text-align: center;
-    background-color: #fff;
+    background-color: rgb(13,17,23);
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   }
 
   .activation-input {
+    color: white;
     width: 50px;
     height: 50px;
     text-align: center;
     font-size: 24px;
     margin: 0 10px;
+    background-color: rgb(22,28,42);
+    border:1px solid  #667DB8;
   }
 
-  .activate-button {
-    margin-top: 6%;
-    background-color: #7b4e34; 
-    color: #fff;
+  .button {
+    margin:10px;
+    padding: 10px 20px;
     border: none;
-    padding: 15px 30px;
-    font-size: 20px;
+    border-radius: 4px;
+    background-color: rgb(22,28,42);
+    color: white;
     cursor: pointer;
-    border-radius: 6px;
+    transition: background-color 0.3s;
+    border:1px solid  #667DB8;
+    font-size:small;
+  }
+  
+  .button:hover {
+    background-color: #667DB8;
+    color: white;
+    border:1px solid #667DB8;
+
   }
 
-  .activate-button:hover{
-    background-color: rgb(250, 238, 209);
-    color: #7b4e34;
-
-  }

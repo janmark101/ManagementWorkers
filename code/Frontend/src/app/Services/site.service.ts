@@ -15,7 +15,6 @@ export class SiteService {
   getUserTeams(){
 
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -30,8 +29,7 @@ export class SiteService {
 
   createTeam(data:any){
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user);
-    
+
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
@@ -41,7 +39,6 @@ export class SiteService {
 
   joinTeam(data:any){
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -52,7 +49,6 @@ export class SiteService {
 
   getTeamName(id:number){
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user.token);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -62,7 +58,6 @@ export class SiteService {
 
   getTaskForTeam(id:number){
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user.token);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -72,7 +67,6 @@ export class SiteService {
 
   addTaskForTeam(id:number, data:any){
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user.token);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -82,7 +76,6 @@ export class SiteService {
 
   getUsersForTeam(id:number){
     let user = this.Auth.getUserFromLocalStorage();
-    console.log(user.token);
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -159,7 +152,7 @@ export class SiteService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.post(`${this.api_url}teams/${teamId}/`,{headers});
+    return this.http.post(`${this.api_url}teams/${teamId}/`,null,{headers});
   }
 
   changeTaskStatus(teamId:number,data:any,taskId:number){
@@ -171,21 +164,5 @@ export class SiteService {
     return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/changestatus/`,data,{headers});
   } 
 
-  reportError(teamId:number,taskId:number,data:any){
-    let user = this.Auth.getUserFromLocalStorage();
 
-    const headers = new HttpHeaders({
-      'Authorization': `Token ${user.token}`
-    });
-    return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/reporterror/`,data,{headers});
-  }
-
-  clearError(teamId:number,taskId:number){
-    let user = this.Auth.getUserFromLocalStorage();
-
-    const headers = new HttpHeaders({
-      'Authorization': `Token ${user.token}`
-    });
-    return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/clearerror/`,{headers});
-  }
 }

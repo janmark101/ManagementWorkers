@@ -41,9 +41,7 @@ export class LoginComponent {
       this.user.verified = data.verified
             
       localStorage.setItem('user',JSON.stringify(this.user));
-
-      this.Auth.setUser(this.user);
-
+      
       this.router.navigate(['/home']);
       
     },(error:any) =>{

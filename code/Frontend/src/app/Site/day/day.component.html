@@ -26,9 +26,9 @@
               </option> 
           </select>
         </div> 
-            <div class="CRUD">             
+            <div class="CRUD" *ngIf="isManager">             
               <fa-icon [icon]="editicon" size="xl" style="cursor: pointer;" (click)="EditTaskPopup(task.id)"></fa-icon>
-                <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete('expense',task.id)"></fa-icon>
+                <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete(task.id)"></fa-icon>
             </div>
         </div>
       </div>

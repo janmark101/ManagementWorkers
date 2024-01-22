@@ -1,15 +1,22 @@
 <div class="body">
     <div style="display:flex; flex-direction: row; justify-content: space-between;padding-bottom: 2%;margin-right:4%;">
         <fa-icon class="backIcon" [icon]="backIcon" [routerLink]="['/home']"> </fa-icon>
-        <button class="button" (click)="leaveTeam()">Leave Team</button>
+        <button class="button" *ngIf="!isManager" (click)="leaveTeam()">Leave Team</button>
     </div>
     <div class="container">
         <div class="calendar-container">
-            <h1>{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
+            <div>
+                <h1 style="font-size: 5vh;">{{teamName}}</h1>
+            </div>
+            <div style="display: flex; justify-content: space-between;width: 20%;align-items: center;">
+                <fa-icon [icon]="backIcon" (click)="prevMonth()" style="cursor: pointer;color: white;" size="xl"></fa-icon>
+                <h1 style="padding-top: 6%;">{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
+                <fa-icon [icon]="nextIcon" (click)="nextMonth()" style="cursor: pointer;color: white;" size="xl"></fa-icon>
+            </div>
             <div class="iconBox"><fa-icon class="info" [icon]="info" matTooltip = "The colors correspond  to the number of tasks to be performed" 
                 [matTooltipClass]="'custom-tooltip'"> </fa-icon></div>
                 
-           
+
             <ul class ="callendar_list">
                 <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of dateInformation.currentMonthDays;let i = index"
                     [ngClass]="{'today': i === dateInformation.currentDay-1}">
@@ -28,8 +35,6 @@
         </div>
 
         <div class="workers_list" *ngIf="isManager">
-            <h1 class="teamName"> {{teamName}}</h1>
-            <!-- <button class="button" (click)="showUniqueCode()">Unique code</button> -->
             <div class="button-container2">
                 <div style="display:flex; flex-direction: column;align-items: center;">            
                     <fa-icon class="icon" [icon]="plus"(click)="AddTaskPopup()"></fa-icon>

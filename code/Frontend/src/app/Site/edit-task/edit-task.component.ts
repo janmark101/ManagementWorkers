@@ -68,6 +68,7 @@ export class EditTaskComponent implements OnInit{
     this.Service.editTask(this.task.id,this.data.teamID,data).subscribe((data:any) =>{
       this.message = data.message;
       this.success = true;
+      
     },(error:any)=>{
       this.message = "Something went wrong!";
       this.success = false;
