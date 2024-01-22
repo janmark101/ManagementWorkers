@@ -11,6 +11,7 @@ import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   
@@ -24,6 +25,7 @@ export class TeamComponent implements OnInit{
   now = new Date();
   dateInformation : any = {'currentMonthDays':0,'currentMonth' : "",'currentYear':0,'currentDay':0};
 
+  backIcon = faAngleLeft
   teamName : String = ''
   info = faCircleInfo
   tasks = faBookmark
