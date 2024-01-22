@@ -25,9 +25,8 @@ export class CreateComponent {
         "description" : form.value.description,
       }
       
-      console.log(data);
+      
       this.Service.createTeam(data).subscribe((data:any) =>{
-        console.log(data);
         this.message = `Team created successfully! Unique code : ${data.unique_code}`;
         this.success = true;
 

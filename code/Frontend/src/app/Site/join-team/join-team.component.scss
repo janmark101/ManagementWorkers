@@ -1,5 +1,5 @@
 
-.container {
+.window {
   width:auto;
   margin: 0 auto;
   padding: 20px;
@@ -18,10 +18,14 @@
   margin-bottom: 10px;
 }
 
-.form-container{
-  
+.form-container{  
   width: 20vw;
-  
+}
+
+.div{  
+  display:flex;
+  flex-direction: column;
+  margin-bottom:15px;
 }
 
 .form-control {
@@ -34,7 +38,6 @@
 }
 
 .form-label {
-  font-weight: bold;
   display: block;
   margin-bottom: 5px;
 }

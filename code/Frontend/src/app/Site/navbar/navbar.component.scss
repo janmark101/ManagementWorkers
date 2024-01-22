@@ -1,22 +1,18 @@
-
-
 .nav-button{
     border-radius: 5px;
-
 }
-
 
 .navbar {
     background-color: #07090C;
     color: white;
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom:15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     min-width: 700px;
     border-bottom: 1px solid #667DB8;
-
   }
   
   .brand {
@@ -25,18 +21,16 @@
   }
 
   .logo {
+    margin-left:2%;
     display: flex;
     align-items: center;
     cursor: pointer
   }
-
-
   
   .logo img {
     height: 50px;
     width: auto;
     margin-right: 25px;
-
   }
   
   .brand span {
@@ -48,8 +42,7 @@
   }
 
   .buttons {
-    display: flex;
-    
+    display: flex;    
   }
   
   .button {

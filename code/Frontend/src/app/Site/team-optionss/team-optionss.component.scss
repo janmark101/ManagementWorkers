@@ -7,7 +7,6 @@
 	content: flex;
 }
 
-
 .button-name{
   margin-top:1%;
   color:white;
@@ -24,12 +23,12 @@
   flex-direction: column;
   align-items: center;
 }
+
 .deleteIcon{
   font-size: 1.3vw;
   color:white; 
 }
 .deleteIcon:hover {
-
   color: #667DB8;
   transform: scale(1.02);
 }
@@ -40,10 +39,9 @@
   color:white; 
   font-size:2vw;
   transition: transform 0.3s;
-
 }
-.icon:hover {
 
+.icon:hover {
   color: #667DB8;
   transform: scale(1.07);
 }
@@ -60,6 +58,8 @@
   margin-top: 2%;
   margin-bottom: 2%;
   border-radius: 15px;
+  min-height: 400px;
+  min-width: 240px;
 }
 .teamName{
 	color:white;
@@ -78,19 +78,17 @@
   margin-top: 2%;
   margin-bottom: 2%;
   border-radius: 15px;
-  height: 80%;
-  
+  height: 80%;  
 }
-
-
 
 .scroll{
   width:100%;
   Overflow-y:auto;
+  min-height: 400px;
 }
 
 .scroll::-webkit-scrollbar {
-  width: 15px; /* Szerokość paska przewijania */
+  width: 15px; 
 }
 
 .scroll::-webkit-scrollbar-track {
@@ -99,34 +97,35 @@
 
 .scroll::-webkit-scrollbar-thumb {
   background-color: rgb(22,28,42);
-  border-radius: 5px; /* Zaokrąglenie narożników paska przewijania */
+  border-radius: 5px;
 }
 
-/* Zwiększ przejrzystość paska przewijania po najechaniu myszą */
 .scroll::-webkit-scrollbar-thumb:hover {
   background-color: #667DB8;
 }
 
 .employee_list_container {
-  display: flex;
-  margin-left: 15%;
-  width: 70%; 
-  padding-top: 1%;
-  padding-bottom: 1%;
-  border-bottom: 1px solid #667DB8;
-  margin-bottom:2%;
-  
-}
+	display: flex;
+	justify-content: space-between;
+	margin-left: 15%;
+	width: 70%; 
+	height:100%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	border-bottom: 1px solid #667DB8;
+	margin-bottom:2%;
+	height:2vw;
+	min-height: 35px;
+  }
 
-.employee_list {
-  
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;   
-  list-style: none;  
-  width: 100%;
-  align-items: center;  
-}
+  .employee_list{	
+    flex-flow: row;	
+    list-style: none;    
+    padding-bottom: 1%;
+    align-items: center;  
+    margin-right: 7%;
+    height: 100%;
+  }
 
 .container {
   column-gap: 5%;  
@@ -148,7 +147,6 @@
 }
 
 .button{
-
   padding: 10px 20px;
   border: none;
   border-radius: 4px;

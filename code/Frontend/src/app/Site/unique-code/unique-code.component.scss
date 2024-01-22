@@ -1,4 +1,4 @@
-.container {
+.window {
     width:auto;
     margin: 0 auto;
     padding: 20px;
@@ -8,17 +8,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    //background-color: rgb(250, 238, 209);
     }
-  
-
-  
 
 .button-container {
     display: flex;
     justify-content: center; 
-    }
-  
+    }  
 
     .button {
       margin:10px;

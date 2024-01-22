@@ -46,12 +46,8 @@ export class RegisterComponent {
             if (error.error.error.password){
               this.error = error.error.error.password
             }
-
-          }
-          
+          }          
         });
-
     }
-
   }
 }

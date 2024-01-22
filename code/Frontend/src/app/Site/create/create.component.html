@@ -1,5 +1,5 @@
-<div class="container">
-    <h1 class="text">Create team</h1>
+<div class="window">
+    <h1 style="text-align: center; color:black;font-weight:bold;">Create team</h1>
     <form class = "form-container"(ngSubmit)="onSubmit(form)" #form="ngForm">
         
       <div class="div">
@@ -10,12 +10,12 @@
         <label for="Title" class="form-label">Description: </label>
         <textarea class="form-control" id="Description"  rows="4" ngModel name="description"></textarea>
       </div>
-      <p style="text-align: center;">{{message}}  </p>
+      <p style="text-align: center;margin:0;font-size:20px;">{{message}}  </p>
       <div class="button-container" style="margin-top: 15%;" *ngIf="!success">
         <button class="button" type="submit">Save</button>
         <button class="button" type="button"(click)="onCancel()">Cancel</button>
       </div>
-      <div class="button-container" style="margin-top: 15%;" *ngIf="success">
+      <div class="button-container" style="margin-top: 8%;" *ngIf="success">
         <button class="button" type="button"(click)="onClose()">OK</button>
       </div>
     </form>

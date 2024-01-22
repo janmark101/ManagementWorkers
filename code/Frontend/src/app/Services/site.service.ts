@@ -8,13 +8,17 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class SiteService {
 
-  constructor(private http:HttpClient,private Auth: AuthService) { }
+  constructor(private http:HttpClient) { }
   api_url = 'http://localhost:8000/api/'
 
+  getUserFromLocalStorage() {
+    const userString = localStorage.getItem('user');
+    return userString ? JSON.parse(userString) : null;
+  }
 
   getUserTeams(){
 
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -28,7 +32,7 @@ export class SiteService {
 
 
   createTeam(data:any){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -38,7 +42,7 @@ export class SiteService {
   }
 
   joinTeam(data:any){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -48,7 +52,7 @@ export class SiteService {
   }
 
   getTeamName(id:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -57,7 +61,7 @@ export class SiteService {
   }
 
   getTaskForTeam(id:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -66,7 +70,7 @@ export class SiteService {
   }
 
   addTaskForTeam(id:number, data:any){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -75,7 +79,7 @@ export class SiteService {
   }
 
   getUsersForTeam(id:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -84,7 +88,7 @@ export class SiteService {
   }
 
   deleteTask(taskId: number,teamId : number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -93,7 +97,7 @@ export class SiteService {
   }
 
   getTask(taskId: number,teamId:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -102,7 +106,7 @@ export class SiteService {
   }
 
   editTask(taskId: number,teamId : number,data:any){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -111,7 +115,7 @@ export class SiteService {
   }
 
   UniqueCode(teamId: number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -120,7 +124,7 @@ export class SiteService {
   }
 
   RegenerateUniqueCode(teamId: number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -129,7 +133,7 @@ export class SiteService {
   }
 
   deleteTeam(teamId: number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -138,7 +142,7 @@ export class SiteService {
   }
 
   removeUserFromTeam(teamId:number,userID:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -147,7 +151,7 @@ export class SiteService {
   }
 
   leaveTeam(teamId:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
@@ -156,7 +160,7 @@ export class SiteService {
   }
 
   changeTaskStatus(teamId:number,data:any,taskId:number){
-    let user = this.Auth.getUserFromLocalStorage();
+    let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`

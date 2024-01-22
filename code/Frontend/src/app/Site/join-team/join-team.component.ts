@@ -25,16 +25,20 @@ export class JoinTeamComponent {
         "unique_code" : form.value.unique_code,
       }
       
-      console.log(data)
+
       
       this.Service.joinTeam(data).subscribe((data:any) =>{
-        console.log(data);
         this.message = data.message;
         this.success = true;
       },(error:any)=>{
         console.error(error);
         this.success = false;
-        this.message = error.error.message;
+        if (error.error.message){
+          this.message = error.error.message;
+        }
+        else{
+          this.message = 'Wrong code. Try again!'
+        }
       });
 
     }
