@@ -10,7 +10,8 @@ from django.db.models import Q
 from Authentication.serializers import UserSerializer
 from itertools import chain
 from django.contrib.auth.models import User
-
+from datetime import timedelta
+from django.utils import timezone
 
 #returns all teams user joined or created
 class TeamsView(APIView):
@@ -74,11 +75,13 @@ class TasksForTeamView(APIView):
 class JoinTeamView(APIView):
     permission_classes=[CustomPersmissions]
     
-    def post(self,request,format=None):
-        unique_code = request.data.get('unique_code')
-        
-        team = get_object_or_404(Team,unique_code=unique_code)
+    def get(self,request,code,format=None):
+        team = get_object_or_404(Team, Q(unique_code=code) | Q(adding_link_code=code))
         user = request.user
+        if team.adding_link_code == code:
+            if not team.code_is_valid():
+                return Response({"error" : f"The code has expired"},status=status.HTTP_400_BAD_REQUEST)
+        
         if user in team.workers.all():
             return Response({"message" : f"Already in team '{team.name}'!"},status=status.HTTP_400_BAD_REQUEST)
         else :
@@ -218,3 +221,18 @@ class ChangeTaskStatusView(APIView):
     
 
         
+class AddingLink(APIView):
+    permission_classes = [CustomPersmissions]
+
+    def get(self,request,pk,format=None):
+        team = get_object_or_404(Team,pk=pk)
+        while True:
+            adding_link_code = get_random_string(16)
+            if not Team.objects.filter(unique_code=adding_link_code).exists():
+                break
+        team.adding_link_code = adding_link_code
+        team.adding_link_code_expiration_time = timezone.now() + timedelta(minutes=10)
+        team.save()
+        link = f"http://127.0.0.1:8000/api/teams/join/{adding_link_code}/"
+        return Response({'link' : link},status=status.HTTP_200_OK) 
+    
