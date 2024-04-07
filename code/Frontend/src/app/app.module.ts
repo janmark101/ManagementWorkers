@@ -35,6 +35,7 @@ import { UniqueCodeComponent } from './Site/unique-code/unique-code.component';
 import { EditTaskComponent } from './Site/edit-task/edit-task.component';
 import { VerifyAccountComponent } from './Site/verify-account/verify-account.component';
 import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.component';
+import { ChatComponent } from './Site/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.compon
     EditTaskComponent,
     VerifyAccountComponent,
     TeamOptionssComponent,
+    ChatComponent,
   ],
   imports: [
     MatTooltipModule,
