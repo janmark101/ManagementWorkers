@@ -91,7 +91,8 @@ REST_FRAMEWORK = {
 
 'DEFAULT_PERMISSION_CLASSES': (
          'rest_framework.permissions.IsAuthenticated',
-         'TeamsApi.permissions.CustomPersmissions'
+         'TeamsApi.permissions.CustomPermissions',
+         'Chat.permissions.CustomPermissions',
     ),
 
 
