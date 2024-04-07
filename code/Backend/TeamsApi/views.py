@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from TeamsApi.permissions import CustomPersmissions
+from TeamsApi.permissions import CustomPermissions
 from . models import Team, Task
 from .serializers import TeamSerializer,TaskSerializer
 from django.utils.crypto import get_random_string
@@ -15,7 +15,7 @@ from django.utils import timezone
 
 #returns all teams user joined or created
 class TeamsView(APIView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
 
     def get(self,request,format=None):
         user = request.user.id
@@ -40,14 +40,14 @@ class TeamsView(APIView):
     
 
 class TeamNameView(TeamsView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
 
     def get(self,request,pk,format=None):
         team = get_object_or_404(Team,pk=pk)
         return Response({"name" : team.name},status=status.HTTP_200_OK)
     
 class TasksForTeamView(APIView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
     
     def get(self,request,id,format=None):
         team = get_object_or_404(Team,pk=id)
@@ -73,7 +73,7 @@ class TasksForTeamView(APIView):
     
     
 class JoinTeamView(APIView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
     
     def get(self,request,code,format=None):
         team = get_object_or_404(Team, Q(unique_code=code) | Q(adding_link_code=code))
@@ -94,7 +94,7 @@ class JoinTeamView(APIView):
 
 
 class TeamUsersView(APIView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
 
     def get(self, request, pk,format=None):
         team = get_object_or_404(Team,pk=pk) 
@@ -112,7 +112,7 @@ class TeamUsersView(APIView):
 
         
 class TaskObjectView(APIView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
     
     def get(self,request,pk,id,format=None):
         team = get_object_or_404(Team,pk=pk)
@@ -145,7 +145,7 @@ class TaskObjectView(APIView):
             
 
 class TeamCodeObject(APIView):
-    permission_classes=[CustomPersmissions]
+    permission_classes=[CustomPermissions]
     
     def get(self,request,pk,format=None):
         team = get_object_or_404(Team,pk=pk)
@@ -168,7 +168,7 @@ class TeamCodeObject(APIView):
     
     
 class TeamObjectView(APIView):
-    permission_classes = [CustomPersmissions]
+    permission_classes = [CustomPermissions]
     
     def post(self,request,pk,format=None):
         team = get_object_or_404(Team,pk=pk)
@@ -190,7 +190,7 @@ class TeamObjectView(APIView):
     
     
 class RemoveUserFromTeamView(APIView):
-    permission_classes = [CustomPersmissions]
+    permission_classes = [CustomPermissions]
     
     def post(self,request,pk,id,format=None):
         team = get_object_or_404(Team,pk=pk)
@@ -206,7 +206,7 @@ class RemoveUserFromTeamView(APIView):
     
     
 class ChangeTaskStatusView(APIView):
-    permission_classes = [CustomPersmissions]
+    permission_classes = [CustomPermissions]
 
     def post(self,request,pk,id,format=None):
         print(request.user)
@@ -222,13 +222,13 @@ class ChangeTaskStatusView(APIView):
 
         
 class AddingLink(APIView):
-    permission_classes = [CustomPersmissions]
+    permission_classes = [CustomPermissions]
 
     def get(self,request,pk,format=None):
         team = get_object_or_404(Team,pk=pk)
         while True:
             adding_link_code = get_random_string(16)
-            if not Team.objects.filter(unique_code=adding_link_code).exists():
+            if not Team.objects.filter(adding_link_code=adding_link_code).exists():
                 break
         team.adding_link_code = adding_link_code
         team.adding_link_code_expiration_time = timezone.now() + timedelta(minutes=10)

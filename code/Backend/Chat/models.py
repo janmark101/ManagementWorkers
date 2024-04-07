@@ -8,4 +8,4 @@ class TeamMessage(models.Model):
     sender = models.ForeignKey(User,on_delete=models.CASCADE)
     content = models.TextField()
     send_date = models.DateTimeField(auto_now_add=True)
-# Create your models here.
+
