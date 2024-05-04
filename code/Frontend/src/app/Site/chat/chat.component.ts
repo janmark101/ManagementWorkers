@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { webSocket } from 'rxjs/webSocket'
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/Services/auth.service';
 
 
@@ -9,25 +9,37 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  
+  teamId : number  = 0;
+  private chatSocket : WebSocket | any;
+  receivedMessages: any[] = [];
   user: any;
-  constructor(private authService: AuthService)
+
+  constructor(private authService: AuthService,private route:ActivatedRoute)
   {
 
   }
   ngOnInit(): void {
+    this.teamId = this.route.snapshot.params['id'];
     this.user = this.authService.getUserFromLocalStorage()
-    console.log(this.user);
-    
+    this.initializeWebSocket()
   }
 
-  url = `ws://localhost:8000/ws/socket-server/`
-  chatSocket = new WebSocket(this.url);
+  initializeWebSocket(): void {
+    this.chatSocket = new WebSocket('ws://localhost:8000/ws/socket-server/');
+
+    this.chatSocket.onmessage = (event:any) => {
+      const messageData = JSON.parse(event.data);
+      this.receivedMessages.push(messageData);
+      console.log(messageData)
+    };
+  }
+
 
   send(message: string): void {
     this.chatSocket.send(JSON.stringify({
       'message':message,
-      'sender': this.user.user_id
+      'sender': this.user.user_id,
+      'teamid' : this.teamId
     }));
   }
 

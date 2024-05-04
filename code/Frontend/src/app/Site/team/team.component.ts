@@ -1,17 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute,  Router } from '@angular/router';
 import { take } from 'rxjs';
 import { SiteService } from 'src/app/Services/site.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DayComponent } from '../day/day.component';
 import { TaskComponent } from '../task/task.component';
-import { UniqueCodeComponent } from '../unique-code/unique-code.component';
-import { faGears } from '@fortawesome/free-solid-svg-icons';
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
-import { faBookmark } from '@fortawesome/free-solid-svg-icons';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faGears,faSquarePlus,faCircleInfo,faAngleLeft, faAngleRight,faBookmark, faComments } from '@fortawesome/free-solid-svg-icons';
 import {
   ConfirmBoxInitializer,
   DialogLayoutDisplay,
@@ -36,6 +30,7 @@ export class TeamComponent implements OnInit{
 
   backIcon = faAngleLeft
   nextIcon = faAngleRight
+  chatIcon = faComments
 
   teamName : String = ''
   info = faCircleInfo
