@@ -8,11 +8,8 @@ import {
 } from '@costlydeveloper/ngx-awesome-popup';
 import { UniqueCodeComponent } from '../unique-code/unique-code.component';
 import { MatDialog } from '@angular/material/dialog';
-import { faBarcode } from '@fortawesome/free-solid-svg-icons';
-import { faQrcode } from '@fortawesome/free-solid-svg-icons';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { faQrcode,faLink,faTrashCan,faAngleLeft,faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { AddingLinkComponent } from '../adding-link/adding-link.component';
 
 @Component({
   selector: 'app-team-optionss',
@@ -21,11 +18,11 @@ import { faUserXmark } from '@fortawesome/free-solid-svg-icons';
 })
 export class TeamOptionssComponent implements OnInit{
 
-  //codeIcon = faBarcode 
   deleteUser = faUserXmark
   codeIcon = faQrcode
   backIcon = faAngleLeft
   deleteIcon = faTrashCan
+  linkIcon = faLink
   teamId : number | any;
   isManager : boolean = false;
   TeamUsers : any = [];
@@ -97,6 +94,15 @@ export class TeamOptionssComponent implements OnInit{
       console.log(error);
       
     });
+  }
+
+  showAddingLink(){
+      const dialogRef = this.dialog.open(AddingLinkComponent, {
+        width: '500px',
+        data:{
+        teamId:this.teamId}
+      });
+    
   }
 
 }

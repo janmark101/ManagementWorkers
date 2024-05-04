@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './Site/login/login.component';
 import { RegisterComponent } from './Site/register/register.component';
   import { FormsModule } from '@angular/forms';
-import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './Services/auth.service';
 import { HomeComponent } from './Site/home/home.component';
 import { SiteService } from './Services/site.service';
@@ -36,6 +36,8 @@ import { EditTaskComponent } from './Site/edit-task/edit-task.component';
 import { VerifyAccountComponent } from './Site/verify-account/verify-account.component';
 import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.component';
 import { ChatComponent } from './Site/chat/chat.component';
+import { AddingLinkComponent } from './Site/adding-link/adding-link.component';
+import { JoinTeamLinkComponent } from './Site/join-team-link/join-team-link.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { ChatComponent } from './Site/chat/chat.component';
     VerifyAccountComponent,
     TeamOptionssComponent,
     ChatComponent,
+    AddingLinkComponent,
+    JoinTeamLinkComponent,
   ],
   imports: [
     MatTooltipModule,

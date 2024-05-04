@@ -1,3 +1,7 @@
+<div *ngFor="let message of receivedMessages">
+    <p style="color:white">{{message.sender}} : {{message.message}}</p>
+</div>
+
 <p style="color: white">chat works!</p>
 <input class="input" #message>
 <button (click)="send(message.value)">Send</button>

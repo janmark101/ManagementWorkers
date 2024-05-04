@@ -1,0 +1,9 @@
+<div class="window">
+    
+    <h3 style="text-align: center;">{{link}}</h3>
+    <h5 style="text-align:center" *ngIf="link != ''">This link will expire in 10 minuts!</h5>
+     <div class="button-container">
+       <button class="button" type="button" (click)="regenerate()">Generate link</button>
+       <button class="button" type="button" (click)="onCancel()">Cancel</button>
+     </div>
+ </div>

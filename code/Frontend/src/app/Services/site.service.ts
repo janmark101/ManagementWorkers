@@ -41,14 +41,14 @@ export class SiteService {
     return this.http.post(`${this.api_url}teams/`,data,{headers})
   }
 
-  joinTeam(data:any){
+  joinTeam(code:any){
     let user = this.getUserFromLocalStorage();
     
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-   
-    return this.http.post(`${this.api_url}teams/join/`,data,{headers})
+    
+    return this.http.get(`${this.api_url}teams/join/${code}/`,{headers})
   }
 
   getTeamName(id:number){
@@ -166,6 +166,15 @@ export class SiteService {
       'Authorization': `Token ${user.token}`
     });
     return this.http.post(`${this.api_url}teams/${teamId}/task/${taskId}/changestatus/`,data,{headers});
+  } 
+
+  AddingLink(teamId:number){
+    let user = this.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.get(`${this.api_url}teams/${teamId}/addinglink/`,{headers});
   } 
 
 

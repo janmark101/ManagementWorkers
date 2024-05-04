@@ -80,7 +80,7 @@ class JoinTeamView(APIView):
         user = request.user
         if team.adding_link_code == code:
             if not team.code_is_valid():
-                return Response({"error" : f"The code has expired"},status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message" : f"The code has expired"},status=status.HTTP_400_BAD_REQUEST)
         
         if user in team.workers.all():
             return Response({"message" : f"Already in team '{team.name}'!"},status=status.HTTP_400_BAD_REQUEST)
@@ -233,6 +233,6 @@ class AddingLink(APIView):
         team.adding_link_code = adding_link_code
         team.adding_link_code_expiration_time = timezone.now() + timedelta(minutes=10)
         team.save()
-        link = f"http://127.0.0.1:8000/api/teams/join/{adding_link_code}/"
-        return Response({'link' : link},status=status.HTTP_200_OK) 
+        #link = f"http://127.0.0.1:8000/api/teams/join/{adding_link_code}/"
+        return Response({'link' : adding_link_code},status=status.HTTP_200_OK) 
     
