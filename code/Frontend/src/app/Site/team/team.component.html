@@ -33,6 +33,7 @@
             </ul>
         </div>
 
+        <!-- <div class="workers_list" *ngIf="isManager"> -->
         <div class="workers_list" *ngIf="isManager">
             <div class="button-container2">
                 <div style="display:flex; flex-direction: column;align-items: center;">            
@@ -43,10 +44,10 @@
                     <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']"></fa-icon>
                     <p style="color:white;font-size: smaller;padding-top: 5px;">Settings</p>
                 </div>
-                <div style="display:flex; flex-direction: column;align-items: center;">            
+                <!-- <div style="display:flex; flex-direction: column;align-items: center;">            
                     <fa-icon class="icon" [icon]="chatIcon" [routerLink]="['/team',teamId,'chat']"></fa-icon>
                     <p style="color:white;font-size: smaller;padding-top: 5px;">Chat</p>
-                </div>
+                </div> -->
             </div>
             <div class="scroll">
             
@@ -62,9 +63,13 @@
                       
                     </div>
                     
-
+                    
                 </div>
             </div>
         </div>
+        <div style="padding-left: 3%; height:90%; display: flex; flex-direction: column;justify-content: end;">
+            <fa-icon class="chat-icon" [icon]="chatIcon" (click)="OpenChat()"></fa-icon>
+        </div>
+        
     </div>
 </div>

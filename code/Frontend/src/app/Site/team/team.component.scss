@@ -12,8 +12,9 @@
 	display:flex;
 	justify-content: center;
 	padding-left:5%;
-	padding-right:5%;
+	// padding-right:5%;
 	height:50vw;
+	
 }
 
 .calendar-container {	
@@ -70,6 +71,7 @@
 	margin-bottom:2%;
 	height:2vw;
 	min-height: 35px;
+	
   }
 
   .iconBox{
@@ -141,6 +143,17 @@
 }
 
 .icon:hover{
+	transform: scale(1.07);
+}
+
+.chat-icon{
+	color:white;
+	transition: transform 0.3s;
+	font-size: 3vw; 
+	cursor: pointer;
+}
+
+.chat-icon:hover{
 	transform: scale(1.07);
 }
 
