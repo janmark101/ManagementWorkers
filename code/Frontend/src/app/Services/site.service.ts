@@ -177,5 +177,13 @@ export class SiteService {
     return this.http.get(`${this.api_url}teams/${teamId}/addinglink/`,{headers});
   } 
 
+  getMessages(teamId:number){
+    let user = this.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    return this.http.get(`http://localhost:8000/chat/team/${teamId}/`,{headers});
+  }
 
 }
