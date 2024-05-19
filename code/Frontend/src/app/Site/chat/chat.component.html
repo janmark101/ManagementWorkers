@@ -1,12 +1,16 @@
 <div class="chat-container">
     <div class="chat-messages">
       <div *ngFor="let message of receivedMessages" class="chat-message">
-        <p>{{ message.sender }}: {{ message.message }}</p>
+        <p [ngStyle]="{'color': message.sender.id === this.user.user_id ? '#778FD0' : 'white'}" class="message-container">
+          <span class="message-text">{{ message.sender.first_name }} {{ message.sender.last_name }}: {{ message.content }}</span>
+          <span class="message-date">{{ message.send_date | date:'HH:mm' }}</span>
+        </p>
+        
       </div>
     </div>
     <div class="chat-input">
-      <input class="input" #message placeholder="Type a message..." />
-      <button (click)="send(message.value)">Send</button>
+      <input class="input" placeholder="Type a message..."  [(ngModel)]="message"/>
+      <button (click)="send()">Send</button>
     </div>
   </div>
   

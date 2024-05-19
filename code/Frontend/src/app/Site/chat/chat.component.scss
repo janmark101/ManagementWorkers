@@ -70,3 +70,21 @@
     font-weight: bold;
   }
   
+
+
+  message-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  message-text {
+    flex-grow: 1;
+  }
+  
+  message-date {
+    white-space: nowrap;
+    margin-left: 10px; /* Adjust spacing as needed */
+  }
+  
