@@ -4,8 +4,9 @@ from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
 from TeamsApi.models import Team
-
+from .serializers import UserSerializer
 from .models import TeamMessage
+import datetime
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -33,6 +34,8 @@ class ChatConsumer(WebsocketConsumer):
             content = message,
             team = team
         )
+        
+        print(mess)
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
@@ -48,12 +51,14 @@ class ChatConsumer(WebsocketConsumer):
         message = event['message']
         sender = event['sender']
         user = User.objects.get(pk=sender)
+        serializer = UserSerializer(user,many=False)
         teamid = event['teamid']
         self.send(text_data=json.dumps({
             'type':'chat',
-            'message':message,
-            'sender': f'{user.first_name} {user.last_name}',
-            'teamid' : teamid
+            'content':message,
+            'send_date': datetime.datetime.now().isoformat(),
+            'sender': serializer.data,
+            'team' : teamid
         }))
 
  

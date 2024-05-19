@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Site/login/login.component';
 import { RegisterComponent } from './Site/register/register.component';
-  import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './Services/auth.service';
 import { HomeComponent } from './Site/home/home.component';
@@ -38,6 +38,9 @@ import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.compon
 import { ChatComponent } from './Site/chat/chat.component';
 import { AddingLinkComponent } from './Site/adding-link/adding-link.component';
 import { JoinTeamLinkComponent } from './Site/join-team-link/join-team-link.component';
+import { DatePipe } from '@angular/common';
+
+
 
 @NgModule({
   declarations: [
@@ -87,7 +90,7 @@ import { JoinTeamLinkComponent } from './Site/join-team-link/join-team-link.comp
     MatDatepickerModule, 
     MatNativeDateModule, // optional
   ],
-  providers: [AuthService,SiteService],
+  providers: [AuthService,SiteService,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

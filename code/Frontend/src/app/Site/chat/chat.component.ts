@@ -4,6 +4,14 @@ import { take } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { SiteService } from 'src/app/Services/site.service';
 
+
+interface Message{
+  content : string,
+  id : number,
+  send_date : Date,
+
+}
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -15,6 +23,7 @@ export class ChatComponent implements OnInit {
   private chatSocket: WebSocket | any;
   receivedMessages: any[] = [];
   user: any;
+  message : string = '';
 
 
   constructor(private authService: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private Site:SiteService) {
@@ -26,9 +35,9 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authService.getUserFromLocalStorage();
     this.initializeWebSocket();
-
+    console.log(this.user);
     this.Site.getMessages(this.teamId).pipe(take(1)).subscribe((data: any) => {
-      // this.receivedMessages = data;
+    this.receivedMessages = data.message;
       console.log(data.message);
     }, (error: any) => {
       console.error(error);
@@ -40,17 +49,20 @@ export class ChatComponent implements OnInit {
 
     this.chatSocket.onmessage = (event: any) => {
       const messageData = JSON.parse(event.data);
-      this.receivedMessages.push(messageData);
-
-      console.log(this.receivedMessages);
+      if (this.teamId == messageData.team) {
+        console.log(messageData);
+        
+        this.receivedMessages.push(messageData);
+      }
     };
   }
 
-  send(message: string): void {
+  send(): void {
     this.chatSocket.send(JSON.stringify({
-      'message': message,
+      'message': this.message,
       'sender': this.user.user_id,
       'teamid': this.teamId
     }));
+    this.message = '';
   }
 }
