@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject,ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -24,7 +24,11 @@ export class ChatComponent implements OnInit {
   receivedMessages: any[] = [];
   user: any;
   message : string = '';
+  @ViewChild('chatMessagesContainer') private chatMessagesContainer!: ElementRef;
+  data_array : any = [];
 
+  
+  
 
   constructor(private authService: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private Site:SiteService) {
     this.teamId = data.team_id;
@@ -37,12 +41,22 @@ export class ChatComponent implements OnInit {
     this.initializeWebSocket();
     console.log(this.user);
     this.Site.getMessages(this.teamId).pipe(take(1)).subscribe((data: any) => {
-    this.receivedMessages = data.message;
       console.log(data.message);
+      
+    this.receivedMessages = data.message;
+    //this.add_data_to_array();
+    this.processMessages();
+
     }, (error: any) => {
       console.error(error);
     });
+
   }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
 
   initializeWebSocket(): void {
     this.chatSocket = new WebSocket('ws://localhost:8000/ws/socket-server/');
@@ -50,9 +64,8 @@ export class ChatComponent implements OnInit {
     this.chatSocket.onmessage = (event: any) => {
       const messageData = JSON.parse(event.data);
       if (this.teamId == messageData.team) {
-        console.log(messageData);
-        
         this.receivedMessages.push(messageData);
+        this.processMessages();
       }
     };
   }
@@ -65,4 +78,63 @@ export class ChatComponent implements OnInit {
     }));
     this.message = '';
   }
+
+  scrollToBottom(): void {
+    try {
+      this.chatMessagesContainer.nativeElement.scrollTop = this.chatMessagesContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Error scrolling:', err);
+    }
+  }
+
+  add_data_to_array(){
+    this.data_array.push(this.receivedMessages[0].send_date.split('T')[0]);
+    console.log(this.data_array);
+    this.receivedMessages.forEach(item=>{
+      let formatted_data = item.send_date.split('T')[0]
+      if (formatted_data != this.data_array[this.data_array.length - 1]){
+        this.data_array.push(formatted_data);
+        
+      }
+      console.log(item.send_date);
+    });
+    console.log(this.data_array);
+    
+  }
+
+  check_date(date:any){
+    let date_formatted = date.send_date.split('T')[0];
+    
+    if (this.counter_date == this.data_array.length){
+      return false
+    }
+
+    if (date_formatted == this.data_array[this.counter_date]){
+      //this.counter_date+=1;
+      return true
+    }
+    else{
+      return false
+    }
+
+  }
+
+  processedMessages: any[] = [];
+  counter_date: number = 0;
+  //data_array: string[] = [];
+
+  processMessages(): void {
+    let lastDate = '';
+    this.processedMessages = this.receivedMessages.map(message => {
+      const dateFormatted = message.send_date.split('T')[0];
+      const showDate = dateFormatted !== lastDate;
+      if (showDate) {
+        this.data_array.push(dateFormatted);
+        this.counter_date += 1; 
+        lastDate = dateFormatted;
+      }
+      return { ...message, showDate };
+    });
+  }
+
 }

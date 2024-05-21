@@ -72,19 +72,28 @@
   
 
 
-  message-container {
+  .message-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    border-bottom: solid 1px rgb(107, 102, 102);
+    padding-top: 3%;
   }
   
-  message-text {
+  .message-text {
     flex-grow: 1;
+    color:white
+  }
+
+  .message-text-author {
+    flex-grow: 1;
+    font-weight: bold;
   }
   
-  message-date {
+  .message-date {
     white-space: nowrap;
     margin-left: 10px; /* Adjust spacing as needed */
+    color:white;
   }
   
