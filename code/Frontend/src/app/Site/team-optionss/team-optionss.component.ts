@@ -8,7 +8,7 @@ import {
 } from '@costlydeveloper/ngx-awesome-popup';
 import { UniqueCodeComponent } from '../unique-code/unique-code.component';
 import { MatDialog } from '@angular/material/dialog';
-import { faQrcode,faLink,faTrashCan,faAngleLeft,faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { faQrcode,faTrashCan,faAngleLeft,faUserXmark,faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { AddingLinkComponent } from '../adding-link/adding-link.component';
 
 @Component({
@@ -22,7 +22,7 @@ export class TeamOptionssComponent implements OnInit{
   codeIcon = faQrcode
   backIcon = faAngleLeft
   deleteIcon = faTrashCan
-  linkIcon = faLink
+  linkIcon = faPaperclip
   teamId : number | any;
   isManager : boolean = false;
   TeamUsers : any = [];

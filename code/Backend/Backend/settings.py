@@ -33,6 +33,7 @@ CORS_ALLOWED_ORIGINS = [
     
 ]
 
+TIME_ZONE = 'Europe/Warsaw'
 
 # Application definition
 

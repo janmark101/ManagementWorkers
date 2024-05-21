@@ -193,7 +193,7 @@ export class TeamComponent implements OnInit {
   OpenChat() {
     const dialogRef = this.dialog.open(ChatComponent, {
       width: '23%',
-      height: '500px',
+      height: '600px',
       data: {
         team_id: this.teamId,
         userList: this.TeamUsers
@@ -204,13 +204,6 @@ export class TeamComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result === 'confirm') {
-        location.reload();
-      } else if (result === 'cancel') {
-
-      }
-    });
   }
 
   AddTaskPopup() {
@@ -220,6 +213,14 @@ export class TeamComponent implements OnInit {
       data: {
         team_id: this.teamId,
         userList: this.TeamUsers
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result === 'confirm') {
+        location.reload();
+      } else if (result === 'cancel') {
+
       }
     });
   }
