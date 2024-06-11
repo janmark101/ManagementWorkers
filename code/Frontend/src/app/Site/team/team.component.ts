@@ -351,4 +351,5 @@ export class TeamComponent implements OnInit {
     this.resetMap();
     this.TaskCounter();
   }
+  
 }

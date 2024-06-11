@@ -15,6 +15,10 @@
                 <fa-icon class="icon" [icon]="deleteIcon" style="color:white;font-size: 10vh;"(click)="deleteTeam()"></fa-icon>
                 <p class="button-name">Delete Team</p>
             </div>
+            <div class="buttonCode">
+                <fa-icon class="icon" [icon]="generateRaport" style="color:white;font-size: 10vh;"(click)="generatePdf(teamName,TeamUsers,TeamTasks)"></fa-icon>
+                <p class="button-name">Generate Raport</p>
+            </div>
         </div>
         <div class="team-info"> 
             <h1 class="teamName">{{teamName}}</h1> 
