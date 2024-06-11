@@ -8,7 +8,7 @@ import {
 } from '@costlydeveloper/ngx-awesome-popup';
 import { UniqueCodeComponent } from '../unique-code/unique-code.component';
 import { MatDialog } from '@angular/material/dialog';
-import { faQrcode,faTrashCan,faAngleLeft,faUserXmark,faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faQrcode,faTrashCan,faAngleLeft,faUserXmark,faPaperclip, faFilePdf} from '@fortawesome/free-solid-svg-icons';
 import { AddingLinkComponent } from '../adding-link/adding-link.component';
 
 @Component({
@@ -17,7 +17,7 @@ import { AddingLinkComponent } from '../adding-link/adding-link.component';
   styleUrls: ['./team-optionss.component.scss']
 })
 export class TeamOptionssComponent implements OnInit{
-
+  generateRaport = faFilePdf
   deleteUser = faUserXmark
   codeIcon = faQrcode
   backIcon = faAngleLeft
@@ -26,7 +26,7 @@ export class TeamOptionssComponent implements OnInit{
   teamId : number | any;
   isManager : boolean = false;
   TeamUsers : any = [];
-
+  TeamTasks : any = [];
   teamName : String = ''
 
   constructor(private route:ActivatedRoute,private Site:SiteService,private router: Router,private confirmBoxEvokeService: ConfirmBoxEvokeService,private dialog: MatDialog){}
@@ -43,6 +43,14 @@ export class TeamOptionssComponent implements OnInit{
 
     this.Site.getTeamName(this.teamId).pipe(take(1)).subscribe((data:any)=>{
       this.teamName = data.name
+    },(error:any)=>{
+      console.error(error);
+      
+    })
+
+    this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data:any)=>{
+      this.TeamTasks = data
+      
     },(error:any)=>{
       console.error(error);
       
@@ -104,5 +112,7 @@ export class TeamOptionssComponent implements OnInit{
       });
     
   }
-
+  generatePdf(Name:any, members:any, tasks:any) {
+    this.Site.generatePdf(Name, members, tasks);
+  }
 }
