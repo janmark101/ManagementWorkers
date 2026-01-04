@@ -26,18 +26,27 @@ SECRET_KEY = 'django-insecure-5ga#gtk9xtc7%m=j^c&@o7tdvnq2-qppg0&hx4#-oy)26qiu^@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = True
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '10.0.2.2']
+
+# CORS musi akceptować zapytania z "pseudodomeny" mobilnej
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-    
+    "http://localhost:4200", # Dla przeglądarki
+    "http://localhost",      # Dla Capacitora (Android)
+    "http://localhost:8080",  # Czasem Ionic używa tego portu
+    "http://192.168.0.117:8000",
+    "http://127.0.0.1:4200"
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 TIME_ZONE = 'Europe/Warsaw'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,12 +54,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',  # <--- Add this line
     'Authentication',
     'rest_framework',
     'rest_framework.authtoken',
     'TeamsApi',
-    'Chat',
-    
+    'Chat', 
 ]
 
 ASGI_APPLICATION = 'Backend.asgi.application'
@@ -116,9 +125,9 @@ REST_FRAMEWORK = {
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'io_2023_projekt',
+       'NAME': 'wm_db_2025',
        'USER': 'postgres',
-       'PASSWORD': '123',
+       'PASSWORD': 'root',
        'HOST': '127.0.0.1',
        'PORT': '5432',
    }

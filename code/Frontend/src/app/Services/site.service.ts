@@ -11,7 +11,9 @@ export class SiteService {
   constructor(private http:HttpClient) {
 
    }
-  api_url = 'http://localhost:8000/api/'
+
+   // ip address on android studio device emulator that is bridged to emulator host localhost
+  api_url = 'http://10.0.2.2:8000/api/'
 
   getUserFromLocalStorage() {
     const userString = localStorage.getItem('user');

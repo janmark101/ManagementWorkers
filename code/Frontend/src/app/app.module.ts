@@ -39,6 +39,7 @@ import { ChatComponent } from './Site/chat/chat.component';
 import { AddingLinkComponent } from './Site/adding-link/adding-link.component';
 import { JoinTeamLinkComponent } from './Site/join-team-link/join-team-link.component';
 import { DatePipe } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 
 
 
@@ -90,7 +91,7 @@ import { DatePipe } from '@angular/common';
     MatFormFieldModule,
     MatInputModule, 
     MatDatepickerModule, 
-    MatNativeDateModule, // optional
+    MatNativeDateModule, IonicModule.forRoot({}), // optional
   ],
   providers: [AuthService,SiteService,DatePipe],
   bootstrap: [AppComponent]
