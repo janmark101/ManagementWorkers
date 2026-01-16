@@ -1,309 +1,111 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { SiteService } from 'src/app/Services/site.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DayComponent } from '../day/day.component';
-import { TaskComponent } from '../task/task.component';
-import { faGears, faSquarePlus, faCircleInfo, faAngleLeft, faAngleRight, faBookmark, faComments } from '@fortawesome/free-solid-svg-icons';
-import {
-  ConfirmBoxInitializer,
-  DialogLayoutDisplay,
-  DisappearanceAnimation,
-  AppearanceAnimation,
-  ConfirmBoxEvokeService,
-} from '@costlydeveloper/ngx-awesome-popup';
-import { ChatComponent } from '../chat/chat.component';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { 
+  ModalController, 
+  ActionSheetController, 
+  AlertController,
+  ToastController,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-team',
   templateUrl: './team.component.html',
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./team.component.scss']
+  styleUrls: ['./team.component.scss'],
 })
 export class TeamComponent implements OnInit {
   now = new Date();
-  dateInformation: any = {'currentMonthDays': 0, 'currentMonth': '', 'currentYear': 0, 'currentDay': 0};
-
-  backIcon = faAngleLeft;
-  nextIcon = faAngleRight;
-  chatIcon = faComments;
+  tasks = faBookmark;
 
   teamName: String = '';
-  info = faCircleInfo;
-  tasks = faBookmark;
-  plus = faSquarePlus;
-  gearIcon = faGears;
+  isManager: boolean = false;
 
   TeamTasks: any = [];
   TeamUsers: any = [];
   currentMonthTasks: any = [];
-  isManager: boolean = false;
   Tasks: any = [];
   teamId: number | any;
-  monthValuesArray: any;
-  currentMonthNumber: any;
+  
+  dateInformation: any = {
+    'currentMonthDays': [],
+    'currentMonth': '', 
+    'currentYear': 0, 
+    'currentDay': 0
+  };
 
   month: any;
   year: any;
+  currentMonthNumber: any;
+  monthValuesArray: any;
 
-  constructor(private Site: SiteService, private route: ActivatedRoute,
-              private dialog: MatDialog,
-              private router: Router,
-              private confirmBoxEvokeService: ConfirmBoxEvokeService) { }
+  list30 = Array.from({length: 30}, (_, i) => i + 1);
+  list31 = Array.from({length: 31}, (_, i) => i + 1);
+  list28 = Array.from({length: 28}, (_, i) => i + 1);
+
+  monthDaysMap: Map<number, number[]> = new Map([
+    [0, this.list31], [1, this.list28], [2, this.list31], [3, this.list30],
+    [4, this.list31], [5, this.list30], [6, this.list31], [7, this.list31],
+    [8, this.list30], [9, this.list31], [10, this.list30], [11, this.list31],
+  ]);
+
+  monthDaysMap2: Map<number, string> = new Map([
+    [0, 'January'], [1, 'February'], [2, 'March'], [3, 'April'],
+    [4, 'May'], [5, 'June'], [6, 'July'], [7, 'August'],
+    [8, 'September'], [9, 'October'], [10, 'November'], [11, 'December'],
+  ]);
+
+  TaskCounterMap: Map<number, number> = new Map();
+
+  constructor(
+    private Site: SiteService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalCtrl: ModalController,
+    private actionSheetCtrl: ActionSheetController,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
+  ) { }
 
   ngOnInit(): void {
     this.teamId = this.route.snapshot.params['id'];
-
     this.month = this.now.getMonth();
     this.year = this.now.getFullYear();
 
+    this.resetMap();
+
     this.Site.getTeamName(this.teamId).pipe(take(1)).subscribe((data: any) => {
       this.teamName = data.name;
-    }, (error: any) => {
-      console.error(error);
     });
 
     this.Site.getUsersForTeam(this.teamId).pipe(take(1)).subscribe((data: any) => {
       this.isManager = data.manager;
       this.TeamUsers = data.data;
-    }, (error: any) => {
-      console.log(error);
     });
 
-    this.dateInformation.currentMonthDays = this.monthDaysMap.get(this.month);
-    this.dateInformation.currentYear = this.year;
-    this.dateInformation.currentMonth = this.monthDaysMap2.get(this.month);
-    this.dateInformation.currentDay = this.now.getDate();
-    this.monthValuesArray = Array.from(this.monthDaysMap2.values());
-
-    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth) + 1;
+    this.updateDateInfo();
 
     this.Site.getTaskForTeam(this.teamId).pipe(take(1)).subscribe((data: any) => {
       this.TeamTasks = data;
       this.Tasks = data;
       this.TaskCounter();
-    }, (error: any) => {
     });
   }
 
-  list30 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28, 29, 30];
-  list31 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28, 29, 30, 31];
-  list28 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28];
+  updateDateInfo() {
+    this.dateInformation.currentMonthDays = this.monthDaysMap.get(this.month);
+    this.dateInformation.currentYear = this.year;
+    this.dateInformation.currentMonth = this.monthDaysMap2.get(this.month);
 
-  monthDaysMap: Map<number, number[]> = new Map([
-    [0, this.list31],
-    [1, this.list28],
-    [2, this.list31],
-    [3, this.list30],
-    [4, this.list31],
-    [5, this.list30],
-    [6, this.list31],
-    [7, this.list31],
-    [8, this.list30],
-    [9, this.list31],
-    [10, this.list30],
-    [11, this.list31],
-  ]);
-  monthDaysMap2: Map<number, string> = new Map([
-    [0, 'January'],
-    [1, 'February'],
-    [2, 'March'],
-    [3, 'April'],
-    [4, 'May'],
-    [5, 'June'],
-    [6, 'July'],
-    [7, 'August'],
-    [8, 'September'],
-    [9, 'October'],
-    [10, 'November'],
-    [11, 'December'],
-  ]);
-
-  TaskCounterMap: Map<number, number> = new Map([
-    [1, 0],
-    [2, 0],
-    [3, 0],
-    [4, 0],
-    [5, 0],
-    [6, 0],
-    [7, 0],
-    [8, 0],
-    [9, 0],
-    [10, 0],
-    [11, 0],
-    [12, 0],
-    [13, 0],
-    [14, 0],
-    [15, 0],
-    [16, 0],
-    [17, 0],
-    [18, 0],
-    [19, 0],
-    [20, 0],
-    [21, 0],
-    [22, 0],
-    [23, 0],
-    [24, 0],
-    [25, 0],
-    [26, 0],
-    [27, 0],
-    [28, 0],
-    [29, 0],
-    [30, 0],
-    [31, 0],
-  ]);
-
-  TaskCounter() {
-    this.currentMonthTasks = this.TeamTasks.filter((item: any) => {
-      const itemDate = new Date(item.date);
-      const dayOfMonth = itemDate.getDate();
-
-      if ((itemDate.getMonth() + 1 === this.currentMonthNumber) && (itemDate.getFullYear() == this.dateInformation.currentYear)) {
-        this.TaskCounterMap.set(dayOfMonth, this.TaskCounterMap.get(dayOfMonth)! + 1);
-      }
-      return itemDate.getMonth() + 1 === this.currentMonthNumber;
-    });
-  }
-
-  DisplayDay(day: number) {
-    const dialogRef = this.dialog.open(DayComponent, {
-      width: '1200px',
-      data: {
-        currentMonthTasks: this.currentMonthTasks,
-        day: day,
-        month: this.dateInformation.currentMonth,
-        teamID: this.teamId,
-        isManager: this.isManager,
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result === 'confirm') {
-
-      } else if (result === 'cancel') {
-
-      }
-    });
-  }
-
-  OpenChat() {
-    const dialogRef = this.dialog.open(ChatComponent, {
-      width: '23%',
-      height: '600px',
-      data: {
-        team_id: this.teamId,
-        userList: this.TeamUsers
-      },
-      position: {
-        bottom: '7%',
-        right: '200px'
-      }
-    });
-
-  }
-
-  AddTaskPopup() {
-    const dialogRef = this.dialog.open(TaskComponent, {
-      width: '1000px',
-      height: '1000px',
-      data: {
-        team_id: this.teamId,
-        userList: this.TeamUsers
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result === 'confirm') {
-        location.reload();
-      } else if (result === 'cancel') {
-
-      }
-    });
-  }
-
-  checkSelectedUser(index: number) {
-    this.TeamUsers.forEach((user: any, i: number) => {
-      if (i !== index) {
-        user.isChecked = false;
-      }
-    });
-    const selectedUser = this.TeamUsers.find((user: any) => user.isChecked);
-    this.resetMap();
-    if (selectedUser) {
-      this.TeamTasks = this.Tasks.filter((task: any) => task.workers_id.includes(selectedUser.id));
+    if(this.month === this.now.getMonth() && this.year === this.now.getFullYear()){
+      this.dateInformation.currentDay = this.now.getDate();
     } else {
-      this.TeamTasks = this.Tasks;
+      this.dateInformation.currentDay = 0;
     }
-    this.TaskCounter();
-  }
 
-  resetMap() {
-    this.TaskCounterMap = new Map([
-      [1, 0],
-      [2, 0],
-      [3, 0],
-      [4, 0],
-      [5, 0],
-      [6, 0],
-      [7, 0],
-      [8, 0],
-      [9, 0],
-      [10, 0],
-      [11, 0],
-      [12, 0],
-      [13, 0],
-      [14, 0],
-      [15, 0],
-      [16, 0],
-      [17, 0],
-      [18, 0],
-      [19, 0],
-      [20, 0],
-      [21, 0],
-      [22, 0],
-      [23, 0],
-      [24, 0],
-      [25, 0],
-      [26, 0],
-      [27, 0],
-      [28, 0],
-      [29, 0],
-      [30, 0],
-      [31, 0],
-    ]);
-  }
-
-  openConfirmBox() {
-    const newConfirmBox = new ConfirmBoxInitializer();
-
-    newConfirmBox.setTitle('Confirm leave team');
-    newConfirmBox.setMessage('');
-
-    newConfirmBox.setConfig({
-      layoutType: DialogLayoutDisplay.DANGER,
-      animationIn: AppearanceAnimation.BOUNCE_IN,
-      animationOut: DisappearanceAnimation.FLIP_OUT,
-    });
-    newConfirmBox.setButtonLabels('Leave', 'Cancel');
-
-    newConfirmBox.openConfirmBox$();
-  }
-
-  leaveTeam() {
-    this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to leave team?', 'Confirm', 'Decline')
-      .subscribe(resp => {
-        if (resp.success === true) {
-          this.Site.leaveTeam(this.teamId).subscribe((data: any) => {
-            this.router.navigate(['/home']);
-          }, (error: any) => {
-            console.error(error);
-          });
-        }
-      });
+    this.monthValuesArray = Array.from(this.monthDaysMap2.values());
+    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth) + 1;
   }
 
   nextMonth() {
@@ -313,20 +115,7 @@ export class TeamComponent implements OnInit {
     } else {
       this.month = this.month + 1;
     }
-
-    this.dateInformation.currentMonthDays = this.monthDaysMap.get(this.month);
-    this.dateInformation.currentMonth = this.monthDaysMap2.get(this.month);
-    this.dateInformation.currentYear = this.year;
-    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth) + 1;
-
-    if (this.month == this.now.getMonth()) {
-      this.dateInformation.currentDay = this.now.getDate();
-    } else {
-      this.dateInformation.currentDay = null;
-    }
-
-    this.resetMap();
-    this.TaskCounter();
+    this.handleMonthChange();
   }
 
   prevMonth() {
@@ -336,20 +125,139 @@ export class TeamComponent implements OnInit {
     } else {
       this.month = this.month - 1;
     }
+    this.handleMonthChange();
+  }
 
-    this.dateInformation.currentMonthDays = this.monthDaysMap.get(this.month);
-    this.dateInformation.currentMonth = this.monthDaysMap2.get(this.month);
-    this.dateInformation.currentYear = this.year;
-    this.currentMonthNumber = this.monthValuesArray.indexOf(this.dateInformation.currentMonth) + 1;
-
-    if (this.month == this.now.getMonth()) {
-      this.dateInformation.currentDay = this.now.getDate();
-    } else {
-      this.dateInformation.currentDay = null;
-    }
-
+  handleMonthChange() {
+    this.updateDateInfo();
     this.resetMap();
     this.TaskCounter();
   }
-  
+
+  TaskCounter() {
+    this.currentMonthTasks = this.TeamTasks.filter((item: any) => {
+      const itemDate = new Date(item.date);
+      const dayOfMonth = itemDate.getDate();
+
+      if ((itemDate.getMonth() + 1 === this.currentMonthNumber) && (itemDate.getFullYear() == this.dateInformation.currentYear)) {
+        const currentCount = this.TaskCounterMap.get(dayOfMonth) || 0;
+        this.TaskCounterMap.set(dayOfMonth, currentCount + 1);
+      }
+      return itemDate.getMonth() + 1 === this.currentMonthNumber;
+    });
+  }
+
+  getTaskColor(count: any): string {
+    if (count === 1) return 'rgb(31, 89, 47)';
+    if (count === 2) return 'rgb(145, 86, 38)';
+    return 'rgb(117, 33, 32)';
+  }
+
+  checkSelectedUser(index: number) {
+    this.TeamUsers.forEach((user: any, i: number) => {
+      if (i !== index) {
+        user.isChecked = false;
+      }
+    });
+    
+    const selectedUser = this.TeamUsers.find((user: any) => user.isChecked);
+    this.resetMap();
+    
+    if (selectedUser) {
+      this.TeamTasks = this.Tasks.filter((task: any) => task.workers_id.includes(selectedUser.id));
+    } else {
+      this.TeamTasks = this.Tasks;
+    }
+    this.TaskCounter();
+  }
+
+  resetMap() {
+    this.TaskCounterMap = new Map();
+    for(let i=1; i<=31; i++) {
+      this.TaskCounterMap.set(i, 0);
+    }
+  }
+
+  DisplayDay(day: number) {
+  this.router.navigate([
+    '/team', 
+    this.teamId, 
+    'day', 
+    day, 
+    this.dateInformation.currentMonth,
+    this.dateInformation.currentYear
+  ]);
+}
+
+  AddTaskPopup() {
+    console.log("add task view")
+    this.router.navigate(['/team', this.teamId, 'add-task']);
+  }
+
+  async presentActionSheet() {
+    const buttons = [];
+
+    if (this.isManager) {
+      buttons.push({
+        text: 'Settings',
+        icon: 'settings',
+        handler: () => {
+          this.router.navigate(['/team', this.teamId, 'options']);
+        }
+      });
+    } else {
+      buttons.push({
+        text: 'Leave Team',
+        icon: 'log-out',
+        role: 'destructive',
+        handler: () => {
+          this.leaveTeamConfirm();
+        }
+      });
+    }
+
+    buttons.push({
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel'
+    });
+
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Team Options',
+      buttons: buttons
+    });
+    await actionSheet.present();
+  }
+
+  async leaveTeamConfirm() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Leave',
+      message: 'Are you sure you want to leave this team?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Leave',
+          role: 'destructive',
+          handler: () => {
+            this.Site.leaveTeam(this.teamId).subscribe(() => {
+               this.router.navigate(['/home']);
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async showLegend() {
+    const alert = await this.alertCtrl.create({
+      header: 'Task Legend',
+      message: 'Green: 1 task<br>Orange: 2 tasks<br>Red: 3+ tasks',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 }

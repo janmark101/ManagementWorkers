@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { delay } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 
@@ -11,30 +11,24 @@ import { AuthService } from 'src/app/Services/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private Auth:AuthService,private router : Router){}
+  constructor(private Auth: AuthService, private router: Router) { }
 
-  user :any;
-
+  user: any;
 
   ngOnInit(): void {
-    this.user=this.Auth.getUserFromLocalStorage();
-
+    this.user = this.Auth.getUserFromLocalStorage();
   }
 
-  Logout(){
-    this.Auth.logout().subscribe((data:any) =>{
+  Logout() {
+    this.Auth.logout().subscribe((data: any) => {
       localStorage.removeItem('user');
       delay(1500);
       this.router.navigate(['']).then(() => {
-          location.reload();
+        location.reload();
       });
-      
-    },(error:any)=>{
+    }, (error: any) => {
       console.error(error);
-      
     })
   }
-
-  
 
 }

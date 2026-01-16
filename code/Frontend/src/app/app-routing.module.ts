@@ -11,17 +11,27 @@ import { loggedGuard } from './Services/logged.guard';
 import { TeamOptionssComponent } from './Site/team-optionss/team-optionss.component';
 import { ChatComponent } from './Site/chat/chat.component';
 import { JoinTeamLinkComponent } from './Site/join-team-link/join-team-link.component';
+import { TaskComponent } from './Site/task/task.component';
+import { DayComponent } from './Site/day/day.component';
+import { CreateComponent } from './Site/create/create.component';
+import { JoinTeamComponent } from './Site/join-team/join-team.component';
 
 
 const routes: Routes = [
-  {path: '', component:LoginComponent,pathMatch : 'full',canActivate: [loggedGuard],},
+  {path: '', component:LoginComponent, pathMatch : 'full', canActivate: [loggedGuard],},
+  {path: 'login', component:LoginComponent, pathMatch : 'full', canActivate: [loggedGuard],},
   {path: 'register',component:RegisterComponent, canActivate: [loggedGuard,]},
   {path: 'home',component:HomeComponent, canActivate : [authGuard],},
+  { path: 'create-team', component: CreateComponent },
   {path: 'accverify', component:VerifyAccountComponent,canActivate: [verifyGuard], },
   {path: 'team/:id',component: TeamComponent,canActivate : [authGuard],},
-  {path: 'team/:id/options',component: TeamOptionssComponent,canActivate : [authGuard],},
+  {path: 'team/:id/options',component: TeamOptionssComponent, canActivate: [authGuard],},
   {path: 'team/:id/chat', component: ChatComponent, canActivate : [authGuard],},
-  {path: 'join/:code',component:JoinTeamLinkComponent, canActivate : [authGuard],}
+  {path: 'join/:code',component:JoinTeamLinkComponent, canActivate : [authGuard],},
+  { path: 'join-team', component: JoinTeamComponent },
+  { path: 'team/:id/add-task', component: TaskComponent },
+  { path: 'team/:id/edit-task/:taskId', component: TaskComponent },
+  { path: 'team/:id/day/:day/:month/:year', component: DayComponent },
 ];
 
 @NgModule({

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SiteService } from 'src/app/Services/site.service';
-import { delay, take } from 'rxjs';
-import { AuthService } from 'src/app/Services/auth.service';
 import { Router } from '@angular/router';
-import { faPeopleGroup,faSquarePlus } from '@fortawesome/free-solid-svg-icons';
-import { MatDialog } from '@angular/material/dialog';
-import { CreateComponent } from '../create/create.component';
-import { JoinTeamComponent } from '../join-team/join-team.component';
+import { ModalController } from '@ionic/angular';
+import { delay, take } from 'rxjs';
+import { faPeopleGroup, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { SiteService } from 'src/app/Services/site.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 
 @Component({
@@ -14,86 +12,72 @@ import { JoinTeamComponent } from '../join-team/join-team.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
-
-  constructor(private Site: SiteService,private Auth:AuthService,private router: Router,private dialog: MatDialog){};
+export class HomeComponent implements OnInit {
 
   plus = faPeopleGroup;
-  join = faSquarePlus
+  join = faSquarePlus;
+  userTeams: any = [];
+  user: any;
 
-  userTeams : any = [];
-  user:any;
-
+  constructor(
+    private Site: SiteService,
+    private Auth: AuthService,
+    private router: Router,
+    private modalCtrl: ModalController
+  ) { };
 
   ngOnInit(): void {
-
     this.user = this.Auth.getUserFromLocalStorage();
-
-    this.Site.getUserTeams().pipe(take(1)).subscribe((data:any) =>{
-      this.userTeams = data;
-      
-    },(error:any) =>{
-      
-    })
+    this.loadTeams();
   }
 
+  ionViewWillEnter() {
+    this.loadTeams();
+  }
 
-  checkRole(id:number){       
-    if(this.userTeams[id].manager == this.user.user_id)
-    {
+  loadTeams() {
+    this.Site.getUserTeams().pipe(take(1)).subscribe({
+      next: (data: any) => {
+        this.userTeams = data;
+      },
+      error: (error: any) => {
+        console.error('Error fetching teams', error);
+      }
+    });
+  }
+
+  checkRole(index: number) {
+    if (!this.userTeams || !this.userTeams[index]) return "";
+    if (this.userTeams[index].manager == this.user.user_id) {
       return "Manager";
     }
+
     return "Worker";
   }
-  
 
-  Logout(){
-    this.Auth.logout().subscribe((data:any) =>{
-      localStorage.removeItem('user');
-      delay(1500);
-      this.router.navigate(['']).then(() => {
-          location.reload();
-      });
-      
-    },(error:any)=>{
-      console.error(error);
-      
-    })
-  }
-
-
-  CreateTeam(){
-    const dialogRef = this.dialog.open(CreateComponent, {
-      width: '700px',
-      
-    });
-
-    dialogRef.afterClosed().subscribe((result:any) => {
-      if (result === 'confirm') {
-        location.reload();
-      } else if (result === 'cancel') {
-        
-      }
-    });
-
-      
-  }
-
-  JoinTeam(){
-    const dialogRef = this.dialog.open(JoinTeamComponent, {
-      width: '700px',
-      
-    });
-
-    dialogRef.afterClosed().subscribe((result:any) => {
-      if (result === 'confirm') {
-        location.reload();
-      } else if (result === 'cancel') {
-        
+  Logout() {
+    this.Auth.logout().subscribe({
+      next: () => {
+        this.performLocalLogout();
+      },
+      error: (error: any) => {
+        console.error('Logout API error:', error);
+        this.performLocalLogout();
       }
     });
   }
 
+  private performLocalLogout() {
+    localStorage.removeItem('user');
+    this.router.navigate(['/login'], { replaceUrl: true });
+  }
 
+  CreateTeam() {
+    this.router.navigate(['/create-team']);
+  }
+
+  JoinTeam() {
+    this.router.navigate(['/join-team']);
+  }
 
 }

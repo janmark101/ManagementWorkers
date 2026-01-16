@@ -1,39 +1,76 @@
-<div class="body">
-<fa-icon class="icon" [icon]="backIcon" [routerLink]="['/team',teamId]"> </fa-icon>
-    <div class="container">
-        
-        <div class="buttons-box">
-            <div class="buttonCode">
-                <fa-icon class="icon" [icon]="codeIcon" style="color:white;font-size: 10vh;"(click)="showUniqueCode()"></fa-icon>
-                <p class="button-name">Team Code</p>
-            </div>
-            <div class="buttonCode">
-                <fa-icon class="icon" [icon]="linkIcon" style="color:white;font-size: 10vh;"(click)="showAddingLink()"></fa-icon>
-                <p class="button-name">Adding Link</p>
-            </div>
-            <div class="buttonCode">
-                <fa-icon class="icon" [icon]="deleteIcon" style="color:white;font-size: 10vh;"(click)="deleteTeam()"></fa-icon>
-                <p class="button-name">Delete Team</p>
-            </div>
-            <div class="buttonCode">
-                <fa-icon class="icon" [icon]="generateRaport" style="color:white;font-size: 10vh;"(click)="generatePdf(teamName,TeamUsers,TeamTasks)"></fa-icon>
-                <p class="button-name">Generate Raport</p>
-            </div>
-        </div>
-        <div class="team-info"> 
-            <h1 class="teamName">{{teamName}}</h1> 
-            <div class="scroll">           
-                <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
-                    <div class="employee_list"> 
-                        <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
-                    </div>
-                    <div>
-                        <fa-icon class="deleteIcon" [icon]="deleteUser" (click)="removeUser(user.id)"> </fa-icon>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/team/{{teamId}}"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Team Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content class="ion-padding">
 
+  <div class="ion-text-center ion-margin-bottom">
+    <h1 style="margin: 0; color: var(--ion-color-dark);">{{ teamName }}</h1>
+    <ion-text color="medium">
+      <p>Manage your team settings</p>
+    </ion-text>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      
+      <ion-col size="6">
+        <div class="option-card ion-activatable ripple-parent" (click)="showUniqueCode()">
+          <fa-icon [icon]="codeIcon" class="option-icon" style="color: var(--ion-color-primary);"></fa-icon>
+          <p>Team Code</p>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </ion-col>
+
+      <ion-col size="6">
+        <div class="option-card ion-activatable ripple-parent" (click)="showAddingLink()">
+          <fa-icon [icon]="linkIcon" class="option-icon" style="color: var(--ion-color-secondary);"></fa-icon>
+          <p>Invite Link</p>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </ion-col>
+
+      <ion-col size="6">
+        <div class="option-card ion-activatable ripple-parent" (click)="generatePdf()">
+          <fa-icon [icon]="generateRaport" class="option-icon" style="color: var(--ion-color-tertiary);"></fa-icon>
+          <p>Report PDF</p>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </ion-col>
+
+      <ion-col size="6">
+        <div class="option-card ion-activatable ripple-parent danger-card" (click)="deleteTeam()">
+          <fa-icon [icon]="deleteIcon" class="option-icon" style="color: var(--ion-color-danger);"></fa-icon>
+          <p>Delete Team</p>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <h3 class="ion-margin-top ion-padding-start">Team Members</h3>
+  
+  <ion-list inset="true">
+    <ion-item *ngFor="let user of TeamUsers">
+      <ion-label>
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p>Member</p>
+      </ion-label>
+      
+      <ion-button slot="end" fill="clear" color="danger" (click)="removeUser(user.id)">
+        <fa-icon [icon]="deleteUser"></fa-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item *ngIf="TeamUsers.length === 0">
+      <ion-label class="ion-text-center">No members found.</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

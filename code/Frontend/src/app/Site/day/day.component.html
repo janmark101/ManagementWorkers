@@ -1,42 +1,113 @@
-<div class="window">
-  <h1 style="text-align: center; color:black;" [ngSwitch]="true">
-    <ng-container *ngSwitchCase="day==1 || day==21 || day==31">
-      {{day}}st of {{month}}
-    </ng-container>
-    <ng-container *ngSwitchCase="day==2 || day ==22">
-      {{day}}nd of {{month}}
-    </ng-container>
-    <ng-container *ngSwitchCase="day==3 || day==23">
-      {{day}}rd of {{month}}
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      {{day}}th of {{month}}
-    </ng-container>
-  </h1>
-      <div class="tasks-container">
-        <div class="task" *ngFor="let task of tasks;let i = index">
-          <div class="task-info">
-            <div class="task-name">{{ task.name }}</div>
-            <div class="task-description">{{ task.description }}</div>
-            <div>
-            <select class="select" (change)="update($event,task.id)"> 
-              <option value="default">{{task.status}}</option> 
-              <option *ngFor="let status of statuses" [value]="status"> 
-                  {{status}} 
-              </option> 
-          </select>
-        </div> 
-            <div class="CRUD" *ngIf="isManager">             
-              <fa-icon [icon]="editicon" size="xl" style="cursor: pointer;" (click)="EditTaskPopup(task.id)"></fa-icon>
-                <fa-icon [icon]="trashicon" size="xl" style="cursor: pointer;" (click)="Delete(task.id)"></fa-icon>
-            </div>
+<ion-header>
+
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+
+      <ion-back-button defaultHref="/team/{{teamID}}"></ion-back-button>
+
+    </ion-buttons>
+
+
+    <ion-title>
+
+      <ng-container [ngSwitch]="true">
+
+        <ng-container *ngSwitchCase="day==1 || day==21 || day==31">
+
+          {{day}}st of {{month}}
+
+        </ng-container>
+
+        <ng-container *ngSwitchCase="day==2 || day ==22">
+
+          {{day}}nd of {{month}}
+
+        </ng-container>
+
+        <ng-container *ngSwitchCase="day==3 || day==23">
+
+          {{day}}rd of {{month}}
+
+        </ng-container>
+
+        <ng-container *ngSwitchDefault>
+
+          {{day}}th of {{month}}
+
+        </ng-container>
+
+      </ng-container>
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+
+  <ion-list lines="none">
+
+    <ion-card *ngFor="let task of tasks; let i = index">
+
+
+
+      <ion-card-header>
+
+        <ion-card-title>{{ task.name }}</ion-card-title>
+
+      </ion-card-header>
+
+
+      <ion-card-content>
+
+        <p style="margin-bottom: 10px;">{{ task.description }}</p>
+
+
+        <ion-item lines="none" class="ion-no-padding">
+
+          <ion-label position="stacked" color="medium">Status</ion-label>
+
+          <ion-select [value]="task.status" interface="popover" (ionChange)="update($event, task.id)">
+
+            <ion-select-option *ngFor="let status of statuses" [value]="status">
+
+              {{ status }}
+
+            </ion-select-option>
+
+          </ion-select>
+
+        </ion-item>
+
+        <div *ngIf="isManager" class="manager-actions ion-margin-top">
+          <ion-button fill="outline" size="small" (click)="EditTask(task.id)">
+            <ion-icon slot="start" name="create-outline"></ion-icon>
+            Edit
+          </ion-button>
+          <ion-button fill="outline" color="danger" size="small" (click)="Delete(task.id)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
         </div>
-      </div>
-      </div>
-      <p style="text-align: center;">{{message}}</p>
-      <div class="button-container">
-        <button class="button" type="button" (click)="onCancel()">Ok</button>
-      </div>
-    
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+
+  <div *ngIf="tasks.length === 0" class="ion-text-center ion-padding-top">
+    <ion-text color="medium">
+      <p>No tasks for this day.</p>
+    </ion-text>
   </div>
-  
+
+  <div class="ion-text-center" *ngIf="message">
+    <ion-text color="danger">
+      <p>{{ message }}</p>
+    </ion-text>
+  </div>
+
+</ion-content>

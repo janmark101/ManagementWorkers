@@ -1,75 +1,83 @@
-<div class="body">
-    <div style="display:flex; flex-direction: row; justify-content: space-between;padding-bottom: 2%;margin-right:4%;">
-        <fa-icon class="backIcon" [icon]="backIcon" [routerLink]="['/home']"> </fa-icon>
-        <button class="button" *ngIf="!isManager" (click)="leaveTeam()">Leave Team</button>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-title>{{ teamName }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="presentActionSheet()">
+        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-bottom">
+
+  <div class="calendar-header ion-padding-top">
+    <ion-button fill="clear" (click)="prevMonth()">
+      <ion-icon name="chevron-back-outline" size="large"></ion-icon>
+    </ion-button>
+    
+    <h2 class="month-label">{{ dateInformation.currentMonth }} {{ dateInformation.currentYear }}</h2>
+    
+    <ion-button fill="clear" (click)="nextMonth()">
+      <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="ion-text-center ion-margin-bottom">
+    <ion-chip (click)="showLegend()" color="medium" outline="true">
+      <ion-icon name="information-circle"></ion-icon>
+      <ion-label>Legend</ion-label>
+    </ion-chip>
+  </div>
+
+  <div class="calendar-grid-container">
+    <div 
+      class="calendar-day" 
+      *ngFor="let day of dateInformation.currentMonthDays; let i = index"
+      [class.today]="i === dateInformation.currentDay - 1"
+      (click)="DisplayDay(i + 1)">
+      
+      <span class="day-number">{{ i + 1 }}</span>
+
+      <div *ngIf="TaskCounterMap.get(i + 1) != 0" class="task-indicator">
+        <fa-icon [icon]="tasks" 
+          [style.color]="getTaskColor(TaskCounterMap.get(i + 1))">
+        </fa-icon>
+      </div>
     </div>
-    <div class="container">
-        <div class="calendar-container">
-            <div>
-                <h1 style="font-size: 3vw;">{{teamName}}</h1>
-            </div>
-            <div style="display: flex; justify-content: space-between;width: 20%;align-items: center;">
-                <fa-icon [icon]="backIcon" (click)="prevMonth()" style="cursor: pointer;color: white;" size="xl"></fa-icon>
-                <h1 style="padding-top: 6%;font-size: 1vw;">{{dateInformation.currentMonth}} {{dateInformation.currentYear}}</h1>
-                <fa-icon [icon]="nextIcon" (click)="nextMonth()" style="cursor: pointer;color: white;" size="xl"></fa-icon>
-            </div>
-            <div class="iconBox"><fa-icon class="info" [icon]="info" matTooltip = "The colors correspond to the number of tasks to be performed:&#10;1 task: green flag&#10;2 tasks: orange flag&#10;3 or more tasks: red flag&#10;"
-                [matTooltipClass]="'custom-tooltip'"> </fa-icon></div>
-                
+  </div>
 
-            <ul class ="callendar_list">
-                <div class="callendar" (click)="DisplayDay(i+1)" *ngFor="let day of dateInformation.currentMonthDays;let i = index"
-                    [ngClass]="{'today': i === dateInformation.currentDay-1}">
-                    <time class="time">{{i+1}}</time>
+  <div class="section-divider">
+    <span>Filter by Worker</span>
+  </div>
 
-                    <fa-icon class="tasks" [icon]="tasks" *ngIf="TaskCounterMap.get(i+1) != 0"
-                            [ngStyle]="{
-                                'color':    
-                                TaskCounterMap.get(i+1) === 1 ? 'rgb(31, 89, 47)' : 
-                                TaskCounterMap.get(i+1) === 2 ? 'rgb(145, 86, 38)' : 
-                                'rgb(117, 33, 32)'}">
-                    </fa-icon>
-                </div>
-            </ul>
-        </div>
+  <ion-list *ngIf="isManager || TeamUsers.length > 0">
+    <ion-item *ngFor="let user of TeamUsers; let i = index">
+      <ion-checkbox 
+        slot="start" 
+        [(ngModel)]="user.isChecked" 
+        (ionChange)="checkSelectedUser(i)">
+      </ion-checkbox>
+      <ion-label>
+        {{ user.first_name }} {{ user.last_name }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-        <!-- <div class="workers_list" *ngIf="isManager"> -->
-        <div class="workers_list" *ngIf="isManager">
-            <div class="button-container2">
-                <div style="display:flex; flex-direction: column;align-items: center;">            
-                    <fa-icon class="icon" [icon]="plus"(click)="AddTaskPopup()"></fa-icon>
-                <p style="color:white;font-size: smaller;padding-top:5px;">Add task</p>
-                </div>
-                <div style="display:flex; flex-direction: column;align-items: center;">            
-                    <fa-icon class="icon" [icon]="gearIcon" [routerLink]="['/team',teamId,'options']"></fa-icon>
-                    <p style="color:white;font-size: smaller;padding-top: 5px;">Settings</p>
-                </div>
-                <!-- <div style="display:flex; flex-direction: column;align-items: center;">            
-                    <fa-icon class="icon" [icon]="chatIcon" [routerLink]="['/team',teamId,'chat']"></fa-icon>
-                    <p style="color:white;font-size: smaller;padding-top: 5px;">Chat</p>
-                </div> -->
-            </div>
-            <div class="scroll">
-            
-                <div class="employee_list_container" *ngFor="let user of TeamUsers; let i = index">
-                    <div class="employee_list"> 
-                        
-                        <input class="checkbox" type="checkbox" id="employee{{i+1}}" [(ngModel)]="user.isChecked"
-                        (change)="checkSelectedUser(i)">
-                    </div>
-                    <div class="name-list">
-                        
-                        <label class="label" for="employee{{i+1}}">{{user.first_name}} {{user.last_name}}</label>
-                      
-                    </div>
-                    
-                    
-                </div>
-            </div>
-        </div>
-        <div style="padding-left: 3%; height:90%; display: flex; flex-direction: column;justify-content: end;">
-            <fa-icon class="chat-icon" [icon]="chatIcon" (click)="OpenChat()"></fa-icon>
-        </div>
-        
-    </div>
-</div>
+  <div *ngIf="TeamUsers.length === 0" class="ion-text-center ion-padding">
+    <ion-text color="medium"><p>No team members yet.</p></ion-text>
+  </div>
+
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isManager">
+  <ion-fab-button [routerLink]="['/team', teamId, 'add-task']">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+

@@ -10,44 +10,52 @@ import { AuthService } from 'src/app/Services/auth.service';
 })
 export class RegisterComponent {
 
-  
-  constructor(private Auth : AuthService,private router: Router){};
   error = "";
-  
 
-  onSubmit(form: NgForm){
-    if (!(form.value.firstname && form.value.lastname && form.value.email && form.value.username && form.value.password)){
-      this.error = "Dont leave empty fields!";
-      
+  constructor(private Auth: AuthService, private router: Router) { }
+
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      this.error = "Please fill all fields!";
+      return;
     }
-    else{
-        let data = {
-          "username" : form.value.username,
-          "first_name" : form.value.firstname,
-          "last_name" : form.value.lastname,
-          "email" : form.value.email,
-          "password" : form.value.password,
+
+    let data = {
+      "username": form.value.username,
+      "first_name": form.value.firstname,
+      "last_name": form.value.lastname,
+      "email": form.value.email,
+      "password": form.value.password,
+    };
+
+    this.Auth.register(data).subscribe({
+      next: (res: any) => {
+        this.error = 'Registered succesfully!';
+        form.reset();
+
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
+      },
+      error: (error: any) => {
+        console.error(error);
+
+        if (error.error && error.error.error) {
+          const errObj = error.error.error;
+
+          if (errObj.email) {
+            this.error = Array.isArray(errObj.email) ? errObj.email[0] : errObj.email;
+          } else if (errObj.username) {
+            this.error = Array.isArray(errObj.username) ? errObj.username[0] : errObj.username;
+          } else if (errObj.password) {
+            this.error = Array.isArray(errObj.password) ? errObj.password[0] : errObj.password;
+          } else {
+            this.error = "Registration failed.";
+          }
+        } else {
+          this.error = "Something went wrong.";
         }
-    
-        
-        this.Auth.register(data).subscribe((data:any) =>{
-          this.error = 'Registered succesfully!';
-          form.reset();
-        },(error:any)=>{
-          console.log(error);
-          
-          if(error.error.error){
-            if (error.error.error.email){
-              this.error = error.error.error.email
-            }
-            if (error.error.error.username){
-              this.error = error.error.error.username
-            }
-            if (error.error.error.password){
-              this.error = error.error.error.password
-            }
-          }          
-        });
-    }
+      }
+    });
   }
 }

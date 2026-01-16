@@ -1,22 +1,65 @@
-<div class="window">
-    <h1 style="text-align: center; color:black;font-weight:bold;">Create team</h1>
-    <form class = "form-container"(ngSubmit)="onSubmit(form)" #form="ngForm">
-        
-      <div class="div">
-        <label for="Title" class="form-label">Team name:</label>
-        <input type="text" class="form-control" id="Title" ngModel name="name">
-      </div>
-      <div class="div">
-        <label for="Title" class="form-label">Description: </label>
-        <textarea class="form-control" id="Description"  rows="4" ngModel name="description"></textarea>
-      </div>
-      <p style="text-align: center;margin:0;font-size:20px;">{{message}}  </p>
-      <div class="button-container" style="margin-top: 15%;" *ngIf="!success">
-        <button class="button" type="submit">Save</button>
-        <button class="button" type="button"(click)="onCancel()">Cancel</button>
-      </div>
-      <div class="button-container" style="margin-top: 8%;" *ngIf="success">
-        <button class="button" type="button"(click)="onClose()">OK</button>
-      </div>
-    </form>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Team</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="ion-text-center ion-margin-vertical" *ngIf="!success">
+    <ion-icon name="people-circle-outline" style="font-size: 80px; color: var(--ion-color-primary);"></ion-icon>
+    <h2>Start a New Team</h2>
   </div>
+
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
+    <div *ngIf="!success">
+      <div class="ion-margin-bottom">
+        <ion-input label="Team Name" label-placement="stacked" fill="outline" ngModel name="name" required
+          placeholder=" ">
+        </ion-input>
+      </div>
+
+      <div class="ion-margin-bottom">
+        <ion-textarea label="Description" label-placement="stacked" fill="outline" rows="5" auto-grow="true" ngModel
+          name="description">
+        </ion-textarea>
+      </div>
+    </div>
+
+    <div class="ion-text-center ion-margin-vertical" *ngIf="message">
+      <div *ngIf="success" class="ion-margin-bottom">
+        <ion-icon name="checkmark-circle-outline" color="success" style="font-size: 80px;"></ion-icon>
+      </div>
+
+      <ion-text [color]="success ? 'success' : 'danger'">
+        <h3>{{ message }}</h3>
+      </ion-text>
+    </div>
+
+    <ng-container *ngIf="!success">
+      <div class="ion-margin-bottom">
+        <ion-button expand="block" type="submit" [disabled]="!form.valid">Create Team
+        </ion-button>
+      </div>
+
+      <div class="ion-margin-bottom">
+        <ion-button expand="block" fill="clear" color="medium" (click)="onCancel()">
+          Cancel
+        </ion-button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="success">
+      <div class="ion-margin-bottom">
+        <ion-button expand="block" color="success" (click)="onClose()">
+          Go to Home
+        </ion-button>
+      </div>
+    </ng-container>
+
+  </form>
+</ion-content>

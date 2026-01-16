@@ -1,0 +1,14 @@
+// login.component.scss
+
+// Opcjonalnie: Wyśrodkowanie w pionie
+ion-content {
+  --padding-top: 20px;
+}
+
+// Jeśli chcesz, żeby formularz był idealnie na środku ekranu:
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%; // Jeśli formularz jest w kontenerze o pełnej wysokości
+}

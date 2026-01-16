@@ -191,4 +191,7 @@ cython_debug/
 .history
 .ionide
 
+# npx android dir
+android/
 # End of https://www.toptal.com/developers/gitignore/api/django,visualstudiocode
+

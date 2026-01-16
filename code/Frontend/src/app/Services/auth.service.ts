@@ -8,9 +8,10 @@ import { HttpClient ,HttpHeaders} from '@angular/common/http';
 export class AuthService {
 
   constructor(private http:HttpClient) { }
-  // ip address on android studio device emulator that is bridged to emulator host localhost
-  api_url = 'http://10.0.2.2:8000/auth/'
 
+  //api_url = 'http://10.0.2.2:8000/auth/'
+  //api_url = 'http://127.0.0.1:8000/auth/'
+  api_url = 'http://192.168.0.103:8000/auth/'
 
   getUserFromLocalStorage() {
     const userString = localStorage.getItem('user');

@@ -1,113 +1,114 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, ToastController } from '@ionic/angular';
 import { SiteService } from 'src/app/Services/site.service';
-
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss']
 })
-export class TaskComponent implements OnInit{
+export class TaskComponent implements OnInit {
 
-  message : string = "";
-  dropdownList:any = [];
-  selectedItems:any = [];
-  dropdownSettings:any = {};
-  userSelected:any=[];
-  success : boolean = false;
+  mode: 'create' | 'edit' = 'create';
+  taskId: number | null = null;
+  team_id: number | any;
+
+  taskData = {
+    name: '',
+    description: '',
+    date: '',
+    workers_id: [] as number[]
+  };
+
+  userList: any[] = [];
 
   constructor(
-    private dialogRef: MatDialogRef<TaskComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
-  ) {}
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private Service: SiteService
+  ) { }
 
+  ngOnInit(): void {
+    this.team_id = this.route.snapshot.paramMap.get('id');
 
-    ngOnInit(): void {
-      this.UsersForTask();
-
+    const paramTaskId = this.route.snapshot.paramMap.get('taskId');
+    console.log(paramTaskId);
+    if (paramTaskId) {
+      this.mode = 'edit';
+      this.taskId = Number(paramTaskId);
+      this.loadTaskDetails(this.taskId);
     }
-    onItemSelect(item : any) {
-      
-      this.userSelected.push(item.item_id);
-    }
 
-    onItemDeSelect(item:any){
-      const indexToRemove = this.userSelected.findIndex((id:any) => id === item.item_id);
+    this.loadUsers();
+  }
 
-      if (indexToRemove!==-1){
-        this.userSelected.splice(indexToRemove, 1);
+  loadUsers() {
+    this.Service.getUsersForTeam(this.team_id).subscribe({
+      next: (data: any) => this.userList = data.data || data || [],
+      error: (err) => console.error(err)
+    });
+  }
+
+  loadTaskDetails(id: number) {
+    this.Service.getTaskForTeam(this.team_id).subscribe((tasks: any) => {
+      const foundTask = tasks.find((t: any) => t.id === id);
+      console.log("Task found");
+      if (foundTask) {
+        // Przypisujemy dane do obiektu, który jest podpięty pod formularz
+        this.taskData = {
+          name: foundTask.name,
+          description: foundTask.description,
+          date: foundTask.date,
+          workers_id: foundTask.workers_id || []
+        };
       }
-    }
+    });
+  }
 
-    onSelectAll(items: any) {
+  onSubmit(form: NgForm) {
+    if (form.invalid) return;
 
-      for(let item of items){
-        this.userSelected.push(item.item_id);
-      }
-      
-    }
+    const requestData = {
+      "name": form.value.name,
+      "description": form.value.description,
+      "date": form.value.date,
+      "workers_id": form.value.workers_id || []
+    };
 
-    onItemDeSelectAll(item:any){
-      this.userSelected = [];
-      
-    }
-
-    
-
-    onSubmit(form:NgForm){
-      
-      let data = {
-        "name" : form.value.name,
-        "description" : form.value.description,
-        "date": form.value.date,
-        "workers_id": this.userSelected
-      }
-      
-      this.Service.addTaskForTeam(this.data.team_id,data).subscribe((data:any) =>{
-        this.success = true;
-        this.message = `Task created`;
-      },(error:any)=>{
-        this.success = false;
-        this.message = "Something went wrong!";
+    if (this.mode === 'create') {
+      this.Service.addTaskForTeam(this.team_id, requestData).subscribe({
+        next: () => this.handleSuccess('Task created successfully!'),
+        error: (err) => this.handleError(err)
       });
-
-      
-
-
+    } else {
+      this.Service.editTask(this.taskId!, this.team_id, requestData).subscribe({
+        next: () => this.handleSuccess('Task updated successfully!'),
+        error: (err) => this.handleError(err)
+      });
     }
+  }
 
-    UsersForTask(){
-      this.dropdownList = [
-        
-      ];
-      this.selectedItems = [
+  async handleSuccess(msg: string) {
+    await this.showToast(msg, 'success');
+    this.navCtrl.back();
+  }
 
-      ];
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'item_id',
-        textField: 'item_text',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-      };
+  async handleError(err: any) {
+    console.error(err);
+    await this.showToast('Something went wrong!', 'danger');
+  }
 
-      for (const user of this.data.userList) {
-        this.dropdownList.push({
-          item_id: user.id,
-          item_text: `${user.first_name} ${user.last_name}`
-        });
-      }
-    }
-    
-    onCancel(){
-      this.dialogRef.close();
-    }
+  onCancel() {
+    this.navCtrl.back();
+  }
 
-    onClose(){
-      this.dialogRef.close('confirm');
-    }
+  async showToast(msg: string, color: string) {
+    const toast = await this.toastCtrl.create({
+      message: msg, duration: 2000, color: color, position: 'bottom'
+    });
+    toast.present();
+  }
 }

@@ -26,20 +26,20 @@ SECRET_KEY = 'django-insecure-5ga#gtk9xtc7%m=j^c&@o7tdvnq2-qppg0&hx4#-oy)26qiu^@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '10.0.2.2']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '10.0.2.2', '192.168.0.103']
 
-# CORS musi akceptować zapytania z "pseudodomeny" mobilnej
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200", # Dla przeglądarki
     "http://localhost",      # Dla Capacitora (Android)
     "http://localhost:8080",  # Czasem Ionic używa tego portu
     "http://192.168.0.117:8000",
-    "http://127.0.0.1:4200"
+    "http://127.0.0.1:4200",
+    "http://192.168.0.103:8000"
 ]
-
-CORS_ALLOW_CREDENTIALS = True
 
 TIME_ZONE = 'Europe/Warsaw'
 

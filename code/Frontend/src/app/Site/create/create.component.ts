@@ -1,49 +1,51 @@
-import { Component,Inject } from '@angular/core';
-import { SiteService } from 'src/app/Services/site.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { SiteService } from 'src/app/Services/site.service';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent {
 
-  
-  message : string = "";
-  success : boolean = false;
+  message: string = "";
+  success: boolean = false;
 
   constructor(
-    private dialogRef: MatDialogRef<CreateComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
+    private router: Router,
+    private navCtrl: NavController,
+    private service: SiteService
   ) {}
 
-    onSubmit(form:NgForm){
-      let data = {
-        "name" : form.value.name,
-        "description" : form.value.description,
-      }
-      
-      
-      this.Service.createTeam(data).subscribe((data:any) =>{
-        this.message = `Team created successfully! Unique code : ${data.unique_code}`;
+  onSubmit(form: NgForm) {
+    if (form.invalid) return;
+
+    const requestData = {
+      "name": form.value.name,
+      "description": form.value.description,
+    };
+
+    this.service.createTeam(requestData).subscribe({
+      next: (response: any) => {
+        this.message = `Team created! Code: ${response.unique_code}`;
         this.success = true;
-
-      },(error:any)=>{
+      },
+      error: (error: any) => {
         console.error(error);
-        this.message = "Something went wrong!";
+        this.message = "Something went wrong! Try again.";
         this.success = false;
-      });
+      }
+    });
+  }
 
-    }
+  onCancel() {
+    this.navCtrl.back();
+  }
 
-    onCancel(){
-      this.dialogRef.close();
-    }
-
-    onClose(){
-      this.dialogRef.close('confirm');
-    }
-
+  onClose() {
+    this.router.navigate(['/home']);
+  }
 }

@@ -1,151 +1,123 @@
-import { Component,Inject, OnInit} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, AlertController, ModalController } from '@ionic/angular';
 import { SiteService } from 'src/app/Services/site.service';
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import {
-  ConfirmBoxInitializer,
-  DialogLayoutDisplay,
-  DisappearanceAnimation,
-  AppearanceAnimation,
-  ConfirmBoxEvokeService,
-  
-} from '@costlydeveloper/ngx-awesome-popup';
 import { EditTaskComponent } from '../edit-task/edit-task.component';
-import { take } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-day',
   templateUrl: './day.component.html',
-  styleUrls: ['./day.component.scss']
+  styleUrls: ['./day.component.scss'],
 })
+
 export class DayComponent implements OnInit {
-  editicon=faGear;
-  trashicon=faTrash;
+  teamID: number | any;
+  
+  day: number | any;
+  month: string = '';
+  year: number | any;
 
-  message : string = "";
-  currentMonthTasks: any;
-  day: any;
-  tasks: any;
-  taskId:any;
-  month : any;
-  teamId : any;
-  isManager : boolean | any;
-
-
+  tasks: any[] = [];
+  message: string = "";
   statuses = ['Not started', 'In progress', 'Finished'];
-  selectedStatus :String | any;
+  isManager: boolean = false;
+
+  monthMap: { [key: string]: number } = {
+    'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
+    'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
+  };
 
   constructor(
-    private dialogRef: MatDialogRef<DayComponent>,
-    private dialog: MatDialog,
-    private confirmBoxEvokeService: ConfirmBoxEvokeService,
-    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
-  ) {}
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
+    private Service: SiteService,
+    private router: Router
+  ) { }
+
 
   ngOnInit(): void {
-    this.currentMonthTasks=this.data.currentMonthTasks;
-    this.day=this.data.day;
-    this.month = this.data.month;
-    this.teamId = this.data.teamID;
-    this.isManager = this.data.isManager;
+    this.teamID = this.route.snapshot.paramMap.get('id');
+    this.day = Number(this.route.snapshot.paramMap.get('day'));
+    this.month = this.route.snapshot.paramMap.get('month') || '';
+    this.year = Number(this.route.snapshot.paramMap.get('year'));
 
-    this.tasks = this.currentMonthTasks.filter((item:any) => {
-      const itemDate = new Date(item.date);
-        
-      return itemDate.getDate() === this.day; 
+    this.checkUserRole();
+    this.loadTasks();
+  }
+
+  checkUserRole() {
+    this.Service.getUsersForTeam(this.teamID).subscribe((data: any) => {
+      this.isManager = data.manager;
     });
+  }
 
-    this.sortListByName();
-    
-
-
+  loadTasks() {
+    this.Service.getTaskForTeam(this.teamID).subscribe({
+      next: (allTasks: any) => {
+        const monthIndex = this.monthMap[this.month];
+        this.tasks = allTasks.filter((item: any) => {
+          const itemDate = new Date(item.date);
+          return itemDate.getDate() === this.day &&
+            itemDate.getMonth() === monthIndex &&
+            itemDate.getFullYear() === this.year;
+        });
+        this.sortListByName();
+      },
+      error: (err) => console.error(err)
+    });
   }
 
   sortListByName() {
-    this.tasks.sort((a:any, b:any) => {
+    this.tasks.sort((a: any, b: any) => {
       const nameA = a.name.toLowerCase();
       const nameB = b.name.toLowerCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
+
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+
       return 0;
     });
   }
-    
-    openConfirmBox() {
-      const newConfirmBox = new ConfirmBoxInitializer();
 
-      newConfirmBox.setTitle('Confirm delete');
-      newConfirmBox.setMessage('');
+  update(event: any, taskId: number) {
+    const status = event.detail.value;
+    const data = { 'status': status };
 
+    this.Service.changeTaskStatus(this.teamID, data, taskId).subscribe({
+      next: () => {
+        // Aktualizacja lokalna
+        const task = this.tasks.find((t: any) => t.id === taskId);
+        if (task) task.status = status;
+      },
+      error: () => this.message = "Failed to update status."
+    });
+  }
 
-      newConfirmBox.setConfig({
-      layoutType: DialogLayoutDisplay.DANGER, 
-      animationIn: AppearanceAnimation.BOUNCE_IN, 
-      animationOut: DisappearanceAnimation.FLIP_OUT, 
-      });
-      newConfirmBox.setButtonLabels('Delete', 'Cancel');
-
-      
-      newConfirmBox.openConfirmBox$()
-    
-    }
-      Delete( index:number){
-        this.confirmBoxEvokeService.danger('Confirm delete!', 'Are you sure you want to delete it?', 'Confirm', 'Decline')
-        .subscribe(resp => {
-    
-          if(resp.success === true){
-              this.Service.deleteTask(index,this.teamId).subscribe((data:any) =>{
-                location.reload();
-              },(error:any)=>{
-                this.message = "Something went wrong!";
-              });
+  async Delete(taskId: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to delete this task?',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.Service.deleteTask(taskId, this.teamID).subscribe({
+              next: () => this.loadTasks(), // Odśwież listę po usunięciu
+              error: () => this.message = "Something went wrong!"
+            });
           }
-        });
-      }
-
-  
-    onCancel(){
-      this.dialogRef.close('confirm');
-    }
-
-    EditTaskPopup(taskID:number){
-      const dialogRef = this.dialog.open(EditTaskComponent, {
-        width: '700px',
-        data: {
-          taskID: taskID,
-          teamID: this.data.teamID,
         }
-      });
-  
-      dialogRef.afterClosed().subscribe((result:any) => {
-        if (result === 'confirm') {
-          location.reload();
-        } else if (result === 'cancel') {
+      ]
+    });
+    await alert.present();
+  }
 
-          
-        }
-      });
-    }
-
-    update(e:any,taskId:number){ 
-      let status : string = e.target.value;
-      let data = {'status' : status};
-      this.Service.changeTaskStatus(this.data.teamID,data,taskId).subscribe((data:any) => {
-        let task = this.tasks.find((task:any) => task.id === taskId);
-        task.status = status;
-        
-      },(error:any)=>{
-        console.error(error);
-    
-      });
-    } 
-
-
-  
-  
-}
+  EditTask(taskId: number) {
+    this.router.navigate(['/team', this.teamID, 'edit-task', taskId]);
+  }
+} 

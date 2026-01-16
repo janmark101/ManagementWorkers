@@ -16,10 +16,11 @@ export class AppComponent {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      if ((this.activatedRoute.snapshot.firstChild?.routeConfig?.path === '') || (this.activatedRoute.snapshot.firstChild?.routeConfig?.path === 'register')){
+      var activeRoute = this.activatedRoute.snapshot.firstChild?.routeConfig?.path; 
+      if ((activeRoute === '') || (activeRoute === 'login') ) {
         this.isLoginPage = true;
       }
-      else{
+      else {
         this.isLoginPage = false;
       }
     });

@@ -4,4 +4,16 @@ html, body { height: 100%; }
 body { margin: 0; font-family: "Poppins", serif;background-color:#07090C;  }
 @import "node_modules/@costlydeveloper/ngx-awesome-popup/styles/theme";
 
+.auto-height-modal {
+  --height: auto;
+  --max-height: 90vh;
+  --border-radius: 16px;
+  align-items: center; 
+}
 
+.auto-height-modal .ion-page {
+  position: relative !important;
+  display: block !important;
+  contain: content;
+  height: auto !important;
+}
