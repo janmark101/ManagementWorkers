@@ -32,6 +32,7 @@ const routes: Routes = [
   { path: 'team/:id/add-task', component: TaskComponent },
   { path: 'team/:id/edit-task/:taskId', component: TaskComponent },
   { path: 'team/:id/day/:day/:month/:year', component: DayComponent },
+  { path: 'team/:id/chat', component: ChatComponent },
 ];
 
 @NgModule({

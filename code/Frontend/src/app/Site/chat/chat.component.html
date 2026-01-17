@@ -1,27 +1,49 @@
-<div class="chat-container">
-    <div class="chat-messages" #chatMessagesContainer>
-      <div *ngFor="let message of processedMessages" class="chat-message">
-        <div  class="message-container">
-          <div style="display: flex;flex-direction: column;width: 100%;" >
-            <div style="width: 100%;text-align: center;">
-              <span *ngIf="message.showDate" style="color: rgb(255, 255, 255);font-size: 20px;">{{ message.send_date.split('T')[0] }}</span>
-            </div>
-          <div style="display: flex;flex-direction: row;justify-content: space-between;">
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/team/{{ teamId }}"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Team Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-          <div>
-            <span class="message-text-author" [ngStyle]="{'color': message.sender.id === this.user.user_id ? '#778FD0' : 'white'}">{{ message.sender.first_name }} {{ message.sender.last_name }} : </span>
-            <span class="message-text">{{ message.content }}</span>
-          </div>
-          <span class="message-date">{{ message.send_date | date:'HH:mm' }}</span> 
-                      
-        </div>
-        </div>
-      </div>
-      </div>
-    </div>
-    <div class="chat-input">
-      <input class="input" placeholder="Type a message..."  [(ngModel)]="message"  (keyup.enter)="send()"/>
-      <button (click)="send()">Send</button>
-    </div>
-  </div>
+<ion-content class="ion-padding" #content>
   
+  <ion-list lines="none">
+    <div *ngFor="let msg of messages" class="message-wrapper" 
+         [class.my-message]="isMyMessage(msg)"
+         [class.other-message]="!isMyMessage(msg)">
+      
+      <div class="sender-name" *ngIf="!isMyMessage(msg)">
+        {{ msg.sender.first_name || msg.sender.username }}
+      </div>
+
+      <div class="message-bubble">
+        {{ msg.content }}
+      </div>
+      
+      <div class="message-time">
+        {{ msg.send_date | date:'shortTime' }}
+      </div>
+    </div>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <div class="input-container">
+      <ion-textarea 
+        auto-grow="true" 
+        rows="1" 
+        placeholder="Type a message..." 
+        [(ngModel)]="newMessage"
+        (keydown.enter)="sendMessage()">
+      </ion-textarea>
+      
+      <ion-button fill="clear" (click)="sendMessage()" [disabled]="!newMessage.trim()">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

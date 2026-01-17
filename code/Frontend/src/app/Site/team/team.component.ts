@@ -260,4 +260,8 @@ export class TeamComponent implements OnInit {
     });
     await alert.present();
   }
+
+  goToChat() {
+  this.router.navigate(['/team', this.teamId, 'chat']);
+}
 }

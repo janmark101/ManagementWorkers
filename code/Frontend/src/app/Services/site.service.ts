@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
-import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environment/environment';
 import jsPDF from 'jspdf';
 @Injectable({
   providedIn: 'root'
@@ -12,9 +11,8 @@ export class SiteService {
 
    }
 
-  //api_url = 'http://10.0.2.2:8000/api/'
-  //api_url = 'http://127.0.0.1:8000/api/'
-  api_url = 'http://192.168.0.103:8000/api/'
+  api_url = 'http://' + environment.backend_url + '/api/'
+  chat_url = 'http://' + environment.backend_url + '/chat/'
 
   getUserFromLocalStorage() {
     const userString = localStorage.getItem('user');
@@ -182,13 +180,13 @@ export class SiteService {
     return this.http.get(`${this.api_url}teams/${teamId}/addinglink/`,{headers});
   } 
 
-  getMessages(teamId:number){
+  getChatHistory(teamId:number){
     let user = this.getUserFromLocalStorage();
 
     const headers = new HttpHeaders({
       'Authorization': `Token ${user.token}`
     });
-    return this.http.get(`http://localhost:8000/chat/team/${teamId}/`,{headers});
+    return this.http.get(`${this.chat_url}team/${teamId}/`,{headers});
   }
 
   generatePdf(teamName:string, members:any, tasks:any) {

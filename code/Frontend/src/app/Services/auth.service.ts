@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient ,HttpHeaders} from '@angular/common/http';
-
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +9,7 @@ export class AuthService {
 
   constructor(private http:HttpClient) { }
 
-  //api_url = 'http://10.0.2.2:8000/auth/'
-  //api_url = 'http://127.0.0.1:8000/auth/'
-  api_url = 'http://192.168.0.103:8000/auth/'
+  api_url = 'http://' + environment.backend_url + '/auth/'
 
   getUserFromLocalStorage() {
     const userString = localStorage.getItem('user');

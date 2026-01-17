@@ -3,10 +3,13 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    
+
     <ion-title>{{ teamName }}</ion-title>
 
     <ion-buttons slot="end">
+      <ion-button (click)="goToChat()">
+        <ion-icon slot="icon-only" name="chatbubbles-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="presentActionSheet()">
         <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
       </ion-button>
@@ -20,9 +23,9 @@
     <ion-button fill="clear" (click)="prevMonth()">
       <ion-icon name="chevron-back-outline" size="large"></ion-icon>
     </ion-button>
-    
+
     <h2 class="month-label">{{ dateInformation.currentMonth }} {{ dateInformation.currentYear }}</h2>
-    
+
     <ion-button fill="clear" (click)="nextMonth()">
       <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
     </ion-button>
@@ -36,17 +39,13 @@
   </div>
 
   <div class="calendar-grid-container">
-    <div 
-      class="calendar-day" 
-      *ngFor="let day of dateInformation.currentMonthDays; let i = index"
-      [class.today]="i === dateInformation.currentDay - 1"
-      (click)="DisplayDay(i + 1)">
-      
+    <div class="calendar-day" *ngFor="let day of dateInformation.currentMonthDays; let i = index"
+      [class.today]="i === dateInformation.currentDay - 1" (click)="DisplayDay(i + 1)">
+
       <span class="day-number">{{ i + 1 }}</span>
 
       <div *ngIf="TaskCounterMap.get(i + 1) != 0" class="task-indicator">
-        <fa-icon [icon]="tasks" 
-          [style.color]="getTaskColor(TaskCounterMap.get(i + 1))">
+        <fa-icon [icon]="tasks" [style.color]="getTaskColor(TaskCounterMap.get(i + 1))">
         </fa-icon>
       </div>
     </div>
@@ -58,10 +57,7 @@
 
   <ion-list *ngIf="isManager || TeamUsers.length > 0">
     <ion-item *ngFor="let user of TeamUsers; let i = index">
-      <ion-checkbox 
-        slot="start" 
-        [(ngModel)]="user.isChecked" 
-        (ionChange)="checkSelectedUser(i)">
+      <ion-checkbox slot="start" [(ngModel)]="user.isChecked" (ionChange)="checkSelectedUser(i)">
       </ion-checkbox>
       <ion-label>
         {{ user.first_name }} {{ user.last_name }}
@@ -70,7 +66,9 @@
   </ion-list>
 
   <div *ngIf="TeamUsers.length === 0" class="ion-text-center ion-padding">
-    <ion-text color="medium"><p>No team members yet.</p></ion-text>
+    <ion-text color="medium">
+      <p>No team members yet.</p>
+    </ion-text>
   </div>
 
 </ion-content>
@@ -80,4 +78,3 @@
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-

@@ -1,99 +1,88 @@
-:host {
-    display: block;
-    height: 100%;
-    width: 100%;
-    background-color: #667DB8; 
-    padding: 1%;
-    box-sizing: border-box;    
-  }
-  
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.message-wrapper {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
 
-  }
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 20px;
+  max-width: 80%;
+  font-size: 14px;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.sender-name {
+  font-size: 10px;
+  color: #666;
+  margin-left: 10px;
+  margin-bottom: 2px;
+}
+
+.message-time {
+  font-size: 10px;
+  color: #999;
+  margin-top: 2px;
+  align-self: flex-end; /* Czas po prawej */
+}
+
+/* MOJE WIADOMOŚCI (Prawa strona) */
+.my-message {
+  align-items: flex-end;
   
-  .chat-messages {
-    flex: 1;
-    background-color: rgb(13,17,23);  
-    padding: 16px;
-    border-radius: 8px;
-    overflow-y: auto; 
-  }
-  
-  .chat-message p {
-    color: white; 
-    margin: 0 0 8px 0;
-  }
-  
-  .chat-input {
-    display: flex;
-    padding: 16px;
-    background-color: rgb(13,17,23); 
-    border-radius: 8px;
-    margin-top:2%;
-    justify-content: space-between;
-  }
-  
-  .input {
-    width:70%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-right: 8px;
-    box-sizing: border-box;
-  }
-  .input:focus {
-    outline: none; 
-  }
-  
-  button {
-    background-color: #667DB8;
+  .message-bubble {
+    background: var(--ion-color-primary);
     color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    border:solid;
-    border-width: 2px;
-    border-color: #667DB8;
+    border-bottom-right-radius: 2px;
   }
   
-  button:hover {
-    border:solid;
-    border-width: 2px;
-    border-color:white;
-    color: rgb(13,17,23);
-    font-weight: bold;
+  .message-time {
+    margin-right: 5px;
   }
-  
+}
 
+/* INNE WIADOMOŚCI (Lewa strona) */
+.other-message {
+  align-items: flex-start;
 
-  .message-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    border-bottom: solid 1px rgb(107, 102, 102);
-    padding-top: 3%;
+  .message-bubble {
+    background: #e0e0e0; /* Jasnoszary */
+    color: black;
+    border-bottom-left-radius: 2px;
   }
   
-  .message-text {
-    flex-grow: 1;
-    color:white
+  .message-time {
+    align-self: flex-start;
+    margin-left: 5px;
   }
+}
 
-  .message-text-author {
-    flex-grow: 1;
-    font-weight: bold;
-  }
-  
-  .message-date {
-    white-space: nowrap;
-    margin-left: 10px; /* Adjust spacing as needed */
-    color:white;
-  }
-  
+/* FOOTER INPUT */
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+  background: #fff;
+}
+
+ion-textarea {
+  background: #f0f0f0;
+  border-radius: 20px;
+  padding-left: 10px;
+  margin-right: 5px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  max-height: 100px;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+ion-content {
+  flex: 1; /* Zajmij całą dostępną przestrzeń */
+}
