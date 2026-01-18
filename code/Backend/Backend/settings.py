@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'TeamsApi',
-    'Chat', 
+    'Chat',
+    'Notifications'
 ]
 
 ASGI_APPLICATION = 'Backend.asgi.application'

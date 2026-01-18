@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { Platform } from '@ionic/angular';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { SiteService } from './Services/site.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +15,10 @@ export class AppComponent {
 
   isLoginPage: boolean = false;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private platform: Platform, private site: SiteService) {
+    
+    this.initializeApp();
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -24,5 +30,49 @@ export class AppComponent {
         this.isLoginPage = false;
       }
     });
+    
+  }
+
+  // add notifications only for android
+  initializeApp() {
+    this.platform.ready().then(() => {
+      if (this.platform.is('capacitor')) {
+        this.registerPush();
+      }
+    });
+  }
+
+  private registerPush() {
+    PushNotifications.addListener('registration', (token) => {
+      console.log('FCM TOKEN: ', token.value);
+      this.site.saveDeviceToken(token.value).subscribe();
+    });
+
+    PushNotifications.addListener('registrationError', (error) => {
+      console.error('Push registration error: ', error);
+    });
+
+    PushNotifications.addListener('pushNotificationReceived', (notification) => {
+      console.log('Push received with app in foreground: ', notification);
+      // display toast
+    });
+
+    PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+      console.log('Push notoficatoin clicked:', notification);
+      // add redirection to chat / notification context
+      // const teamId = notification.notification.data.teamId;
+      // this.router.navigate(['/team', teamId, 'chat']);
+    });
+
+    // premission request
+    PushNotifications.requestPermissions().then(result => {
+      if (result.receive === 'granted') {
+        PushNotifications.register();
+      } else {
+        console.log('Push permision not granted');
+      }
+    });
   }
 }
+
+

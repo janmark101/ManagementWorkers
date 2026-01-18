@@ -22,4 +22,5 @@ urlpatterns = [
     path('auth/',include('Authentication.urls')),
     path('api/',include('TeamsApi.urls')),
     path('chat/',include('Chat.urls')),
+    path('api/', include('Notifications.urls')),
 ]

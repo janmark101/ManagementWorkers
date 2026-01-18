@@ -193,5 +193,11 @@ cython_debug/
 
 # npx android dir
 android/
+
+# firebase server key
+firebase-admin.json
+
 # End of https://www.toptal.com/developers/gitignore/api/django,visualstudiocode
+
+
 

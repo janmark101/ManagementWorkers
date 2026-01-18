@@ -227,10 +227,23 @@ export class SiteService {
         y += 5;
     });
 
-
-
-    // Zapisanie dokumentu
     doc.save('raport_zespolu.pdf');
+  }
+
+  saveDeviceToken(token: string) {
+    const payload = {
+      registration_id: token, // firebase token
+      type: 'android',
+      active: true
+    };
+
+    let user = this.getUserFromLocalStorage();
+
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${user.token}`
+    });
+    
+    return this.http.post(`${this.api_url}devices/`, payload, { headers });
   }
 
 }
