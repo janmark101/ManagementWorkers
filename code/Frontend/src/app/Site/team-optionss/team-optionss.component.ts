@@ -32,7 +32,7 @@ export class TeamOptionssComponent implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
   ) {}
 
   ngOnInit(): void {
@@ -113,10 +113,11 @@ export class TeamOptionssComponent implements OnInit {
 
   async showUniqueCode() {
     this.Site.UniqueCode(this.teamId).pipe(take(1)).subscribe(async (data: any) => {
+      const codeToCopy = data.code;
       const modal = await this.modalCtrl.create({
         component: UniqueCodeComponent,
         componentProps: {
-          code: data.code,
+          code: codeToCopy,
           teamId: this.teamId
         },
       });

@@ -1,8 +1,37 @@
-<div class="window">
-       <h1 style="text-align: center; color:black;">Unique code : </h1> 
-       <h3 style="text-align: center;">{{code}}</h3>
-        <div class="button-container">
-          <button class="button" type="button" (click)="regenerate()">Regenerate</button>
-          <button class="button" type="button" (click)="onCancel()">Cancel</button>
-        </div>
-    </div>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Team Code</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+
+  <div class="code-container">
+    <ion-text color="medium">
+      <p>Share this code with your colleagues to let them join the team:</p>
+    </ion-text>
+
+    <h1 class="unique-code">{{ code }}</h1>
+    
+  </div>
+
+  <div class="actions ion-margin-top">
+
+    <ion-button expand="block" (click)="copyToClipboard()">
+      <ion-icon name="copy-outline" slot="start"></ion-icon>
+      Copy Code
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" color="medium" (click)="regenerate()" class="ion-margin-top">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      Regenerate Code
+    </ion-button>
+
+  </div>
+
+</ion-content>

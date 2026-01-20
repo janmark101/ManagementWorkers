@@ -1,7 +1,8 @@
-import { Component,Inject, OnInit} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
 import { take } from 'rxjs';
 import { SiteService } from 'src/app/Services/site.service';
+import { Clipboard } from '@capacitor/clipboard';
 
 @Component({
   selector: 'app-unique-code',
@@ -10,27 +11,50 @@ import { SiteService } from 'src/app/Services/site.service';
 })
 export class UniqueCodeComponent implements OnInit {
 
-  code = '';
+  // W Ionic Modals dane odbieramy przez @Input, nie przez Inject
+  @Input() code: string = '';
+  @Input() teamId: number | any;
 
   constructor(
-    private dialogRef: MatDialogRef<UniqueCodeComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,private Service : SiteService
+    private modalCtrl: ModalController,
+    private Service: SiteService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit(): void {
-     this.code = this.data.code;
+    
   }
 
-  regenerate(){
-    this.Service.RegenerateUniqueCode(this.data.teamId).pipe(take(1)).subscribe((data:any) =>{
-          this.code = data.code;
-          
-        },(error:any) =>{
-          console.log(error);
+  regenerate() {
+    this.Service.RegenerateUniqueCode(this.teamId).pipe(take(1)).subscribe({
+      next: (data: any) => {
+        this.code = data.code;
+        this.showToast('Code regenerated successfully');
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.showToast('Failed to regenerate code');
+      }
     });
   }
 
-  onCancel(){
-    this.dialogRef.close();
+  async copyToClipboard() {
+    await Clipboard.write({
+      string: this.code
+    });
+    this.showToast('Copied to clipboard!');
+  }
+
+  async showToast(msg: string) {
+    const toast = await this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+
+  onCancel() {
+    this.modalCtrl.dismiss();
   }
 }
