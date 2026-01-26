@@ -1,17 +1,39 @@
-<div class="container">
-    <div class="activation-container">
-        <h2 style="font-size: 2rem;">You need to verify your account!</h2>
-      <h1 for="activation-code" style="font-size: 1.5rem;">Verification code:</h1>
-      <br>
-      <input *ngFor="let index of [1, 2, 3, 4, 5, 6]" 
-           type="text" 
-           id="activation-code-{{index}}" 
-           class="activation-input" 
-           maxlength="1" 
-           [(ngModel)]="activationCode[index - 1]"
-           (input)="moveToNextInput(index)">
-    <br>
-    <button class="button" (click)="activate()" style="margin-top: 7%;">Activate</button>
-    <p style="color:white">{{message}}</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Verification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <div class="verify-container">
+    <ion-icon name="shield-checkmark-outline" class="verify-icon"></ion-icon>
+    
+    <h2>Verify Account</h2>
+    <p class="ion-text-muted">
+      Enter the 6-digit code sent to your email to activate your account.
+    </p>
+
+    <div class="otp-container">
+      <input *ngFor="let index of [0, 1, 2, 3, 4, 5]" 
+             type="tel" 
+             id="otp-{{index}}" 
+             class="otp-input" 
+             maxlength="1" 
+             [(ngModel)]="activationCode[index]"
+             (keyup)="handleInput($event, index)">
     </div>
+
+    <ion-button expand="block" class="ion-margin-top" (click)="activate()" [disabled]="!isCodeComplete()">
+      Activate
+    </ion-button>
+
+    <div *ngIf="message" class="error-message ion-margin-top">
+      <ion-text color="danger">
+        <p>{{ message }}</p>
+      </ion-text>
+    </div>
+
   </div>
+
+</ion-content>
