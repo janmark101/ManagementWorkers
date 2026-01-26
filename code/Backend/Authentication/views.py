@@ -47,14 +47,19 @@ class Register(APIView):
     authentication_classes = ()
     permission_classes = ()
     
-    def post(self,request):
+    def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            UserProfile.objects.create(user=user)
-            send_verify_email(serializer.data['email'])
-            return Response ({'message' : 'Registered succesfully.'},status=status.HTTP_201_CREATED)
-        return Response ({'error' : serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+            UserProfile.objects.get_or_create(user=user)
+            email_sent = send_verify_email(user.email)
+            
+            if email_sent:
+                return Response({'message': 'Registered successfully. Verification mail sent.'}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'message': 'Registered, but failed to send email.'}, status=status.HTTP_201_CREATED)
+                
+        return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     
 class VerifyAccountView(APIView):
@@ -69,5 +74,5 @@ class VerifyAccountView(APIView):
             user_profile.verify_code = ''
             user_profile.save()
             return Response({'message':'Your account has been activated!'},status=status.HTTP_200_OK)  
-        return Response({'error':'Wrong code! Try again.'},status=status.HTTP_400_BAD_REQUEST)  
+        return Response({'error':'Wrong code! Try again.'},status=status.HTTP_400_BAD_REQUEST)
         
