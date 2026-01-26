@@ -15,6 +15,8 @@ import { TaskComponent } from './Site/task/task.component';
 import { DayComponent } from './Site/day/day.component';
 import { CreateComponent } from './Site/create/create.component';
 import { JoinTeamComponent } from './Site/join-team/join-team.component';
+import { ForgotPasswordComponent } from './Site/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Site/reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -33,6 +35,8 @@ const routes: Routes = [
   { path: 'team/:id/edit-task/:taskId', component: TaskComponent },
   { path: 'team/:id/day/:day/:month/:year', component: DayComponent },
   { path: 'team/:id/chat', component: ChatComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'reset-password/:uid/:token', component: ResetPasswordComponent},
 ];
 
 @NgModule({

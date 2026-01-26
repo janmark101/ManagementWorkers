@@ -40,6 +40,8 @@ import { AddingLinkComponent } from './Site/adding-link/adding-link.component';
 import { JoinTeamLinkComponent } from './Site/join-team-link/join-team-link.component';
 import { DatePipe } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { ForgotPasswordComponent } from './Site/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Site/reset-password/reset-password.component';
 
 
 
@@ -64,6 +66,8 @@ import { IonicModule } from '@ionic/angular';
     ChatComponent,
     AddingLinkComponent,
     JoinTeamLinkComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     MatTooltipModule,
