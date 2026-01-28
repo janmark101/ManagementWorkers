@@ -20,7 +20,7 @@ export class DayComponent implements OnInit {
 
   tasks: any[] = [];
   message: string = "";
-  statuses = ['Not started', 'In progress', 'Finished'];
+  statuses = ['Not started', 'In progress', 'Done'];
   isManager: boolean = false;
 
   monthMap: { [key: string]: number } = {
