@@ -45,10 +45,10 @@
   </div>
 
   <div class="section-divider">
-    <span>Filter by Worker</span>
+    <span>Filter by person</span>
   </div>
 
-  <ion-list *ngIf="isManager || TeamUsers.length > 0">
+  <ion-list class="scrollable-list" *ngIf="isManager || TeamUsers.length > 0">
     <ion-item *ngFor="let user of TeamUsers; let i = index">
       <ion-checkbox slot="start" [(ngModel)]="user.isChecked" (ionChange)="checkSelectedUser(i)">
       </ion-checkbox>
