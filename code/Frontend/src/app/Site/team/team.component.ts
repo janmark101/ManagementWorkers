@@ -261,6 +261,14 @@ export class TeamComponent implements OnInit {
     await alert.present();
   }
 
+  getDotsArray(dayNumber: number): any[] {
+    const count = this.TaskCounterMap.get(dayNumber) || 0;
+    if (count === 0) return [];
+    
+    const dotsToShow = Math.min(count, 3); 
+    return new Array(dotsToShow);
+  }
+
   goToChat() {
   this.router.navigate(['/team', this.teamId, 'chat']);
 }

@@ -105,9 +105,15 @@ class Command(BaseCommand):
             "Clients are asking for the new price list.",
             "It's on the shared drive.",
             "Did you see the email from the CEO?",
-            "Good job team!",
+            "Good job!",
             "Can we reschedule the daily sync?",
-            "Sure, no problem."
+            "Who ate my labeled yogurt?",
+            "Sure",
+            "Not my problem ;)",
+            "I dont have access",
+            "We've seen this before"
+            "This violates the company guidelines",
+            "¯\\_(ツ)_/¯",
         ]
 
         task_names = [
