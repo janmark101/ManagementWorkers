@@ -60,8 +60,18 @@ export class AppComponent {
     PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log('Push notoficatoin clicked:', notification);
       // add redirection to chat / notification context
-      // const teamId = notification.notification.data.teamId;
-      // this.router.navigate(['/team', teamId, 'chat']);
+      const data = notification.notification.data;
+      
+      if (data.type === 'chat_message') {
+            this.router.navigate(['/team', data.team_id, 'chat']);
+      }
+
+      if (data.type === 'task_assignment') {
+        this.router.navigate(['/team', data.team_id]);
+      }
+
+      const teamId = notification.notification.data.teamId;
+      this.router.navigate(['/team', teamId, 'chat']);
     });
 
     // premission request

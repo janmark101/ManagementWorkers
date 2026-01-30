@@ -1,11 +1,12 @@
 import firebase_admin
 from firebase_admin import credentials, messaging
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.conf import settings
 from django.contrib.auth.models import User
 import os
 from Chat.models import TeamMessage
+from TeamsApi.models import Task
 from .models import FCMDevice
 
 CRED_PATH = os.path.join(settings.BASE_DIR, 'firebase-admin.json')
@@ -40,6 +41,7 @@ def send_notification_on_new_message(sender, instance, created, **kwargs):
         devices = FCMDevice.objects.filter(user__id__in=recipient_ids, active=True)
                 
         if not devices.exists():
+            print("No devices exists")
             return
 
         tokens = list(set(device.registration_id for device in devices))
@@ -74,3 +76,52 @@ def send_notification_on_new_message(sender, instance, created, **kwargs):
             
         except Exception as e:
             print(f"PUSH ERROR: {e}")
+            
+
+@receiver(m2m_changed, sender=Task.workers_id.through)
+def send_notification_on_task_assignment(sender, instance, action, pk_set, **kwargs):
+
+    if action == "post_add":
+        print("send_notification_on_task_assignment")
+        
+        task = instance
+
+        if not pk_set:
+            return
+        
+        devices = FCMDevice.objects.filter(user__id__in=pk_set, active=True)
+        
+        if not devices.exists():
+            return
+
+        tokens = list(set(device.registration_id for device in devices))
+        
+        if not tokens:
+            return
+
+        try:
+            notification_title = "New Task Assigned"
+            notification_body = f"You have been assigned to: {task.name}"
+            
+            if len(notification_body) > 100:
+                notification_body = notification_body[:97] + "..."
+
+            message_payload = messaging.MulticastMessage(
+                notification=messaging.Notification(
+                    title=notification_title,
+                    body=notification_body
+                ),
+                data={
+                    'team_id': str(task.team_id.id),
+                    'task_id': str(task.id),
+                    'click_action': 'FCM_PLUGIN_ACTIVITY',
+                    'type': 'task_assignment'
+                },
+                tokens=tokens,
+            )
+            
+            response = messaging.send_each_for_multicast(message_payload)
+            print(f"TASK PUSH SENT: {response.success_count} sent, {response.failure_count} failed.")
+            
+        except Exception as e:
+            print(f"TASK PUSH ERROR: {e}")

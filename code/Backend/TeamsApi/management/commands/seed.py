@@ -6,6 +6,7 @@ from django.utils import timezone
 from faker import Faker
 
 # Importy Twoich modeli
+from Notifications.models import FCMDevice
 from TeamsApi.models import Team, Task
 from Chat.models import TeamMessage
 from Authentication.models import UserProfile
@@ -38,7 +39,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.WARNING('Starting seeding process...'))
 
         # ---------------------------------------------------------
-        # 1. PRESENTER USER
+        # 1. PRESENTER USER (Jan Kowalski)
         # ---------------------------------------------------------
         jan, created = User.objects.get_or_create(username='jankowalski')
         jan.first_name = 'Jan'
@@ -50,14 +51,45 @@ class Command(BaseCommand):
         jan_profile, _ = UserProfile.objects.get_or_create(user=jan)
         jan_profile.is_verified = True
         jan_profile.save()
+        
+        FCMDevice.objects.create(
+            user=jan,
+            registration_id=fake.sha256(),
+            type='android',
+            active=True
+        )
 
         self.stdout.write(self.style.SUCCESS(f'Presenter ready: {jan.username}'))
 
         # ---------------------------------------------------------
+        # 1.1. PRESENTER USER (Adam Nowak)
+        # ---------------------------------------------------------
+        adam, created = User.objects.get_or_create(username='adamnowak')
+        adam.first_name = 'Adam'
+        adam.last_name = 'Nowak'
+        adam.email = 'adam.nowak@example.com'
+        adam.set_password('haslo123')
+        adam.save()
+
+        adam_profile, _ = UserProfile.objects.get_or_create(user=adam)
+        adam_profile.is_verified = True
+        adam_profile.save()
+        
+        # --- DODAJEMY FAKE DEVICE DLA JANA ---
+        FCMDevice.objects.create(
+            user=adam,
+            registration_id=fake.sha256(),
+            type='android',
+            active=True
+        )
+
+        self.stdout.write(self.style.SUCCESS(f'Presenter Partner ready: {adam.username}'))
+
+        # ---------------------------------------------------------
         # 2. DUMMY WORKERS
         # ---------------------------------------------------------
-        users_pool = [jan]
-        # Generujemy 15 pracowników
+        users_pool = [jan, adam]
+        
         for _ in range(15):
             profile_data = fake.simple_profile()
             username = profile_data['username']
@@ -111,7 +143,7 @@ class Command(BaseCommand):
             "Sure",
             "Not my problem ;)",
             "I dont have access",
-            "We've seen this before"
+            "We've seen this before",
             "This violates the company guidelines",
             "¯\\_(ツ)_/¯",
         ]
@@ -135,7 +167,12 @@ class Command(BaseCommand):
         ]
 
         for team_name, jan_is_manager in teams_config:
-            manager = jan if jan_is_manager else random.choice(users_pool[1:])
+            
+            # oposite roles in teams for jan and adam
+            if jan_is_manager:
+                manager = jan
+            else:
+                manager = adam
             
             team, created = Team.objects.get_or_create(
                 name=team_name,
@@ -148,13 +185,17 @@ class Command(BaseCommand):
 
             # Workers (6-10 people per team)
             members = random.sample(users_pool, k=random.randint(6, 10))
+            
             if jan not in members:
                 members.append(jan)
+            
+            if adam not in members:
+                members.append(adam)
             
             team.workers.set(members) 
             team.save()
 
-            self.stdout.write(f'--- Seeding Team: {team.name} ---')
+            self.stdout.write(f'--- Seeding Team: {team.name} (Manager: {manager.username}) ---')
 
             # ---------------------------------------------------------
             # 4. TASKS GENERATION
